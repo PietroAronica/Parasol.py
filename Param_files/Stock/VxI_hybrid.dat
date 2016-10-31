@@ -1,0 +1,10 @@
+# Add dummy and magical hybridastion parameters
+
+addAtomTypes {
+        { "dc"  "C" "sp3" }
+        { "dh"  "H" "sp3" }
+        { "mh"  "H" "sp3" }
+        { "tc"  "C" "sp3" }
+        { "th"  "H" "sp3" }
+        { "ih"  "H" "sp3" }
+}

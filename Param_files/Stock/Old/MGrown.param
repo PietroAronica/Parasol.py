@@ -1,0 +1,17 @@
+#Methyl_grown_FF99SB
+dc atom 12.010 0.8780 1.9080 0.1094
+dh atom 1.0080 0.1350 1.4870 0.0157
+mh atom 1.0080 0.0000 0.0000 0.0000
+CT-dc bond 310.0 1.526
+dc-dh bond 340.0 1.090
+CT-mh bond 340.0 1.526
+CT-dc-dh angle 50.000 109.50
+dh-dc-dh angle 35.000 109.50
+HC-CT-dc angle 50.000 109.50
+HC-CT-mh angle 35.000 109.50
+mh-CT-dc angle 50.000 000.00
+CT-CT-mh angle 50.000 109.50
+CT-CT-dc angle 40.000 109.50
+mh-CT-dc-dh dihedral 999 0.0 0.0 1
+HC-CT-dc-dh dihedral 1 0.15 0.0 3
+CT-CT-dc-dh dihedral 1 0.16 0.0 3
