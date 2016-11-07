@@ -85,7 +85,7 @@ def IMPROPER_insert(file, impr, fcst, angl, peri):
 			proc = True
 		else:
 			if proc:
-				print impr, fcst, angl, peri
+				print '{}    {} {} {:.0f}.'.format(impr, fcst, angl, peri)
 			proc = False
 		print line,
 

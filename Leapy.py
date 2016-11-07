@@ -8,7 +8,7 @@ def run(cmd, output='leap.log'):
 	cmdline = "tleap -f %s >> %s"%(cmd, output)
 	os.system(cmdline)
 
-def createprmtops(ff='ff99SB+', pbradii='Null', dat='Hyb.dat', lib='VXI.lib', ion='Null', box='Null', solvbox='8.0', output='leap.log'):
+def createprmtops(ff='ff99SB+', pbradii='Null', dat='Hyb.dat', lib='VXI.lib', ion='Null', box='Null', solvbox='8.0', output='leap.log', bal='Null'):
 	ctrl = open('lyp.in', 'w')
 	ctrl.write("source leaprc.%s\n"%ff)
 	ctrl.write("source %s\n"%dat)
@@ -23,6 +23,10 @@ def createprmtops(ff='ff99SB+', pbradii='Null', dat='Hyb.dat', lib='VXI.lib', io
 		ctrl.write("set Mutanda box %s\n" %box)
 	if solvbox != 'Null':
 		ctrl.write("solvateoct Mutanda TIP3PBOX %s\n" %solvbox)
+	if bal != 'Null':
+		ctrl.write("loadamberparams Param_files/Stock/Ion.frcmod\n")
+		ctrl.write("loadoff Param_files/Stock/Ion.lib\n")
+		ctrl.write("addions Mutanda %s 1\n" %bal)
 	ctrl.write("saveamberparm Mutanda Solv_0_100.prmtop Solv_0_100.inpcrd\n")
 	ctrl.write("loadamberparams 10_90.frcmod\n")
 	ctrl.write("saveamberparm Mutanda Solv_10_90.prmtop Solv_10_90.inpcrd\n")

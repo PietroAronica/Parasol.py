@@ -22,10 +22,12 @@ def make_store(oldbox):
 		os.system('sed -i s/9.00000000E+01/1.09471219E+02/g Solv_*.prmtop')
 		os.chdir('..')
 
-def mutate_beg(store, faa, resnum, dct='/home/pietroa/Work', wkdir='None', solv = 'No'):
+def mutate_beg(store, faa, resnum, dct='/home/pietroa/Work', wkdir='None', solv = 'No', fin=None):
 	os.chdir(dct)
 	if wkdir == 'None':
-		wkdir=datetime.datetime.now().strftime('Mutation_%m-%d_%H:%M_to{}{}'.format(faa, resnum))
+		if fin is None:
+			fin = faa
+		wkdir=datetime.datetime.now().strftime('Mutation_%m-%d_%H:%M_to{}{}'.format(fin, resnum))
 	try:
 		os.mkdir(wkdir)
 	except:
@@ -60,3 +62,4 @@ def mutate_con(store, faa, wkdir, resnum):
 	pt.write_traj('Run_1.pdb', traj, overwrite=True)
 	s = PDBHandler.readpdb('Run_1.pdb')
 	PDBHandler.chop(s, faa, resnum)
+	shutil.copyfile('Mut_leap.pdb', '/home/pietroa/Python/Curr_run.pdb')

@@ -1,18 +1,17 @@
-#Methyl_small_FF99SB
-dc 12.010 0.0000 0.0000 0.0000
-dh 1.0080 0.0000 0.0000 0.0000
-mh 1.0080 0.1350 1.4870 0.0157
-fh 1.0080 0.1350 1.4870 0.0157
-ho 16.000 0.0000 0.0000 0.0000
-hh 1.0080 0.0000 0.0000 0.0000
-sh 1.0080 0.1350 1.4870 0.0157
-CT-dc 310.0 0.545
-dc-dh 340.0 0.545
-CT-mh 340.0 1.090
-CT-fh 340.0 1.090
-CT-ho 320.0 0.545
-CT-sh 340.0 1.090
-ho-hh 553.0 0.545
+#Nonexisting_Parameters_FF99SB
+Carbon               12.010    0.0000    0.0000    0.0000
+Hydrogen             1.0080    0.0000    0.0000    0.0000
+Oxygen               16.000    0.0000    0.0000    0.0000
+CTCar_midHyd          310.0     0.545
+HCHyd_midHyd          340.0     0.545
+HOHyd_midHyd          553.0     0.545
+OHOxy_midHyd          320.0     0.545
+HCHyd_supHCCar        340.0     1.526
+HCHyd_supOHOxy        340.0     1.410
+Ang_keep_em_close    50.000    000.00
+Ang_keep_em_straight 50.000    180.00
+
+
 CT-dc-dh 50.000 180.00
 dh-dc-dh 35.000 000.00
 HC-CT-dc 50.000 109.50

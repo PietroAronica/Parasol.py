@@ -1,0 +1,8 @@
+# Modifications to the force field
+MASS
+PN          22.990      0.2500
+PC          35.450      1.9100
+
+NONBON
+PN          1.3690      0.0874393
+PC          2.5130      0.035591

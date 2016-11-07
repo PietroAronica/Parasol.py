@@ -289,6 +289,11 @@ def sulpher(struct, pdb):
 	for res in struct.residue_list:
 		if res.get_resname() == 'CYX':
 			sulfurs.append(res.atom_dict['SG'])
+		if res.get_resname() == 'OEH':
+			for res2 in struct.residue_list:
+				if res2.get_resname() == 'NL7':
+					curr_conect = Conect_record(res.atom_dict['CF'].get_number(), res2.atom_dict['CE'].get_number())
+					struct.add_conect(curr_conect)
 	for sul1 in sulfurs[:]:
 		s1 = {}
 		try:
@@ -326,13 +331,29 @@ def sulpher(struct, pdb):
 
 def chop(struct, resid, resnum):
 	struct.residue_dict[resnum].set_resname(resid)
-	if resid == 'VAL':
+	if resid == 'ABU':
 		for atom in struct.residue_dict[resnum].atom_list[:]:
-			if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'HB', 'CG1', 'HG11', 'HG12', 'HG13', 'CG2', 'HG21', 'HG22', 'HG23', 'C', 'O']:
+			if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'HB2', 'HB3', 'CG', 'HG1', 'HG2', 'HG3', 'C', 'O']:
 				struct.residue_dict[resnum].atom_list.remove(atom)	
 	if resid == 'ALA':
 		for atom in struct.residue_dict[resnum].atom_list[:]:
 			if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'HB1', 'HB2', 'HB3', 'C', 'O']:
+				struct.residue_dict[resnum].atom_list.remove(atom)	
+	if resid == 'ANN':
+		for atom in struct.residue_dict[resnum].atom_list[:]:
+			if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'HB2', 'HB3', 'CG', 'CD1', 'HD1', 'CD2', 'HD2', 'CE', 'HE',  'C', 'O']:
+				struct.residue_dict[resnum].atom_list.remove(atom)	
+	if resid == 'GLU':
+		for atom in struct.residue_dict[resnum].atom_list[:]:
+			if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'HB2', 'HB3', 'CG', 'HG2', 'HG3', 'CD', 'OE1', 'OE2', 'C', 'O']:
+				struct.residue_dict[resnum].atom_list.remove(atom)	
+	if resid == 'NVA':
+		for atom in struct.residue_dict[resnum].atom_list[:]:
+			if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'HB2', 'HB3', 'CG', 'HG2', 'HG3', 'CD', 'HD1', 'HD2', 'HD3', 'C', 'O']:
+				struct.residue_dict[resnum].atom_list.remove(atom)	
+	if resid == 'VAL':
+		for atom in struct.residue_dict[resnum].atom_list[:]:
+			if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'HB', 'CG1', 'HG11', 'HG12', 'HG13', 'CG2', 'HG21', 'HG22', 'HG23', 'C', 'O']:
 				struct.residue_dict[resnum].atom_list.remove(atom)	
 	pdb = open('Mutated.pdb', 'w')
 	try:
@@ -341,6 +362,12 @@ def chop(struct, resid, resnum):
 		pass
 	for res in struct.residue_list:
 		for atom in res.atom_list:
+			if atom.get_name() == 'PC':
+				atom.set_name('Cl-')
+				atom.set_resname('Cl-')
+			if atom.get_name() == 'PN':
+				atom.set_name('Na+')
+				atom.set_resname('Na+')
 			pdb.write(atom.formatted())
 		try:
 			pdb.write(struct.other_dict[res.get_resnumber()].ter())
