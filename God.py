@@ -16,15 +16,6 @@ def makeinput(pdbfile, outfile, baa, faa, resid, atypes='Standard', newbox=8.0):
 	struct = PDBHandler.readpdb(pdbfile)
 	Curr_mut = 'Mutation_Modules.' + baa + '_' + faa
 	Curr_mut = importlib.import_module(Curr_mut)
-# Make Mutated PDB (Mutabond)
-	Curr_mut.makevxi(struct, 'Mutabond.pdb', resid)
-# Create parameters and lib files
-	Curr_mut.all_make()
-	if atypes == 'Standard':
-		Curr_mut.stock_add_to_all()
-	else:
-		Curr_mut.stock_add_to_all(**atypes)
-	Curr_mut.lib_make('ff99SB+', outfile)
 # Determine the overall charge of the pdb to see what ion is needed
 	ocharge = 0
 	for res in struct.residue_list:
@@ -43,7 +34,20 @@ def makeinput(pdbfile, outfile, baa, faa, resid, atypes='Standard', newbox=8.0):
 		newbox = 'Null'
 	except:
 		oldbox = 'Null'
+	if baa == 'GLU':
+		bal = 'PC'
+	else:
+		bal='Null'
+# Make Mutated PDB (Mutabond)
+	Curr_mut.makevxi(struct, 'Mutabond.pdb', resid)
+# Create parameters and lib files
+	Curr_mut.all_make()
+	if atypes == 'Standard':
+		Curr_mut.stock_add_to_all()
+	else:
+		Curr_mut.stock_add_to_all(**atypes)
+	Curr_mut.lib_make('ff99SB+', outfile)
 # Create prmtops
-	Leapy.createprmtops(ff='ff99SB+', ion=Ion, box=oldbox, solvbox=newbox, output=outfile)
+	Leapy.createprmtops(ff='ff99SB+', ion=Ion, box=oldbox, solvbox=newbox, output=outfile, bal=bal)
 	Curr_mut.parmed_command()
 	Run.make_store(oldbox)
