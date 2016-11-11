@@ -26,6 +26,8 @@ def parmed_command(vxi='VXI'):
 		i = float(i)
 		parm = AmberParm('Solv_{}_{}.prmtop'.format(a, 100-a))
 		changeLJPair(parm, ':{}@HG1 :{}@OE1 0 0'.format(vxi, vxi)).execute()
+		changeLJPair(parm, ':{}@HG1 :{}@NE2 0 0'.format(vxi, vxi)).execute()
+		changeLJPair(parm, ':{}@HG1 :{}@HE21 0 0'.format(vxi, vxi)).execute()
                 change(parm, 'charge', ':{}@N'.format(vxi), bc['N']+((fc['N']-bc['N'])/10)*i).execute()
                 change(parm, 'charge', ':{}@H'.format(vxi), bc['H']+((fc['H']-bc['H'])/10)*i).execute()
                 change(parm, 'charge', ':{}@CA'.format(vxi), bc['CA']+((fc['CA']-bc['CA'])/10)*i).execute()

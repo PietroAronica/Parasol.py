@@ -83,6 +83,42 @@ class Atom(object):
 		z = (atom2.get_coord()[2] + atom1.get_coord()[2])/2
 		return _ATOM_FORMAT_STRING.format('ATOM', self.number, name, self.resname, self.resnumber, x, y, z, self.occupancy, self.bfactor)
 
+	def halfway_between1(self, name, atom1, atom2):
+		x = ((atom2.get_coord()[0] + atom1.get_coord()[0])/2) - 0.001
+		y = ((atom2.get_coord()[1] + atom1.get_coord()[1])/2) - 0.001
+		z = ((atom2.get_coord()[2] + atom1.get_coord()[2])/2) - 0.001
+		return _ATOM_FORMAT_STRING.format('ATOM', self.number, name, self.resname, self.resnumber, x, y, z, self.occupancy, self.bfactor)
+
+	def halfway_between2(self, name, atom1, atom2):
+		x = ((atom2.get_coord()[0] + atom1.get_coord()[0])/2) + 0.001
+		y = ((atom2.get_coord()[1] + atom1.get_coord()[1])/2) + 0.001
+		z = ((atom2.get_coord()[2] + atom1.get_coord()[2])/2) + 0.001
+		return _ATOM_FORMAT_STRING.format('ATOM', self.number, name, self.resname, self.resnumber, x, y, z, self.occupancy, self.bfactor)
+
+	def halfway_after1(self, name, atom1, atom2):
+		x = ((3*atom2.get_coord()[0] - atom1.get_coord()[0])/2) - 0.001
+		y = ((3*atom2.get_coord()[1] - atom1.get_coord()[1])/2) - 0.001
+		z = ((3*atom2.get_coord()[2] - atom1.get_coord()[2])/2) - 0.001
+		return _ATOM_FORMAT_STRING.format('ATOM', self.number, name, self.resname, self.resnumber, x, y, z, self.occupancy, self.bfactor)
+
+	def halfway_after2(self, name, atom1, atom2):
+		x = ((3*atom2.get_coord()[0] - atom1.get_coord()[0])/2) + 0.001
+		y = ((3*atom2.get_coord()[1] - atom1.get_coord()[1])/2) + 0.001
+		z = ((3*atom2.get_coord()[2] - atom1.get_coord()[2])/2) + 0.001
+		return _ATOM_FORMAT_STRING.format('ATOM', self.number, name, self.resname, self.resnumber, x, y, z, self.occupancy, self.bfactor)
+
+	def thirdone_between(self, name, atom1, atom2):
+		x = (atom2.get_coord()[0] + 2*atom1.get_coord()[0])/3
+		y = (atom2.get_coord()[1] + 2*atom1.get_coord()[1])/3
+		z = (atom2.get_coord()[2] + 2*atom1.get_coord()[2])/3
+		return _ATOM_FORMAT_STRING.format('ATOM', self.number, name, self.resname, self.resnumber, x, y, z, self.occupancy, self.bfactor)
+
+	def thirdtwo_between(self, name, atom1, atom2):
+		x = (2*atom2.get_coord()[0] + atom1.get_coord()[0])/3
+		y = (2*atom2.get_coord()[1] + atom1.get_coord()[1])/3
+		z = (2*atom2.get_coord()[2] + atom1.get_coord()[2])/3
+		return _ATOM_FORMAT_STRING.format('ATOM', self.number, name, self.resname, self.resnumber, x, y, z, self.occupancy, self.bfactor)
+
 class Residue(object):
 	def __init__(self, resname, resnumber):
 		self.resname = resname
@@ -289,9 +325,9 @@ def sulpher(struct, pdb):
 	for res in struct.residue_list:
 		if res.get_resname() == 'CYX':
 			sulfurs.append(res.atom_dict['SG'])
-		if res.get_resname() == 'OEH':
+		if res.get_resname() in [ 'OEH', 'OEC', 'OET' ] :
 			for res2 in struct.residue_list:
-				if res2.get_resname() == 'NL7':
+				if res2.get_resname() in ['MKC','MKT','NL7']:
 					curr_conect = Conect_record(res.atom_dict['CF'].get_number(), res2.atom_dict['CE'].get_number())
 					struct.add_conect(curr_conect)
 	for sul1 in sulfurs[:]:
@@ -343,13 +379,89 @@ def chop(struct, resid, resnum):
 		for atom in struct.residue_dict[resnum].atom_list[:]:
 			if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'HB2', 'HB3', 'CG', 'CD1', 'HD1', 'CD2', 'HD2', 'CE', 'HE',  'C', 'O']:
 				struct.residue_dict[resnum].atom_list.remove(atom)	
+	if resid == 'ARG':
+		for atom in struct.residue_dict[resnum].atom_list[:]:
+			if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'HB2', 'HB3', 'CG', 'HG2', 'HG3', 'CD', 'HD2', 'HD3', 'NE', 'HE', 'CZ', 'NH1', 'HH11', 'HH12', 'NH2', 'HH21', 'HH22', 'C', 'O']:
+				struct.residue_dict[resnum].atom_list.remove(atom)	
+	if resid == 'ASN':
+		for atom in struct.residue_dict[resnum].atom_list[:]:
+			if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'HB2', 'HB3', 'CG', 'OD1', 'ND2', 'HD21', 'HD22', 'C', 'O']:
+				struct.residue_dict[resnum].atom_list.remove(atom)	
+	if resid == 'ASP':
+		for atom in struct.residue_dict[resnum].atom_list[:]:
+			if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'HB2', 'HB3', 'CG', 'OD1', 'OD2', 'C', 'O']:
+				struct.residue_dict[resnum].atom_list.remove(atom)	
+	if resid == 'CYS':
+		for atom in struct.residue_dict[resnum].atom_list[:]:
+			if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'HB2', 'HB3', 'SG', 'HG', 'C', 'O']:
+				struct.residue_dict[resnum].atom_list.remove(atom)	
+	if resid == 'GLN':
+		for atom in struct.residue_dict[resnum].atom_list[:]:
+			if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'HB2', 'HB3', 'CG', 'HG2', 'HG3', 'CD', 'OE1', 'NE2', 'HE21', 'HE22', 'C', 'O']:
+				struct.residue_dict[resnum].atom_list.remove(atom)	
 	if resid == 'GLU':
 		for atom in struct.residue_dict[resnum].atom_list[:]:
 			if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'HB2', 'HB3', 'CG', 'HG2', 'HG3', 'CD', 'OE1', 'OE2', 'C', 'O']:
 				struct.residue_dict[resnum].atom_list.remove(atom)	
+	if resid == 'HCY':
+		for atom in struct.residue_dict[resnum].atom_list[:]:
+			if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'HB2', 'HB3', 'CG', 'HG2', 'HG3', 'SD', 'HD', 'C', 'O']:
+				struct.residue_dict[resnum].atom_list.remove(atom)	
+	if resid == 'HIS':
+		for atom in struct.residue_dict[resnum].atom_list[:]:
+			if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'HB2', 'HB3', 'CG', 'ND1', 'CD2', 'HD2', 'CE1', 'HE1', 'NE2', 'HE2', 'C', 'O']:
+				struct.residue_dict[resnum].atom_list.remove(atom)	
+	if resid == 'ILE':
+		for atom in struct.residue_dict[resnum].atom_list[:]:
+			if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'HB', 'CG2', 'HG21', 'HG22', 'HG23', 'CG1', 'HG12', 'HG13', 'CD1', 'HD11', 'HD12', 'HD13', 'HG13', 'C', 'O']:
+				struct.residue_dict[resnum].atom_list.remove(atom)	
+	if resid == 'LEU':
+		for atom in struct.residue_dict[resnum].atom_list[:]:
+			if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'HB2', 'HB3', 'CG', 'HG', 'CD1', 'HD11', 'HD12', 'HD13', 'HG13', 'CD2', 'HD21', 'HD22', 'HD23', 'C', 'O']:
+				struct.residue_dict[resnum].atom_list.remove(atom)	
+	if resid == 'LYS':
+		for atom in struct.residue_dict[resnum].atom_list[:]:
+			if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'HB2', 'HB3', 'CG', 'HG2', 'HG3', 'CD', 'HD2', 'HD3', 'CE', 'HE2', 'HE3', 'NZ', 'HZ1', 'HZ2', 'HZ3', 'C', 'O']:
+				struct.residue_dict[resnum].atom_list.remove(atom)	
+	if resid == 'MET':
+		for atom in struct.residue_dict[resnum].atom_list[:]:
+			if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'HB2', 'HB3', 'CG', 'HG2', 'HG3', 'SD', 'CE', 'HE1', 'HE2', 'HE3', 'C', 'O']:
+				struct.residue_dict[resnum].atom_list.remove(atom)	
+	if resid == 'NLE':
+		for atom in struct.residue_dict[resnum].atom_list[:]:
+			if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'HB2', 'HB3', 'CG', 'HG2', 'HG3', 'CD', 'HD2', 'HD3', 'CE', 'HE1', 'HE2', 'HE3', 'C', 'O']:
+				struct.residue_dict[resnum].atom_list.remove(atom)	
 	if resid == 'NVA':
 		for atom in struct.residue_dict[resnum].atom_list[:]:
 			if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'HB2', 'HB3', 'CG', 'HG2', 'HG3', 'CD', 'HD1', 'HD2', 'HD3', 'C', 'O']:
+				struct.residue_dict[resnum].atom_list.remove(atom)	
+	if resid == 'PHE':
+		for atom in struct.residue_dict[resnum].atom_list[:]:
+			if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'HB2', 'HB3', 'CG', 'CD1', 'HD1', 'CD2', 'HD2', 'CE1', 'HE1', 'CE2', 'HE2', 'CZ', 'HZ', 'C', 'O']:
+				struct.residue_dict[resnum].atom_list.remove(atom)	
+	if resid == 'PRO':
+		for atom in struct.residue_dict[resnum].atom_list[:]:
+			if atom.get_name() not in ['N', 'CA', 'HA', 'CB', 'HB2', 'HB3', 'CG', 'HG2', 'HG3', 'CD', 'HD2', 'HD3', 'C', 'O']:
+				struct.residue_dict[resnum].atom_list.remove(atom)	
+	if resid == 'QUA':
+		for atom in struct.residue_dict[resnum].atom_list[:]:
+			if atom.get_name() not in ['N', 'CA', 'HA', 'CB', 'HB2', 'HB3', 'CG', 'HG2', 'HG3', 'C', 'O']:
+				struct.residue_dict[resnum].atom_list.remove(atom)	
+	if resid == 'SER':
+		for atom in struct.residue_dict[resnum].atom_list[:]:
+			if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'HB2', 'HB3', 'OG', 'HG', 'C', 'O']:
+				struct.residue_dict[resnum].atom_list.remove(atom)	
+	if resid == 'THR':
+		for atom in struct.residue_dict[resnum].atom_list[:]:
+			if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'HB', 'CG2', 'HG21', 'HG22', 'HG23', 'OG1', 'HG1', 'C', 'O']:
+				struct.residue_dict[resnum].atom_list.remove(atom)	
+	if resid == 'TRP':
+		for atom in struct.residue_dict[resnum].atom_list[:]:
+			if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'HB2', 'HB3', 'CG', 'CD1', 'HD1', 'NE1', 'HE1', 'CE2', 'CZ2', 'HZ2', 'CH2', 'HH2', 'CZ3', 'HZ3', 'CE3', 'HE3', 'CD2', 'C', 'O']:
+				struct.residue_dict[resnum].atom_list.remove(atom)	
+	if resid == 'TYR':
+		for atom in struct.residue_dict[resnum].atom_list[:]:
+			if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'HB2', 'HB3', 'CG', 'CD1', 'HD1', 'CD2', 'HD2', 'CE1', 'HE1', 'CE2', 'HE2', 'CZ', 'OH', 'HH', 'C', 'O']:
 				struct.residue_dict[resnum].atom_list.remove(atom)	
 	if resid == 'VAL':
 		for atom in struct.residue_dict[resnum].atom_list[:]:

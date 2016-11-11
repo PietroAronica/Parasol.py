@@ -51,6 +51,7 @@ def makevxi(struct, out, aa, vxi='VXI'):
         for res in struct.residue_list:
                 for atom in res.atom_list:
 			if atom.get_name() == 'CB' and res.get_resname() == vxi:
+                        	pdb.write(atom.formatted())
                         	pdb.write(atom.superimposed1('HB1', OG))
 			else:
                         	pdb.write(atom.formatted())

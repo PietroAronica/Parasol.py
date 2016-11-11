@@ -1,305 +1,213 @@
-# Copyright (C) 2002, Thomas Hamelryck (thamelry@binf.ku.dk)
-# This code is part of the Biopython distribution and governed by its
-# license.  Please see the LICENSE file that should have been included
-# as part of this package.
+# ILE to VAL Mutation
 
-"""Output of PDB files."""
+import Frcmod_creator
+import PDBHandler
+import Leapy
+from ParmedTools.ParmedActions import *
+from chemistry.amber.readparm import *
 
-from Bio._py3k import basestring
+def parmed_command(vxi='VXI'):
+	bc = {}
+        with open('Param_files/AminoAcid/ILE.param', 'r') as b:
+                data = b.readlines()[1:]
+        for line in data:
+		key, value = line.split()
+		bc[key] = float(value)
+        b.close()
+	fc = {}
+        with open('Param_files/AminoAcid/VAL.param', 'r') as b:
+                data = b.readlines()[1:]
+        for line in data:
+		key, value = line.split()
+		fc[key] = float(value)
+        b.close()
+	for i in range(11):
+		a = i*10
+		parm = AmberParm('Solv_{}_{}.prmtop'.format(a, 100-a))
+		changeLJPair(parm, ':{}@HG11 :{}@HD11 0 0'.format(vxi, vxi)).execute()
+                change(parm, 'charge', ':{}@N'.format(vxi), bc['N']+((fc['N']-bc['N'])/10)*i).execute()
+                change(parm, 'charge', ':{}@H'.format(vxi), bc['H']+((fc['H']-bc['H'])/10)*i).execute()
+                change(parm, 'charge', ':{}@CA'.format(vxi), bc['CA']+((fc['CA']-bc['CA'])/10)*i).execute()
+                change(parm, 'charge', ':{}@HA'.format(vxi), bc['HA']+((fc['HA']-bc['HA'])/10)*i).execute()
+                change(parm, 'charge', ':{}@CB'.format(vxi), bc['CB']+((fc['CB']-bc['CB'])/10)*i).execute()
+                change(parm, 'charge', ':{}@HB'.format(vxi), bc['HB']+((fc['HB']-bc['HB'])/10)*i).execute()
+                change(parm, 'charge', ':{}@CG2'.format(vxi), bc['CG2']+((fc['CG2']-bc['CG2'])/10)*i).execute()
+                change(parm, 'charge', ':{}@HG21'.format(vxi), bc['HG21']+((fc['HG21']-bc['HG21'])/10)*i).execute()
+                change(parm, 'charge', ':{}@HG22'.format(vxi), bc['HG22']+((fc['HG22']-bc['HG22'])/10)*i).execute()
+                change(parm, 'charge', ':{}@HG23'.format(vxi), bc['HG23']+((fc['HG23']-bc['HG23'])/10)*i).execute()
+                change(parm, 'charge', ':{}@CG1'.format(vxi), bc['CG1']+((fc['CG1']-bc['CG1'])/10)*i).execute()
+                change(parm, 'charge', ':{}@HG11'.format(vxi), (fc['HG11']/10)*i).execute()
+                change(parm, 'charge', ':{}@HG12'.format(vxi), bc['HG12']+((fc['HG12']-bc['HG12'])/10)*i).execute()
+                change(parm, 'charge', ':{}@HG13'.format(vxi), bc['HG13']+((fc['HG13']-bc['HG13'])/10)*i).execute()
+                change(parm, 'charge', ':{}@CD1'.format(vxi), bc['CD1']-(bc['CD1']/10)*i).execute()
+                change(parm, 'charge', ':{}@HD11'.format(vxi), bc['HD11']-(bc['HD11']/10)*i).execute()
+                change(parm, 'charge', ':{}@HD12'.format(vxi), bc['HD12']-(bc['HD12']/10)*i).execute()
+                change(parm, 'charge', ':{}@HD13'.format(vxi), bc['HD13']-(bc['HD13']/10)*i).execute()
+                change(parm, 'charge', ':{}@C'.format(vxi), bc['C']+((fc['C']-bc['C'])/10)*i).execute()
+                change(parm, 'charge', ':{}@O'.format(vxi), bc['O']+((fc['O']-bc['O'])/10)*i).execute()
+		setOverwrite(parm).execute()
+		parmout(parm, 'Solv_{}_{}.prmtop'.format(a, 100-a)).execute()
 
-from Bio.PDB.StructureBuilder import StructureBuilder  # To allow saving of chains, residues, etc..
-from Bio.Data.IUPACData import atom_weights  # Allowed Elements
-
-
-_ATOM_FORMAT_STRING = "%s%5i %-4s%c%3s %c%4i%c   %8.3f%8.3f%8.3f%s%6.2f      %4s%2s%2s\n"
-
-
-class Select(object):
-    """Select everything fo PDB output (for use as a bas class).
-
-    Default selection (everything) during writing - can be used as base class
-    to implement selective output. This selects which entities will be written out.
-    """
-
-    def __repr__(self):
-        return "<Select all>"
-
-    def accept_model(self, model):
-        """Overload this to reject models for output."""
-        return 1
-
-    def accept_chain(self, chain):
-        """Overload this to reject chains for output."""
-        return 1
-
-    def accept_residue(self, residue):
-        """Overload this to reject residues for output."""
-        return 1
-
-    def accept_atom(self, atom):
-        """Overload this to reject atoms for output."""
-        return 1
-
-
-class vxier(object):
-    """Write a Structure object (or a subset of a Structure object) as a PDB file.
-
-    Example:
-
-        >>> p=PDBParser()
-        >>> s=p.get_structure("1fat", "1fat.pdb")
-        >>> io=vxier()
-        >>> io.set_structure(s)
-        >>> io.save("out.pdb")
-    """
-    def __init__(self, use_model_flag=0):
-        """Creat the vxier object.
-
-        @param use_model_flag: if 1, force use of the MODEL record in output.
-        @type use_model_flag: int
-        """
-        self.use_model_flag = use_model_flag
-
-    # private mathods
-
-    def _get_atom_line(self, atom, hetfield, segid, atom_number, resname,
-                       resseq, icode, chain_id, charge="  "):
-        """Returns an ATOM PDB string (PRIVATE)."""
-        if hetfield != " ":
-            record_type = "HETATM"
-        else:
-            record_type = "ATOM  "
-        if atom.element:
-            element = atom.element.strip().upper()
-            if element.capitalize() not in atom_weights:
-                raise ValueError("Unrecognised element %r" % atom.element)
-            element = element.rjust(2)
-        else:
-            element = "  "
-        name = atom.get_fullname()
-        altloc = atom.get_altloc()
-        x, y, z = atom.get_coord()
-        bfactor = atom.get_bfactor()
-        occupancy = atom.get_occupancy()
+def makevxi(struct, out, aa, vxi='VXI'):
+        struct.residue_dict[aa].set_resname(vxi)
+        CD1 = struct.residue_dict[aa].atom_dict['CD1']
+	pdb = open(out, 'w')
         try:
-            occupancy_str = "%6.2f" % occupancy
-        except TypeError:
-            if occupancy is None:
-                occupancy_str = " " * 6
-                import warnings
-                from Bio import BiopythonWarning
-                warnings.warn("Missing occupancy in atom %s written as blank" %
-                              repr(atom.get_full_id()), BiopythonWarning)
-            else:
-                raise TypeError("Invalid occupancy %r in atom %r"
-                                % (occupancy, atom.get_full_id()))
+                pdb.write(struct.other_dict['Cryst1'].formatted())
+        except KeyError:
+                pass
+        for res in struct.residue_list:
+                for atom in res.atom_list:
+			if atom.get_name() == 'CG1' and res.get_resname() == vxi:
+                        	pdb.write(atom.formatted())
+                        	pdb.write(atom.superimposed1('HG11', CD1))
+			else:
+                        	pdb.write(atom.formatted())
+                try:
+                        pdb.write(struct.other_dict[res.get_resnumber()].ter())
+                except:
+                        pass
+        for oth in struct.other_dict:
+                try:
+                        if oth.startswith('Conect'):
+                                pdb.write(struct.other_dict[oth].formatted())
+                except:
+                        pass
+        pdb.write('END\n')
 
-        args = (record_type, atom_number, name, altloc, resname, chain_id,
-                resseq, icode, x, y, z, occupancy_str, bfactor, segid,
-                element, charge)
-        return _ATOM_FORMAT_STRING % args
+def lib_make(ff, outputfile, vxi='VXI', metcar='dc', methyd='dh', hydhyd='mh'):
+        ctrl = open('lyp.in', 'w')
+        ctrl.write("source leaprc.%s\n"%ff)
+	ctrl.write("%s=loadpdb Param_files/LibPDB/ILE-VAL.pdb\n"%vxi)
+	ctrl.write('set %s.1.1 element "N"\n'%vxi)
+	ctrl.write('set %s.1.2 element "H"\n'%vxi)
+	ctrl.write('set %s.1.3 element "C"\n'%vxi)
+	ctrl.write('set %s.1.4 element "H"\n'%vxi)
+	ctrl.write('set %s.1.5 element "C"\n'%vxi)
+	ctrl.write('set %s.1.6 element "H"\n'%vxi)
+	ctrl.write('set %s.1.7 element "C"\n'%vxi)
+	ctrl.write('set %s.1.8 element "H"\n'%vxi)
+	ctrl.write('set %s.1.9 element "H"\n'%vxi)
+	ctrl.write('set %s.1.10 element "H"\n'%vxi)
+	ctrl.write('set %s.1.11 element "C"\n'%vxi)
+	ctrl.write('set %s.1.12 element "H"\n'%vxi)
+	ctrl.write('set %s.1.13 element "H"\n'%vxi)
+	ctrl.write('set %s.1.14 element "H"\n'%vxi)
+	ctrl.write('set %s.1.15 element "C"\n'%vxi)
+	ctrl.write('set %s.1.16 element "H"\n'%vxi)
+	ctrl.write('set %s.1.17 element "H"\n'%vxi)
+	ctrl.write('set %s.1.18 element "H"\n'%vxi)
+	ctrl.write('set %s.1.19 element "C"\n'%vxi)
+	ctrl.write('set %s.1.20 element "O"\n'%vxi)
+	ctrl.write('set %s.1.1 name "N"\n'%vxi)
+	ctrl.write('set %s.1.2 name "H"\n'%vxi)
+	ctrl.write('set %s.1.3 name "CA"\n'%vxi)
+	ctrl.write('set %s.1.4 name "HA"\n'%vxi)
+	ctrl.write('set %s.1.5 name "CB"\n'%vxi)
+	ctrl.write('set %s.1.6 name "HB"\n'%vxi)
+	ctrl.write('set %s.1.7 name "CG2"\n'%vxi)
+	ctrl.write('set %s.1.8 name "HG21"\n'%vxi)
+	ctrl.write('set %s.1.9 name "HG22"\n'%vxi)
+	ctrl.write('set %s.1.10 name "HG23"\n'%vxi)
+	ctrl.write('set %s.1.11 name "CG1"\n'%vxi)
+	ctrl.write('set %s.1.12 name "HG11"\n'%vxi)
+	ctrl.write('set %s.1.13 name "HG12"\n'%vxi)
+	ctrl.write('set %s.1.14 name "HG13"\n'%vxi)
+	ctrl.write('set %s.1.15 name "CD1"\n'%vxi)
+	ctrl.write('set %s.1.16 name "HD11"\n'%vxi)
+	ctrl.write('set %s.1.17 name "HD12"\n'%vxi)
+	ctrl.write('set %s.1.18 name "HD13"\n'%vxi)
+	ctrl.write('set %s.1.19 name "C"\n'%vxi)
+	ctrl.write('set %s.1.20 name "O"\n'%vxi)
+	ctrl.write('set %s.1.1 type "N"\n'%vxi)
+	ctrl.write('set %s.1.2 type "H"\n'%vxi)
+	ctrl.write('set %s.1.3 type "CT"\n'%vxi)
+	ctrl.write('set %s.1.4 type "H1"\n'%vxi)
+	ctrl.write('set %s.1.5 type "CT"\n'%vxi)
+	ctrl.write('set %s.1.6 type "HC"\n'%vxi)
+	ctrl.write('set %s.1.7 type "CT"\n'%vxi)
+	ctrl.write('set %s.1.8 type "HC"\n'%vxi)
+	ctrl.write('set %s.1.9 type "HC"\n'%vxi)
+	ctrl.write('set %s.1.10 type "HC"\n'%vxi)
+	ctrl.write('set %s.1.11 type "CT"\n'%vxi)
+	ctrl.write('set %s.1.12 type "%s"\n'%(vxi, hydhyd))
+	ctrl.write('set %s.1.13 type "HC"\n'%vxi)
+	ctrl.write('set %s.1.14 type "HC"\n'%vxi)
+	ctrl.write('set %s.1.15 type "%s"\n'%(vxi, metcar))
+	ctrl.write('set %s.1.16 type "%s"\n'%(vxi, methyd))
+	ctrl.write('set %s.1.17 type "%s"\n'%(vxi, methyd))
+	ctrl.write('set %s.1.18 type "%s"\n'%(vxi, methyd))
+	ctrl.write('set %s.1.19 type "C"\n'%vxi)
+	ctrl.write('set %s.1.20 type "O"\n'%vxi)
+	ctrl.write('bond %s.1.1 %s.1.2\n'%(vxi, vxi))
+	ctrl.write('bond %s.1.1 %s.1.3\n'%(vxi, vxi))
+	ctrl.write('bond %s.1.3 %s.1.4\n'%(vxi, vxi))
+	ctrl.write('bond %s.1.3 %s.1.5\n'%(vxi, vxi))
+	ctrl.write('bond %s.1.3 %s.1.19\n'%(vxi, vxi))
+	ctrl.write('bond %s.1.5 %s.1.6\n'%(vxi, vxi))
+	ctrl.write('bond %s.1.5 %s.1.7\n'%(vxi, vxi))
+	ctrl.write('bond %s.1.5 %s.1.11\n'%(vxi, vxi))
+	ctrl.write('bond %s.1.7 %s.1.8\n'%(vxi, vxi))
+	ctrl.write('bond %s.1.7 %s.1.9\n'%(vxi, vxi))
+	ctrl.write('bond %s.1.7 %s.1.10\n'%(vxi, vxi))
+	ctrl.write('bond %s.1.11 %s.1.12\n'%(vxi, vxi))
+	ctrl.write('bond %s.1.11 %s.1.13\n'%(vxi, vxi))
+	ctrl.write('bond %s.1.11 %s.1.14\n'%(vxi, vxi))
+	ctrl.write('bond %s.1.11 %s.1.15\n'%(vxi, vxi))
+	ctrl.write('bond %s.1.15 %s.1.16\n'%(vxi, vxi))
+	ctrl.write('bond %s.1.15 %s.1.17\n'%(vxi, vxi))
+	ctrl.write('bond %s.1.15 %s.1.18\n'%(vxi, vxi))
+	ctrl.write('bond %s.1.19 %s.1.20\n'%(vxi, vxi))
+	ctrl.write('set %s.1 connect0 %s.1.N\n'%(vxi, vxi))
+	ctrl.write('set %s.1 connect1 %s.1.C\n'%(vxi, vxi))
+	ctrl.write('set %s name "%s"\n'%(vxi, vxi))
+	ctrl.write('set %s.1 name "%s"\n'%(vxi, vxi))
+	ctrl.write('set %s head %s.1.N\n'%(vxi, vxi))
+	ctrl.write('set %s tail %s.1.C\n'%(vxi, vxi))
+	ctrl.write('saveoff %s %s.lib\n'%(vxi, vxi))
+	ctrl.write("quit\n") 
+        ctrl.close()
+	Leapy.run('lyp.in', outputfile)
 
-    def superimpose_atom(self, atom, hetfield, segid, atom_number, resname,
-                       resseq, icode, chain_id, xx, yy, zz, newname, charge="  "):
-        """Returns an ATOM PDB string (PRIVATE)."""
-        if hetfield != " ":
-            record_type = "HETATM"
-        else:
-            record_type = "ATOM  "
-        if atom.element:
-            element = atom.element.strip().upper()
-            if element.capitalize() not in atom_weights:
-                raise ValueError("Unrecognised element %r" % atom.element)
-            element = element.rjust(2)
-        else:
-            element = "  "
-        name = newname
-        altloc = atom.get_altloc()
-        xx, yy, zz = atom.get_coord()
-	x = xx - 0.001
-	y = yy - 0.001
-	z = zz - 0.001
-        bfactor = atom.get_bfactor()
-        occupancy = atom.get_occupancy()
-        try:
-            occupancy_str = "%6.2f" % occupancy
-        except TypeError:
-            if occupancy is None:
-                occupancy_str = " " * 6
-                import warnings
-                from Bio import BiopythonWarning
-                warnings.warn("Missing occupancy in atom %s written as blank" %
-                              repr(atom.get_full_id()), BiopythonWarning)
-            else:
-                raise TypeError("Invalid occupancy %r in atom %r"
-                                % (occupancy, atom.get_full_id()))
+def all_make():
+	for i in range(0,110,10):
+		Frcmod_creator.make ('{}_{}.frcmod'.format(i, 100-i))
 
-        args = (record_type, atom_number, name, altloc, resname, chain_id,
-                resseq, icode, x, y, z, occupancy_str, bfactor, segid,
-                element, charge)
-        return _ATOM_FORMAT_STRING % args
-    # Public methods
+def cal(x, y, i):
+	num = x+((y-x)/10)*i
+	return num
 
-    def set_structure(self, pdb_object):
-        # Check what the user is providing and build a structure appropriately
-        if pdb_object.level == "S":
-            structure = pdb_object
-        else:
-            sb = StructureBuilder()
-            sb.init_structure('pdb')
-            sb.init_seg(' ')
-            # Build parts as necessary
-            if pdb_object.level == "M":
-                sb.structure.add(pdb_object)
-                self.structure = sb.structure
-            else:
-                sb.init_model(0)
-                if pdb_object.level == "C":
-                    sb.structure[0].add(pdb_object)
-                else:
-                    sb.init_chain('A')
-                    if pdb_object.level == "R":
-                        try:
-                            parent_id = pdb_object.parent.id
-                            sb.structure[0]['A'].id = parent_id
-                        except Exception:
-                            pass
-                        sb.structure[0]['A'].add(pdb_object)
-                    else:
-                        # Atom
-                        sb.init_residue('DUM', ' ', 1, ' ')
-                        try:
-                            parent_id = pdb_object.parent.parent.id
-                            sb.structure[0]['A'].id = parent_id
-                        except Exception:
-                            pass
-                        sb.structure[0]['A'].child_list[0].add(pdb_object)
-
-            # Return structure
-            structure = sb.structure
-        self.structure = structure
-
-    def save(self, file, vxi, x, y, z, select=Select(), write_end=True):
-        """
-        @param file: output file
-        @type file: string or filehandle
-
-        @param select: selects which entities will be written.
-        @type select: object
-
-        Typically select is a subclass of L{Select}, it should
-        have the following methods:
-
-         - accept_model(model)
-         - accept_chain(chain)
-         - accept_residue(residue)
-         - accept_atom(atom)
-
-        These methods should return 1 if the entity is to be
-        written out, 0 otherwise.
-
-        Typically select is a subclass of L{Select}.
-        """
-        get_atom_line = self._get_atom_line
-	superimpose_atom = self.superimpose_atom
-        if isinstance(file, basestring):
-            fp = open(file, "w")
-            close_file = 1
-        else:
-            # filehandle, I hope :-)
-            fp = file
-            close_file = 0
-        # multiple models?
-        if len(self.structure) > 1 or self.use_model_flag:
-            model_flag = 1
-        else:
-            model_flag = 0
-        for model in self.structure.get_list():
-            if not select.accept_model(model):
-                continue
-            # necessary for ENDMDL
-            # do not write ENDMDL if no residues were written
-            # for this model
-            model_residues_written = 0
-            atom_number = 1
-            if model_flag:
-                fp.write("MODEL      %s\n" % model.serial_num)
-            for chain in model.get_list():
-                if not select.accept_chain(chain):
-                    continue
-                chain_id = chain.get_id()
-                # necessary for TER
-                # do not write TER if no residues were written
-                # for this chain
-                chain_residues_written = 0
-                for residue in chain.get_unpacked_list():
-                    if not select.accept_residue(residue):
-                        continue
-                    hetfield, resseq, icode = residue.get_id()
-		    if resseq is vxi:
-			resname = 'VXI'
-                        segid = residue.get_segid()
-                        for atom in residue.get_unpacked_list():
-                            if select.accept_atom(atom):
-			        if atom.get_name() == 'CA':
-                               	    chain_residues_written = 1
-                                    model_residues_written = 1
-                                    s = get_atom_line(atom, hetfield, segid, atom_number, resname,
-                                        resseq, icode, chain_id)
-                                    fp.write(s)
-                                    atom_number = atom_number + 1
-                               	    chain_residues_written = 1
-                                    model_residues_written = 1
-                                    s = superimpose_atom(atom, hetfield, segid, atom_number, resname,
-                                        resseq, icode, chain_id, x, y, z, 'CAX')
-                                    fp.write(s)
-                                    atom_number = atom_number + 1
-			        else:
-                               	    chain_residues_written = 1
-                                    model_residues_written = 1
-                                    s = get_atom_line(atom, hetfield, segid, atom_number, resname,
-                                        resseq, icode, chain_id)
-                                    fp.write(s)
-                                    atom_number = atom_number + 1
-		    else:
-                    	resname = residue.get_resname()
-                    	segid = residue.get_segid()
-                    	for atom in residue.get_unpacked_list():
-                            if select.accept_atom(atom):
-                                chain_residues_written = 1
-                                model_residues_written = 1
-                                s = get_atom_line(atom, hetfield, segid, atom_number, resname,
-                                    resseq, icode, chain_id)
-                                fp.write(s)
-                                atom_number = atom_number + 1
-                if chain_residues_written:
-                    fp.write("TER\n")
-            if model_flag and model_residues_written:
-                fp.write("ENDMDL\n")
-        if write_end:
-            fp.write('END\n')
-        if close_file:
-            fp.close()
-
-if __name__ == "__main__":
-
-    from Bio.PDB.PDBParser import PDBParser
-
-    import sys
-
-    p = PDBParser(PERMISSIVE=True)
-
-    s = p.get_structure("test", sys.argv[1])
-
-    io = vxier()
-    io.set_structure(s)
-    io.save("out1.pdb")
-
-    with open("out2.pdb", "w") as fp:
-        s1 = p.get_structure("test1", sys.argv[1])
-        s2 = p.get_structure("test2", sys.argv[2])
-        io = vxier(1)
-        io.set_structure(s1)
-        io.save(fp)
-        io.set_structure(s2)
-        io.save(fp, write_end=1)
+def stock_add_to_all(metcar='dc', methyd='dh', hydhyd='mh'):
+	Frcmod_creator.make_hyb()
+	Frcmod_creator.TYPE_insert(metcar, 'C', 'sp3')
+	Frcmod_creator.TYPE_insert(methyd, 'H', 'sp3')
+	Frcmod_creator.TYPE_insert(hydhyd, 'H', 'sp3')
+	p = {}
+	with open('Param_files/Stock/Stock.param', 'r') as b:
+		data = b.readlines()[1:]
+	for line in data:
+		p[line.split()[0]] = []
+		for point in line.split()[1:]:
+			p[line.split()[0]].append(float(point))
+	b.close()
+	for i in range(11):
+		a = i*10
+		Frcmod_creator.MASS_insert('{}_{}.frcmod'.format(a, 100-a), metcar, cal(p['CT'][0], p['0_C'][0], i), cal(p['CT'][1], p['0_C'][1], i))
+		Frcmod_creator.MASS_insert('{}_{}.frcmod'.format(a, 100-a), methyd, cal(p['HC'][0], p['0_H'][0], i), cal(p['HC'][1], p['0_H'][1], i))
+		Frcmod_creator.MASS_insert('{}_{}.frcmod'.format(a, 100-a), hydhyd, cal(p['0_H'][0], p['HC'][0], i), cal(p['0_H'][1], p['HC'][1], i))
+		Frcmod_creator.BOND_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}'.format('CT', metcar), cal(p['CT_CT'][0], p['CT_mH'][0], i), cal(p['CT_CT'][1], p['CT_mH'][1], i))
+		Frcmod_creator.BOND_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}'.format('CT', hydhyd), cal(p['HC_sC'][0], p['CT_HC'][0], i), cal(p['HC_sC'][1], p['CT_HC'][1], i))
+		Frcmod_creator.BOND_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}'.format(metcar, methyd), cal(p['CT_HC'][0], p['HC_mH'][0], i), cal(p['CT_HC'][1], p['HC_mH'][1], i))
+		Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format('CT', metcar, methyd), cal(p['C_C_H'][0], p['Dritt'][0], i), cal(p['C_C_H'][1], p['Dritt'][1], i))
+		Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format(methyd, metcar, methyd), cal(p['H_C_H'][0], p['Close'][0], i), cal(p['H_C_H'][1], p['Close'][1], i))
+		Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format('CT', 'CT', metcar), cal(p['C_C_C'][0], p['C_C_C'][0], i), cal(p['C_C_C'][1], p['C_C_C'][1], i))
+		Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format('HC', 'CT', metcar), cal(p['C_C_H'][0], p['C_C_H'][0], i), cal(p['C_C_H'][1], p['C_C_H'][1], i))
+		Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format('HC', 'CT', hydhyd), cal(p['H_C_H'][0], p['H_C_H'][0], i), cal(p['H_C_H'][1], p['H_C_H'][1], i))
+		Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format(hydhyd, 'CT', metcar), cal(p['Close'][0], p['Close'][0], i), cal(p['Close'][1], p['Close'][1], i))
+		Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format('CT', 'CT', hydhyd), cal(p['C_C_H'][0], p['C_C_H'][0], i), cal(p['C_C_H'][1], p['C_C_H'][1], i))
+		Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format('CT', 'CT', metcar, methyd), cal(p['C_C_C_H'][0], p['0_1'][0], i), cal(p['C_C_C_H'][1], p['0_1'][1], i), cal(p['C_C_C_H'][2], p['0_1'][2], i), cal(p['C_C_C_H'][3], p['0_1'][3], i))
+		Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format('HC', 'CT', metcar, methyd), cal(p['H_C_C_H'][0], p['0_1'][0], i), cal(p['H_C_C_H'][1], p['0_1'][1], i), cal(p['H_C_C_H'][2], p['0_1'][2], i), cal(p['H_C_C_H'][3], p['0_1'][3], i))
+		Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format(hydhyd, 'CT', metcar, methyd), cal(p['0_Dihe'][0], p['0_Dihe'][0], i), cal(p['0_Dihe'][1], p['0_Dihe'][1], i), cal(p['0_Dihe'][2], p['0_Dihe'][2], i), cal(p['0_Dihe'][3], p['0_Dihe'][3], i))
+		Frcmod_creator.NONBON_insert('{}_{}.frcmod'.format(a, 100-a), metcar, cal(p['CT'][2], p['0_C'][2], i), cal(p['CT'][3], p['0_C'][3], i))
+		Frcmod_creator.NONBON_insert('{}_{}.frcmod'.format(a, 100-a), methyd, cal(p['HC'][2], p['0_H'][2], i), cal(p['HC'][3], p['0_H'][3], i))
+		Frcmod_creator.NONBON_insert('{}_{}.frcmod'.format(a, 100-a), hydhyd, cal(p['0_H'][2], p['HC'][2], i), cal(p['0_H'][3], p['HC'][3], i))

@@ -34,7 +34,13 @@ def makeinput(pdbfile, outfile, baa, faa, resid, atypes='Standard', newbox=8.0):
 		newbox = 'Null'
 	except:
 		oldbox = 'Null'
-	if baa == 'GLU':
+	if baa in ('GLU', 'ASP'):
+		bal = 'PC'
+	elif faa in ('GLU', 'ASP'):
+		bal = 'PN'
+	elif baa in ('ARG', 'LYS'):
+		bal = 'PN'
+	elif faa in ('ARG', 'LYS'):
 		bal = 'PC'
 	else:
 		bal='Null'

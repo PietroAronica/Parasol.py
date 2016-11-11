@@ -71,18 +71,25 @@ def get_var():
 	struct = PDBHandler.readpdb(pdbfile)
 	baa = struct.residue_dict[resid].get_resname()
 	faa = inf['finalaa']
+	try:
+		wkdir = inf['wkdir']
+	except:
+		wkdir = 'None'
         try:
                 struct.other_dict['Cryst1'].box_side()
                 solv = 'Yes'
         except:
                 solv = 'No'
-	return baa, faa, resid, solv
+	return baa, faa, resid, solv, wkdir
 
 get_var()
 baa = get_var()[0]
+if baa == 'HIE':
+	baa = 'HIS'
 faa = get_var()[1]
 resid = get_var()[2]
 solv = get_var()[3]
+wkdir = get_var()[4]
 pdbfile=readinput(sys.argv[1:])[1]
 outfile=readinput(sys.argv[1:])[2]
 
@@ -90,42 +97,51 @@ outfile=readinput(sys.argv[1:])[2]
 if baa == 'ILE' and faa == 'VAL':
 	God.makeinput(pdbfile, outfile, baa, faa, resid)
 	cleanup()
-	Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, solv=solv)
+	Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv)
 if baa == 'ILE' and faa == 'ALA':
 	God.makeinput(pdbfile, outfile, baa, 'VAL', resid)
 	cleanup()
-	nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'VAL', resid, solv=solv, fin='ALA')
+	nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'VAL', resid, wkdir=wkdir, solv=solv, fin='ALA')
 	os.chdir('/home/pietroa/Python')
 	God.makeinput('Curr_run.pdb', outfile, 'VAL', 'ALA', resid)
 	cleanup()
 	Run.mutate_con('/home/pietroa/Python/Store/', 'ALA', nwdir, resid)
+# METHIONINE MUTATIONS
+if baa == 'MET' and faa == 'ABU':
+	God.makeinput(pdbfile, outfile, baa, 'HCY', resid)
+	cleanup()
+	nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'HCY', resid, wkdir=wkdir, solv=solv, fin='ABU')
+	os.chdir('/home/pietroa/Python')
+	God.makeinput('Curr_run.pdb', outfile, 'HCY', 'ABU', resid)
+	cleanup()
+	Run.mutate_con('/home/pietroa/Python/Store/', 'ABU', nwdir, resid)
 # GLUTAMIC ACID MUTATIONS
 if baa == 'GLU' and faa == 'ABU':
 	God.makeinput(pdbfile, outfile, baa, faa, resid)
 	cleanup()
-	Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, solv=solv)
+	Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv)
 if baa == 'GLU' and faa == 'ALA':
 	God.makeinput(pdbfile, outfile, baa, 'ABU', resid)
 	cleanup()
-	nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, solv=solv, fin='ALA')
+	nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, fin='ALA')
 	os.chdir('/home/pietroa/Python')
 	God.makeinput('Curr_run.pdb', outfile, 'ABU', 'ALA', resid)
 	cleanup()
 	Run.mutate_con('/home/pietroa/Python/Store/', 'ALA', nwdir, resid)
 # VALINE MUTATIONS
-if baa == 'VAL' and faa == 'ALA':
+if baa == 'VAL' and faa in ('ALA', 'ILE'):
 	God.makeinput(pdbfile, outfile, baa, faa, resid)
 	cleanup()
-	Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, solv=solv)
+	Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv)
 # LEUCINE MUTATIONS
 if baa == 'LEU' and faa == 'ABU':
 	God.makeinput(pdbfile, outfile, baa, faa, resid)
 	cleanup()
-	Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, solv=solv)
+	Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv)
 if baa == 'LEU' and faa == 'ALA':
 	God.makeinput(pdbfile, outfile, baa, 'ABU', resid)
 	cleanup()
-	nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, solv=solv, fin='ALA')
+	nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, fin='ALA')
 	os.chdir('/home/pietroa/Python')
 	God.makeinput('Curr_run.pdb', outfile, 'ABU', 'ALA', resid)
 	cleanup()
@@ -134,29 +150,38 @@ if baa == 'LEU' and faa == 'ALA':
 if baa == 'THR' and faa == 'ALA':
 	God.makeinput(pdbfile, outfile, baa, faa, resid)
 	cleanup()
-	Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, solv=solv)
+	Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv)
 # GLUTAMINE MUTATIONS
 if baa == 'GLN' and faa == 'ABU':
 	God.makeinput(pdbfile, outfile, baa, faa, resid)
 	cleanup()
-	Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, solv=solv)
+	Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv)
 if baa == 'GLN' and faa == 'ALA':
 	God.makeinput(pdbfile, outfile, baa, 'ABU', resid)
 	cleanup()
-	nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, solv=solv, fin='ALA')
+	nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, fin='ALA')
 	os.chdir('/home/pietroa/Python')
 	God.makeinput('Curr_run.pdb', outfile, 'ABU', 'ALA', resid)
+	cleanup()
+	Run.mutate_con('/home/pietroa/Python/Store/', 'ALA', nwdir, resid)
+# PROLINE MUTATIONS
+if baa == 'PRO' and faa == 'ALA':
+	God.makeinput(pdbfile, outfile, baa, 'QUA', resid)
+	cleanup()
+	nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'QUA', resid, wkdir=wkdir, solv=solv, fin='ALA')
+	os.chdir('/home/pietroa/Python')
+	God.makeinput('Curr_run.pdb', outfile, 'QUA', 'ALA', resid)
 	cleanup()
 	Run.mutate_con('/home/pietroa/Python/Store/', 'ALA', nwdir, resid)
 # TRYPTOPHAN MUTATIONS
 if baa == 'TRP' and faa == 'ANN':
 	God.makeinput(pdbfile, outfile, baa, faa, resid)
 	cleanup()
-	Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, solv=solv)
+	Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv)
 if baa == 'TRP' and faa == 'ALA':
 	God.makeinput(pdbfile, outfile, baa, 'ANN', resid)
 	cleanup()
-	nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, solv=solv, fin='ALA')
+	nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, fin='ALA')
 	os.chdir('/home/pietroa/Python')
 	God.makeinput('Curr_run.pdb', outfile, 'ANN', 'NVA', resid)
 	cleanup()
@@ -173,11 +198,11 @@ if baa == 'TRP' and faa == 'ALA':
 if baa == 'TYR' and faa == 'ANN':
 	God.makeinput(pdbfile, outfile, baa, faa, resid)
 	cleanup()
-	Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, solv=solv)
+	Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv)
 if baa == 'TYR' and faa == 'ALA':
 	God.makeinput(pdbfile, outfile, baa, 'ANN', resid)
 	cleanup()
-	nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, solv=solv, fin='ALA')
+	nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, fin='ALA')
 	os.chdir('/home/pietroa/Python')
 	God.makeinput('Curr_run.pdb', outfile, 'ANN', 'NVA', resid)
 	cleanup()
@@ -190,15 +215,25 @@ if baa == 'TYR' and faa == 'ALA':
 	God.makeinput('Curr_run.pdb', outfile, 'ABU', 'ALA', resid)
 	cleanup()
 	Run.mutate_con('/home/pietroa/Python/Store/', 'ALA', nwdir, resid)
+# GLYCINE MUTATIONS
+if baa == 'GLY' and faa == 'ALA':
+	God.makeinput(pdbfile, outfile, baa, faa, resid)
+	cleanup()
+	Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv)
+# QUADRINE MUTATIONS
+if baa == 'QUA' and faa == 'PRO':
+	God.makeinput(pdbfile, outfile, baa, faa, resid)
+	cleanup()
+	Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv)
 # PHENYLALANINE MUTATIONS
 if baa == 'PHE' and faa == 'ANN':
 	God.makeinput(pdbfile, outfile, baa, faa, resid)
 	cleanup()
-	Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, solv=solv)
+	Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv)
 if baa == 'PHE' and faa == 'ALA':
 	God.makeinput(pdbfile, outfile, baa, 'ANN', resid)
 	cleanup()
-	nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, solv=solv, fin='ALA')
+	nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, fin='ALA')
 	os.chdir('/home/pietroa/Python')
 	God.makeinput('Curr_run.pdb', outfile, 'ANN', 'NVA', resid)
 	cleanup()
@@ -211,16 +246,88 @@ if baa == 'PHE' and faa == 'ALA':
 	God.makeinput('Curr_run.pdb', outfile, 'ABU', 'ALA', resid)
 	cleanup()
 	Run.mutate_con('/home/pietroa/Python/Store/', 'ALA', nwdir, resid)
-# NORVALINE MUTATIONS
-if baa == 'NVA' and faa == 'ABU':
+# ALANINE MUTATIONS
+if baa == 'ALA' and faa in ('ABU', 'ASP', 'ASN', 'GLY', 'QUA', 'THR', 'VAL'):
 	God.makeinput(pdbfile, outfile, baa, faa, resid)
 	cleanup()
-	Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, solv=solv)
+	Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv)
+if baa == 'ALA' and faa in ('ARG', 'LYS'):
+	God.makeinput(pdbfile, outfile, baa, 'ABU', resid)
+	cleanup()
+	nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, fin='ALA')
+	os.chdir('/home/pietroa/Python')
+	God.makeinput('Curr_run.pdb', outfile, 'ABU', 'NVA', resid)
+	cleanup()
+	Run.mutate_con('/home/pietroa/Python/Store/', 'NVA', nwdir, resid)
+	os.chdir('/home/pietroa/Python')
+	God.makeinput('Curr_run.pdb', outfile, 'NVA', 'NLE', resid)
+	cleanup()
+	Run.mutate_con('/home/pietroa/Python/Store/', 'NLE', nwdir, resid)
+	os.chdir('/home/pietroa/Python')
+	God.makeinput('Curr_run.pdb', outfile, 'NLE', 'ARG', resid)
+	cleanup()
+	Run.mutate_con('/home/pietroa/Python/Store/', faa, nwdir, resid)
+# NORVALINE MUTATIONS
+if baa == 'NVA' and faa in ('ABU', 'ANN', 'NLE'):
+	God.makeinput(pdbfile, outfile, baa, faa, resid)
+	cleanup()
+	Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv)
+# LYSINE MUTATIONS
+if baa == 'LYS' and faa == 'NLE':
+	God.makeinput(pdbfile, outfile, baa, faa, resid)
+	cleanup()
+	Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv)
+if baa == 'LYS' and faa == 'ALA':
+	God.makeinput(pdbfile, outfile, baa, 'NLE', resid)
+	cleanup()
+	nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NLE', resid, wkdir=wkdir, solv=solv, fin='ALA')
+	os.chdir('/home/pietroa/Python')
+	God.makeinput('Curr_run.pdb', outfile, 'NLE', 'NVA', resid)
+	cleanup()
+	Run.mutate_con('/home/pietroa/Python/Store/', 'NVA', nwdir, resid)
+	os.chdir('/home/pietroa/Python')
+	God.makeinput('Curr_run.pdb', outfile, 'NVA', 'ABU', resid)
+	cleanup()
+	Run.mutate_con('/home/pietroa/Python/Store/', 'ABU', nwdir, resid)
+	os.chdir('/home/pietroa/Python')
+	God.makeinput('Curr_run.pdb', outfile, 'ABU', 'ALA', resid)
+	cleanup()
+	Run.mutate_con('/home/pietroa/Python/Store/', 'ALA', nwdir, resid)
+# ARGININE MUTATIONS
+if baa == 'ARG' and faa == 'NLE':
+	God.makeinput(pdbfile, outfile, baa, faa, resid)
+	cleanup()
+	Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv)
+if baa == 'ARG' and faa == 'ALA':
+	God.makeinput(pdbfile, outfile, baa, 'NLE', resid)
+	cleanup()
+	nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NLE', resid, wkdir=wkdir, solv=solv, fin='ALA')
+	os.chdir('/home/pietroa/Python')
+	God.makeinput('Curr_run.pdb', outfile, 'NLE', 'NVA', resid)
+	cleanup()
+	Run.mutate_con('/home/pietroa/Python/Store/', 'NVA', nwdir, resid)
+	os.chdir('/home/pietroa/Python')
+	God.makeinput('Curr_run.pdb', outfile, 'NVA', 'ABU', resid)
+	cleanup()
+	Run.mutate_con('/home/pietroa/Python/Store/', 'ABU', nwdir, resid)
+	os.chdir('/home/pietroa/Python')
+	God.makeinput('Curr_run.pdb', outfile, 'ABU', 'ALA', resid)
+	cleanup()
+	Run.mutate_con('/home/pietroa/Python/Store/', 'ALA', nwdir, resid)
+# NORLEUCINE MUTATIONS
+if baa == 'NLE' and faa in ('ARG', 'LYS', 'NVA') :
+	God.makeinput(pdbfile, outfile, baa, faa, resid)
+	cleanup()
+	Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv)
 # NORANNULINE MUTATIONS
 if baa == 'CBA' and faa == 'NVA':
 	God.makeinput(pdbfile, outfile, baa, faa, resid)
 	cleanup()
-	Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, solv=solv)
+	Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv)
+if baa == 'CBA' and faa == 'ALA':
+	God.makeinput(pdbfile, outfile, baa, 'NVA', resid)
+	cleanup()
+	nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NVA', resid, wkdir=wkdir, solv=solv, fin='ALA')
 	os.chdir('/home/pietroa/Python')
 	God.makeinput('Curr_run.pdb', outfile, 'NVA', 'ABU', resid)
 	cleanup()
@@ -230,17 +337,42 @@ if baa == 'CBA' and faa == 'NVA':
 	cleanup()
 	Run.mutate_con('/home/pietroa/Python/Store/', 'ALA', nwdir, resid)
 # ANNULINE MUTATIONS
-if baa == 'ANN' and faa == 'NVA':
+if baa == 'ANN' and faa in ('NVA', 'PHE', 'TRP', 'TYR', 'HIS'):
 	God.makeinput(pdbfile, outfile, baa, faa, resid)
 	cleanup()
-	Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, solv=solv)
+	Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv)
+# HISTIDINE MUTATIONS
+if baa == 'HIS' and faa == 'ANN':
+	God.makeinput(pdbfile, outfile, baa, faa, resid)
+	cleanup()
+	Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv)
+# CYSTEINE MUTATIONS
+if baa == 'CYS' and faa == 'ALA':
+	God.makeinput(pdbfile, outfile, baa, faa, resid)
+	cleanup()
+	Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv)
 # SERINE MUTATIONS
 if baa == 'SER' and faa == 'ALA':
 	God.makeinput(pdbfile, outfile, baa, faa, resid)
 	cleanup()
-	Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, solv=solv)
-# AMINOBUTYRIC ACID MUTATIONS
-if baa == 'ABU' and faa == 'ALA':
+	Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv)
+# HOMOCYSTEINE MUTATIONS
+if baa == 'HCY' and faa == 'MET':
 	God.makeinput(pdbfile, outfile, baa, faa, resid)
 	cleanup()
-	Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, solv=solv)
+	Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv)
+# ASPARTIC ACID MUTATIONS
+if baa == 'ASP' and faa == 'ALA':
+	God.makeinput(pdbfile, outfile, baa, faa, resid)
+	cleanup()
+	Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv)
+# ASPARAGINE MUTATIONS
+if baa == 'ASN' and faa == 'ALA':
+	God.makeinput(pdbfile, outfile, baa, faa, resid)
+	cleanup()
+	Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv)
+# AMINOBUTYRIC ACID MUTATIONS
+if baa == 'ABU' and faa in ('ALA', 'GLU', 'GLN', 'HCY', 'LEU', 'NVA'):
+	God.makeinput(pdbfile, outfile, baa, faa, resid)
+	cleanup()
+	Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv)
