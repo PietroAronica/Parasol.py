@@ -77,6 +77,12 @@ class Atom(object):
 		z = atom.get_coord()[2] + 0.001
 		return _ATOM_FORMAT_STRING.format('ATOM', self.number, name, self.resname, self.resnumber, x, y, z, self.occupancy, self.bfactor)
 
+	def superimposed4(self, name, atom):
+		x = atom.get_coord()[0] + 0.002
+		y = atom.get_coord()[1] + 0.002
+		z = atom.get_coord()[2] + 0.002
+		return _ATOM_FORMAT_STRING.format('ATOM', self.number, name, self.resname, self.resnumber, x, y, z, self.occupancy, self.bfactor)
+
 	def halfway_between(self, name, atom1, atom2):
 		x = (atom2.get_coord()[0] + atom1.get_coord()[0])/2
 		y = (atom2.get_coord()[1] + atom1.get_coord()[1])/2

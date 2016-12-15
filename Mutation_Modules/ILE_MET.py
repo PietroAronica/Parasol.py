@@ -93,7 +93,7 @@ def makevxi(struct, out, aa, vxi='VXI'):
                         pass
         pdb.write('END\n')
 
-def lib_make(ff, outputfile, vxi='VXI', metcar='dc', methyd='dh', hydhyd='mh', estsul='ss', mthhyd='dh'):
+def lib_make(ff, outputfile, vxi='VXI', metcar='dc', methyd='dh', hydhyd='mh', estsul='ss', mthhyd='fh'):
         ctrl = open('lyp.in', 'w')
         ctrl.write("source leaprc.%s\n"%ff)
 	ctrl.write("%s=loadpdb Param_files/LibPDB/ILE-MET.pdb\n"%vxi)
@@ -199,11 +199,11 @@ def cal(x, y, i):
 	num = x+((y-x)/10)*i
 	return num
 
-def cal2(x, y, i):
+def lac(x, y, i):
 	num = y+((x-y)/10)*i
 	return num
 
-def stock_add_to_all(metcar='dc', methyd='dh', hydhyd='mh', estsul='ss', mthhyd='dh'):
+def stock_add_to_all(metcar='dc', methyd='dh', hydhyd='mh', estsul='ss', mthhyd='fh'):
 	Frcmod_creator.make_hyb()
 	Frcmod_creator.TYPE_insert(estsul, 'S', 'sp3')
 	Frcmod_creator.TYPE_insert(mthhyd, 'H', 'sp3')
@@ -233,6 +233,7 @@ def stock_add_to_all(metcar='dc', methyd='dh', hydhyd='mh', estsul='ss', mthhyd=
 		Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format('CT', estsul, 'CT', 'CT'), cal(p['0_5'][0], p['X_C_S_X'][0], i), cal(p['0_5'][1], p['X_C_S_X'][1], i), cal(p['0_5'][2], p['X_C_S_X'][2], i), cal(p['0_5'][3], p['X_C_S_X'][3], i))
 		Frcmod_creator.NONBON_insert('{}_{}.frcmod'.format(a, 100-a), estsul, cal(p['0_S'][2], p['SH'][2], i), cal(p['0_S'][3], p['SH'][3], i))
 		Frcmod_creator.NONBON_insert('{}_{}.frcmod'.format(a, 100-a), mthhyd, cal(p['HC'][2], p['H1'][2], i), cal(p['HC'][3], p['H1'][3], i))
+
                 Frcmod_creator.MASS_insert('{}_{}.frcmod'.format(a, 100-a), metcar, cal(p['CT'][0], p['0_C'][0], i), cal(p['CT'][1], p['0_C'][1], i))
                 Frcmod_creator.MASS_insert('{}_{}.frcmod'.format(a, 100-a), methyd, cal(p['HC'][0], p['0_H'][0], i), cal(p['HC'][1], p['0_H'][1], i))
                 Frcmod_creator.MASS_insert('{}_{}.frcmod'.format(a, 100-a), hydhyd, cal(p['0_H'][0], p['HC'][0], i), cal(p['0_H'][1], p['HC'][1], i))

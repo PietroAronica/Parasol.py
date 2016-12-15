@@ -44,6 +44,10 @@ def makeinput(pdbfile, outfile, baa, faa, resid, atypes='Standard', newbox=8.0):
 		bal = 'PC'
 	else:
 		bal='Null'
+	if baa == 'ASP' and faa == 'GLU':
+		bal='Null'
+	if baa == 'GLU' and faa == 'ASP':
+		bal='Null'
 # Make Mutated PDB (Mutabond)
 	Curr_mut.makevxi(struct, 'Mutabond.pdb', resid)
 # Create parameters and lib files

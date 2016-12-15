@@ -84,7 +84,7 @@ def makevxi(struct, out, aa, vxi='VXI'):
                         pass
         pdb.write('END\n')
 
-def lib_make(ff, outputfile, vxi='VXI', aminit='dn', amihyd='dh', hydhyd='mh', lyshyd='fh'):
+def lib_make(ff, outputfile, vxi='VXI', amnnit='dn', amnhyd='dh', hydhyd='mh', lyshyd='fh'):
         ctrl = open('lyp.in', 'w')
         ctrl.write("source leaprc.%s\n"%ff)
 	ctrl.write("%s=loadpdb Param_files/LibPDB/NLE-LYS.pdb\n"%vxi)
@@ -151,10 +151,10 @@ def lib_make(ff, outputfile, vxi='VXI', aminit='dn', amihyd='dh', hydhyd='mh', l
 	ctrl.write('set %s.1.15 type "%s"\n'%(vxi, hydhyd))
 	ctrl.write('set %s.1.16 type "%s"\n'%(vxi, lyshyd))
 	ctrl.write('set %s.1.17 type "%s"\n'%(vxi, lyshyd))
-	ctrl.write('set %s.1.18 type "%s"\n'%(vxi, aminit))
-	ctrl.write('set %s.1.19 type "%s"\n'%(vxi, amihyd))
-	ctrl.write('set %s.1.20 type "%s"\n'%(vxi, amihyd))
-	ctrl.write('set %s.1.21 type "%s"\n'%(vxi, amihyd))
+	ctrl.write('set %s.1.18 type "%s"\n'%(vxi, amnnit))
+	ctrl.write('set %s.1.19 type "%s"\n'%(vxi, amnhyd))
+	ctrl.write('set %s.1.20 type "%s"\n'%(vxi, amnhyd))
+	ctrl.write('set %s.1.21 type "%s"\n'%(vxi, amnhyd))
 	ctrl.write('set %s.1.22 type "C"\n'%vxi)
 	ctrl.write('set %s.1.23 type "O"\n'%vxi)
 	ctrl.write('bond %s.1.1 %s.1.2\n'%(vxi, vxi))
@@ -198,14 +198,14 @@ def cal(x, y, i):
 	num = x+((y-x)/10)*i
 	return num
 
-def cal2(x, y, i):
+def lac(x, y, i):
 	num = y+((x-y)/10)*i
 	return num
 
-def stock_add_to_all(aminit='dn', amihyd='dh', hydhyd='mh', lyshyd='fh'):
+def stock_add_to_all(amnnit='dn', amnhyd='dh', hydhyd='mh', lyshyd='fh'):
 	Frcmod_creator.make_hyb()
-	Frcmod_creator.TYPE_insert(aminit, 'N', 'sp3')
-	Frcmod_creator.TYPE_insert(amihyd, 'H', 'sp3')
+	Frcmod_creator.TYPE_insert(amnnit, 'N', 'sp3')
+	Frcmod_creator.TYPE_insert(amnhyd, 'H', 'sp3')
 	Frcmod_creator.TYPE_insert(hydhyd, 'H', 'sp3')
 	Frcmod_creator.TYPE_insert(lyshyd, 'H', 'sp3')
 	p = {}
@@ -218,27 +218,27 @@ def stock_add_to_all(aminit='dn', amihyd='dh', hydhyd='mh', lyshyd='fh'):
 	b.close()
 	for i in range(11):
 		a = i*10
-		Frcmod_creator.MASS_insert('{}_{}.frcmod'.format(a, 100-a), aminit, cal2(p['NA'][0], p['0_N'][0], i), cal2(p['NA'][1], p['0_N'][1], i))
-		Frcmod_creator.MASS_insert('{}_{}.frcmod'.format(a, 100-a), amihyd, cal2(p['H'][0], p['0_H'][0], i), cal2(p['H'][1], p['0_H'][1], i))
-		Frcmod_creator.MASS_insert('{}_{}.frcmod'.format(a, 100-a), hydhyd, cal2(p['0_H'][0], p['HC'][0], i), cal2(p['0_H'][1], p['HC'][1], i))
-		Frcmod_creator.MASS_insert('{}_{}.frcmod'.format(a, 100-a), lyshyd, cal2(p['HP'][0], p['HC'][0], i), cal2(p['HP'][1], p['HC'][1], i))
-		Frcmod_creator.BOND_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}'.format('CT', aminit), cal2(p['C_N3'][0], p['CT_mH'][0], i), cal2(p['C_N3'][1], p['CT_mH'][1], i))
-		Frcmod_creator.BOND_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}'.format('CT', hydhyd), cal2(p['HC_sN3'][0], p['CT_HC'][0], i), cal2(p['HC_sN3'][1], p['CT_HC'][1], i))
-		Frcmod_creator.BOND_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}'.format('CT', lyshyd), cal2(p['CT_HC'][0], p['CT_HC'][0], i), cal2(p['CT_HC'][1], p['CT_HC'][1], i))
-		Frcmod_creator.BOND_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}'.format(aminit, amihyd), cal2(p['NA_H'][0], p['H_mHC'][0], i), cal2(p['NA_H'][1], p['H_mHC'][1], i))
-		Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format('CT', aminit, amihyd), cal2(p['C_C_H'][0], p['Dritt'][0], i), cal2(p['C_C_H'][1], p['Dritt'][1], i))
-		Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format(amihyd, aminit, amihyd), cal2(p['H_C_H'][0], p['Close'][0], i), cal2(p['H_C_H'][1], p['Close'][1], i))
-		Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format('CT', 'CT', aminit), cal2(p['C_C_H'][0], p['C_C_N'][0], i), cal2(p['C_C_H'][1], p['C_C_N'][1], i))
-		Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format(lyshyd, 'CT', aminit), cal2(p['C_C_H'][0], p['C_C_H'][0], i), cal2(p['C_C_H'][1], p['C_C_H'][1], i))
-		Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format(lyshyd, 'CT', lyshyd), cal2(p['H_C_H'][0], p['H_C_H'][0], i), cal2(p['H_C_H'][1], p['H_C_H'][1], i))
-		Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format(lyshyd, 'CT', hydhyd), cal2(p['H_C_H'][0], p['H_C_H'][0], i), cal2(p['H_C_H'][1], p['H_C_H'][1], i))
-		Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format(hydhyd, 'CT', aminit), cal2(p['Close'][0], p['Close'][0], i), cal2(p['Close'][1], p['Close'][1], i))
-		Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format('CT', 'CT', lyshyd), cal2(p['C_C_H'][0], p['C_C_H'][0], i), cal2(p['C_C_H'][1], p['C_C_H'][1], i))
-		Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format('CT', 'CT', hydhyd), cal2(p['C_C_NH'][0], p['C_C_H'][0], i), cal2(p['C_C_NH'][1], p['C_C_H'][1], i))
-		Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format('CT', 'CT', aminit, amihyd), cal2(p['X_C_C_X'][0], p['0_4'][0], i), cal2(p['X_C_C_X'][1], p['0_4'][1], i), cal2(p['X_C_C_X'][2], p['0_4'][2], i), cal2(p['X_C_C_X'][3], p['0_4'][3], i))
-		Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format(lyshyd, 'CT', aminit, amihyd), cal2(p['X_C_C_X'][0], p['0_4'][0], i), cal2(p['X_C_C_X'][1], p['0_4'][1], i), cal2(p['X_C_C_X'][2], p['0_4'][2], i), cal2(p['X_C_C_X'][3], p['0_4'][3], i))
-		Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format(hydhyd, 'CT', aminit, amihyd), cal2(p['0_Dihe'][0], p['0_Dihe'][0], i), cal2(p['0_Dihe'][1], p['0_Dihe'][1], i), cal2(p['0_Dihe'][2], p['0_Dihe'][2], i), cal2(p['0_Dihe'][3], p['0_Dihe'][3], i))
-		Frcmod_creator.NONBON_insert('{}_{}.frcmod'.format(a, 100-a), aminit, cal2(p['NA'][2], p['0_N'][2], i), cal2(p['NA'][3], p['0_N'][3], i))
-		Frcmod_creator.NONBON_insert('{}_{}.frcmod'.format(a, 100-a), amihyd, cal2(p['H'][2], p['0_H'][2], i), cal2(p['H'][3], p['0_H'][3], i))
-		Frcmod_creator.NONBON_insert('{}_{}.frcmod'.format(a, 100-a), hydhyd, cal2(p['0_H'][2], p['HC'][2], i), cal2(p['0_H'][3], p['HC'][3], i))
-		Frcmod_creator.NONBON_insert('{}_{}.frcmod'.format(a, 100-a), lyshyd, cal2(p['HP'][2], p['HC'][2], i), cal2(p['HP'][3], p['HC'][3], i))
+		Frcmod_creator.MASS_insert('{}_{}.frcmod'.format(a, 100-a), amnnit, lac(p['NA'][0], p['0_N'][0], i), lac(p['NA'][1], p['0_N'][1], i))
+		Frcmod_creator.MASS_insert('{}_{}.frcmod'.format(a, 100-a), amnhyd, lac(p['H'][0], p['0_H'][0], i), lac(p['H'][1], p['0_H'][1], i))
+		Frcmod_creator.MASS_insert('{}_{}.frcmod'.format(a, 100-a), hydhyd, lac(p['0_H'][0], p['HC'][0], i), lac(p['0_H'][1], p['HC'][1], i))
+		Frcmod_creator.MASS_insert('{}_{}.frcmod'.format(a, 100-a), lyshyd, lac(p['HP'][0], p['HC'][0], i), lac(p['HP'][1], p['HC'][1], i))
+		Frcmod_creator.BOND_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}'.format('CT', amnnit), lac(p['C_N3'][0], p['CT_mH'][0], i), lac(p['C_N3'][1], p['CT_mH'][1], i))
+		Frcmod_creator.BOND_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}'.format('CT', hydhyd), lac(p['HC_sN3'][0], p['CT_HC'][0], i), lac(p['HC_sN3'][1], p['CT_HC'][1], i))
+		Frcmod_creator.BOND_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}'.format('CT', lyshyd), lac(p['CT_HC'][0], p['CT_HC'][0], i), lac(p['CT_HC'][1], p['CT_HC'][1], i))
+		Frcmod_creator.BOND_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}'.format(amnnit, amnhyd), lac(p['NA_H'][0], p['H_mHC'][0], i), lac(p['NA_H'][1], p['H_mHC'][1], i))
+		Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format('CT', amnnit, amnhyd), lac(p['C_C_H'][0], p['Dritt'][0], i), lac(p['C_C_H'][1], p['Dritt'][1], i))
+		Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format(amnhyd, amnnit, amnhyd), lac(p['H_C_H'][0], p['Close'][0], i), lac(p['H_C_H'][1], p['Close'][1], i))
+		Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format('CT', 'CT', amnnit), lac(p['C_C_H'][0], p['C_C_N'][0], i), lac(p['C_C_H'][1], p['C_C_N'][1], i))
+		Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format(lyshyd, 'CT', amnnit), lac(p['C_C_H'][0], p['C_C_H'][0], i), lac(p['C_C_H'][1], p['C_C_H'][1], i))
+		Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format(lyshyd, 'CT', lyshyd), lac(p['H_C_H'][0], p['H_C_H'][0], i), lac(p['H_C_H'][1], p['H_C_H'][1], i))
+		Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format(lyshyd, 'CT', hydhyd), lac(p['H_C_H'][0], p['H_C_H'][0], i), lac(p['H_C_H'][1], p['H_C_H'][1], i))
+		Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format(hydhyd, 'CT', amnnit), lac(p['Close'][0], p['Close'][0], i), lac(p['Close'][1], p['Close'][1], i))
+		Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format('CT', 'CT', lyshyd), lac(p['C_C_H'][0], p['C_C_H'][0], i), lac(p['C_C_H'][1], p['C_C_H'][1], i))
+		Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format('CT', 'CT', hydhyd), lac(p['C_C_NH'][0], p['C_C_H'][0], i), lac(p['C_C_NH'][1], p['C_C_H'][1], i))
+		Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format('CT', 'CT', amnnit, amnhyd), lac(p['X_C_C_X'][0], p['0_4'][0], i), lac(p['X_C_C_X'][1], p['0_4'][1], i), lac(p['X_C_C_X'][2], p['0_4'][2], i), lac(p['X_C_C_X'][3], p['0_4'][3], i))
+		Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format(lyshyd, 'CT', amnnit, amnhyd), lac(p['X_C_C_X'][0], p['0_4'][0], i), lac(p['X_C_C_X'][1], p['0_4'][1], i), lac(p['X_C_C_X'][2], p['0_4'][2], i), lac(p['X_C_C_X'][3], p['0_4'][3], i))
+		Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format(hydhyd, 'CT', amnnit, amnhyd), lac(p['0_Dihe'][0], p['0_Dihe'][0], i), lac(p['0_Dihe'][1], p['0_Dihe'][1], i), lac(p['0_Dihe'][2], p['0_Dihe'][2], i), lac(p['0_Dihe'][3], p['0_Dihe'][3], i))
+		Frcmod_creator.NONBON_insert('{}_{}.frcmod'.format(a, 100-a), amnnit, lac(p['NA'][2], p['0_N'][2], i), lac(p['NA'][3], p['0_N'][3], i))
+		Frcmod_creator.NONBON_insert('{}_{}.frcmod'.format(a, 100-a), amnhyd, lac(p['H'][2], p['0_H'][2], i), lac(p['H'][3], p['0_H'][3], i))
+		Frcmod_creator.NONBON_insert('{}_{}.frcmod'.format(a, 100-a), hydhyd, lac(p['0_H'][2], p['HC'][2], i), lac(p['0_H'][3], p['HC'][3], i))
+		Frcmod_creator.NONBON_insert('{}_{}.frcmod'.format(a, 100-a), lyshyd, lac(p['HP'][2], p['HC'][2], i), lac(p['HP'][3], p['HC'][3], i))

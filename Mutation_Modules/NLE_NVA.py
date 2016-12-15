@@ -177,7 +177,7 @@ def cal(x, y, i):
 	num = x+((y-x)/10)*i
 	return num
 
-def cal2(x, y, i):
+def lac(x, y, i):
 	num = y+((x-y)/10)*i
 	return num
 

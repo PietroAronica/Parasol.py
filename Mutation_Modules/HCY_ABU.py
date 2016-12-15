@@ -152,7 +152,7 @@ def cal(x, y, i):
         num = x+((y-x)/10)*i
         return num
 
-def cal2(x, y, i):
+def lac(x, y, i):
         num = y+((x-y)/10)*i
         return num
 
@@ -172,7 +172,7 @@ def stock_add_to_all(thisul='hs', thihyd='hh', hydhyd='sh', cyshyd='fh'):
         b.close()
 	for i in range(11):
 		a = i*10
-		Frcmod_creator.MASS_insert('{}_{}.frcmod'.format(a, 100-a), thisul, cal(p['SH'][0], p['0_O'][0], i), cal(p['SH'][1], p['0_O'][1], i))
+		Frcmod_creator.MASS_insert('{}_{}.frcmod'.format(a, 100-a), thisul, cal(p['SH'][0], p['0_S'][0], i), cal(p['SH'][1], p['0_S'][1], i))
 		Frcmod_creator.MASS_insert('{}_{}.frcmod'.format(a, 100-a), thihyd, cal(p['HS'][0], p['0_H'][0], i), cal(p['HS'][1], p['0_H'][1], i))
 		Frcmod_creator.MASS_insert('{}_{}.frcmod'.format(a, 100-a), hydhyd, cal(p['0_H'][0], p['HC'][0], i), cal(p['0_H'][1], p['HC'][1], i))
 		Frcmod_creator.MASS_insert('{}_{}.frcmod'.format(a, 100-a), cyshyd, cal(p['H1'][0], p['HC'][0], i), cal(p['H1'][1], p['HC'][1], i))
