@@ -63,3 +63,22 @@ def mutate_con(store, faa, wkdir, resnum):
 	s = PDBHandler.readpdb('Run_1.pdb')
 	PDBHandler.chop(s, faa, resnum)
 	shutil.copyfile('Mut_leap.pdb', '/home/pietroa/Python/Curr_run.pdb')
+
+def staple(store, resnum, dct='/home/pietroa/Work', wkdir='None'):
+	os.chdir(dct)
+	if wkdir == 'None':
+		wkdir=datetime.datetime.now().strftime('Staple_%m-%d_%H:%M_{}-{}'.format(resnum, resnum + 4))
+	try:
+		os.mkdir(wkdir)
+	except:
+		pass
+	os.chdir(wkdir)
+	shutil.move(store, os.getcwd())
+	os.system('/home/pietroa/Files/Mutation/Method_proceed.x')
+	os.chdir('Run_1')
+	traj = pt.load('100_0.restart', top='../Store/Solv_0_100.prmtop')
+	traj.autoimage()
+	pt.write_traj('Run_1.pdb', traj, overwrite=True)
+	s = PDBHandler.readpdb('Run_1.pdb')
+	PDBHandler.chop(s, 'NL4', resnum)
+	PDBHandler.chop(s, 'NL4', resnum + 4)

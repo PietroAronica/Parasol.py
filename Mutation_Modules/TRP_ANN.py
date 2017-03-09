@@ -37,7 +37,7 @@ def parmed_command(vxi='VXI'):
                 change(parm, 'charge', ':{}@CD1'.format(vxi), bc['CD1']+((fc['CD1']-bc['CD1'])/10)*i).execute()
                 change(parm, 'charge', ':{}@HD1'.format(vxi), bc['HD1']+((fc['HD1']-bc['HD1'])/10)*i).execute()
                 change(parm, 'charge', ':{}@CD2'.format(vxi), bc['CD2']+((fc['CD2']-bc['CD2'])/10)*i).execute()
-                change(parm, 'charge', ':{}@NE1'.format(vxi), bc['NE']-(bc['NE']/10)*i).execute()
+                change(parm, 'charge', ':{}@NE1'.format(vxi), bc['NE1']-(bc['NE1']/10)*i).execute()
                 change(parm, 'charge', ':{}@HE1'.format(vxi), bc['HE1']-(bc['HE1']/10)*i).execute()
                 change(parm, 'charge', ':{}@CE'.format(vxi), bc['CE2']+((fc['CE']-bc['CE2'])/10)*i).execute()
                 change(parm, 'charge', ':{}@HD2'.format(vxi), bc['CE3']+((fc['HD2']-bc['CE3'])/10)*i).execute()

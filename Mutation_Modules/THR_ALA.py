@@ -162,6 +162,10 @@ def cal(x, y, i):
         num = x+((y-x)/10)*i
         return num
 
+def lac(x, y, i):
+        num = y+((x-y)/10)*i
+        return num
+
 def stock_add_to_all(metcar='dc', methyd='dh', hydhyd1='mh', alcoxy='ho', alchyd='hh', hydhyd2='sh', thrhyd='fh'):
 	Frcmod_creator.make_hyb()
 	Frcmod_creator.TYPE_insert(metcar, 'C', 'sp3')

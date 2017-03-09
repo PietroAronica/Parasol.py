@@ -1,4 +1,4 @@
-# ILE to VAL Mutation
+# PHE to ANN Mutation
 
 import Frcmod_creator
 import PDBHandler
@@ -177,6 +177,10 @@ def all_make():
 def cal(x, y, i):
 	num = x+((y-x)/10)*i
 	return num
+
+def lac(x, y, i):
+        num = y+((x-y)/10)*i
+        return num
 
 def stock_add_to_all(cd='1c', ce='2c', he='2h'):
 	Frcmod_creator.make_hyb()

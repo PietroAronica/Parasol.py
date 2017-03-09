@@ -1,4 +1,4 @@
-# ILE to VAL Mutation
+# ANN to NVA Mutation
 
 import Frcmod_creator
 import PDBHandler
@@ -43,7 +43,7 @@ def parmed_command(vxi='VXI'):
                 change(parm, 'charge', ':{}@HD21'.format(vxi), bc['HD2']-(bc['HD2']/10)*i).execute()
                 change(parm, 'charge', ':{}@CD'.format(vxi), bc['CE']+((fc['CD']-bc['CE'])/10)*i).execute()
                 change(parm, 'charge', ':{}@HD1'.format(vxi), bc['HE']+((fc['HD1']-bc['HE'])/10)*i).execute()
-                change(parm, 'charge', ':{}@HD3'.format(vxi), (fc['HD2']/10)*i).execute()
+                change(parm, 'charge', ':{}@HD2'.format(vxi), (fc['HD2']/10)*i).execute()
                 change(parm, 'charge', ':{}@HD3'.format(vxi), (fc['HD3']/10)*i).execute()
                 change(parm, 'charge', ':{}@C'.format(vxi), bc['C']+((fc['C']-bc['C'])/10)*i).execute()
                 change(parm, 'charge', ':{}@O'.format(vxi), bc['O']+((fc['O']-bc['O'])/10)*i).execute()
@@ -191,6 +191,10 @@ def all_make():
 def cal(x, y, i):
 	num = x+((y-x)/10)*i
 	return num
+
+def lac(x, y, i):
+        num = y+((x-y)/10)*i
+        return num
 
 def stock_add_to_all(cg='1c', hg1='0h', hg2='1h', cd1='2c', hd11='2h', cd2='3c', hd21='3h', cd='4c', hd1='4h', hd2='5h', hd3='6h'):
 	Frcmod_creator.make_hyb()

@@ -146,6 +146,10 @@ def cal(x, y, i):
 	num = x+((y-x)/10)*i
 	return num
 
+def lac(x, y, i):
+        num = y+((x-y)/10)*i
+        return num
+
 def stock_add_to_all(carcar='cc', caroxy='co', hydhyd='sh'):
 	Frcmod_creator.make_hyb()
 	Frcmod_creator.TYPE_insert(carcar, 'C', 'sp2')
