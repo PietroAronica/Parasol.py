@@ -11,7 +11,7 @@ import PDBHandler
 import Leapy
 import Run
 
-def makeinput(pdbfile, outfile, baa, faa, resid, atypes='Standard', newbox=8.0):
+def makeinput(pdbfile, outfile, baa, faa, resid, resid2='No', atypes='Standard', newbox=8.0):
 # Read PDB and load correct mutation module
 	struct = PDBHandler.readpdb(pdbfile)
 	Curr_mut = 'Mutation_Modules.' + baa + '_' + faa
@@ -19,9 +19,9 @@ def makeinput(pdbfile, outfile, baa, faa, resid, atypes='Standard', newbox=8.0):
 # Determine the overall charge of the pdb to see what ion is needed
 	ocharge = 0
 	for res in struct.residue_list:
-		if res.get_resname() in ['ASP', 'GLU', 'Cl-']:
+		if res.get_resname() in ['ASP', 'GLU', 'Cl-', 'ACE']:
 			ocharge = ocharge - 1
-		elif res.get_resname() in ['LYS', 'ARG', 'Na+']:
+		elif res.get_resname() in ['LYS', 'ARG', 'Na+', 'NME']:
 			ocharge = ocharge + 1
 	if ocharge < 0:
 		Ion = 'Na+'
@@ -50,6 +50,9 @@ def makeinput(pdbfile, outfile, baa, faa, resid, atypes='Standard', newbox=8.0):
 		bal='Null'
 # Make Mutated PDB (Mutabond)
 	Curr_mut.makevxi(struct, 'Mutabond.pdb', resid)
+	if resid2 != 'No':
+		struct = PDBHandler.readpdb('Mutabond.pdb')
+		Curr_mut.makevxi(struct, 'Mutabond.pdb', resid2)
 # Create parameters and lib files
 	Curr_mut.all_make()
 	if atypes == 'Standard':

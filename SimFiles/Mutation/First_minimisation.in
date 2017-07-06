@@ -1,0 +1,15 @@
+1SMF minimisation: initial solvent + ions min
+ &cntrl
+  imin=1,
+  maxcyc=1000,
+  ncyc=500,
+  ntpr=100,
+  ntb=1,
+  ntr=1,
+  cut=8.0,
+ /
+Group input for restrained protein and ligand
+500.0
+RES 1 232
+END
+END

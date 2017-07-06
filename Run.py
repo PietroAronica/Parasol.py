@@ -5,6 +5,7 @@ import shutil
 import datetime
 import pytraj as pt
 import PDBHandler
+simpath='/home/pietroa/Python/SimFiles/'
 
 def make_store(oldbox):
 	try:
@@ -22,7 +23,7 @@ def make_store(oldbox):
 		os.system('sed -i s/9.00000000E+01/1.09471219E+02/g Solv_*.prmtop')
 		os.chdir('..')
 
-def mutate_beg(store, faa, resnum, dct='/home/pietroa/Work', wkdir='None', solv = 'No', fin=None):
+def mutate_beg(store, faa, resnum, dct='/home/pietroa/Work', wkdir='None', solv = 'No', fin=None, strip = 'No'):
 	os.chdir(dct)
 	if wkdir == 'None':
 		if fin is None:
@@ -37,12 +38,17 @@ def mutate_beg(store, faa, resnum, dct='/home/pietroa/Work', wkdir='None', solv 
 	os.mkdir('To{}'.format(faa))
 	os.chdir('To{}'.format(faa))
 	shutil.move(store, os.getcwd())
+	print simpath
 	if solv == 'No':
-		os.system('/home/pietroa/Files/Mutation/Method.x')
+		Input = simpath + 'Method.x'
+		os.system(Input)
 	elif solv == 'Yes':
-		os.system('/home/pietroa/Files/Mutation/Method_proceed.x')
+		Input = simpath + 'Method_proceed.x'
+		os.system(Input)
 	os.chdir('Run_1')
 	traj = pt.load('100_0.restart', top='../Store/Solv_0_100.prmtop')
+	if strip != 'No':
+		traj.strip(':WAT,Cl-,Na+')
 	traj.autoimage()
 	pt.write_traj('Run_1.pdb', traj, overwrite=True)
 	s = PDBHandler.readpdb('Run_1.pdb')
@@ -50,14 +56,17 @@ def mutate_beg(store, faa, resnum, dct='/home/pietroa/Work', wkdir='None', solv 
 	shutil.copyfile('Mut_leap.pdb', '/home/pietroa/Python/Curr_run.pdb')
 	return nwdir
 
-def mutate_con(store, faa, wkdir, resnum):
+def mutate_con(store, faa, wkdir, resnum, strip = 'No'):
 	os.chdir(wkdir)
 	os.mkdir('To{}'.format(faa))
 	os.chdir('To{}'.format(faa))
 	shutil.move(store, os.getcwd())
-	os.system('/home/pietroa/Files/Mutation/Method_proceed.x')
+	Input = simpath + 'Method_proceed.x'
+	os.system(Input)
 	os.chdir('Run_1')
 	traj = pt.load('100_0.restart', top='../Store/Solv_0_100.prmtop')
+	if strip != 'No':
+		traj.strip(':WAT,Cl-,Na+')
 	traj.autoimage()
 	pt.write_traj('Run_1.pdb', traj, overwrite=True)
 	s = PDBHandler.readpdb('Run_1.pdb')
@@ -74,11 +83,12 @@ def staple(store, resnum, dct='/home/pietroa/Work', wkdir='None'):
 		pass
 	os.chdir(wkdir)
 	shutil.move(store, os.getcwd())
-	os.system('/home/pietroa/Files/Mutation/Method_proceed.x')
+	Input = simpath + 'Method_proceed.x'
+	os.system(Input)
 	os.chdir('Run_1')
 	traj = pt.load('100_0.restart', top='../Store/Solv_0_100.prmtop')
 	traj.autoimage()
 	pt.write_traj('Run_1.pdb', traj, overwrite=True)
 	s = PDBHandler.readpdb('Run_1.pdb')
-	PDBHandler.chop(s, 'NL4', resnum)
-	PDBHandler.chop(s, 'NL4', resnum + 4)
+	PDBHandler.chop(s, 'NLS', resnum)
+	PDBHandler.chop(s, 'NLS', resnum + 4)

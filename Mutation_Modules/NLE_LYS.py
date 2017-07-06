@@ -50,7 +50,7 @@ def parmed_command(vxi='VXI'):
                 change(parm, 'charge', ':{}@O'.format(vxi), bc['O']+((fc['O']-bc['O'])/10)*i).execute()
 		setOverwrite(parm).execute()
                 d = netCharge(parm).execute()
-                change(parm, 'charge', ':PC', '-{:.3f}'.format(d)).execute()
+                change(parm, 'charge', ':PC', '{:.3f}'.format(-d)).execute()
 		parmout(parm, 'Solv_{}_{}.prmtop'.format(a, 100-a)).execute()
 
 def makevxi(struct, out, aa, vxi='VXI'):

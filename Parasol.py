@@ -90,7 +90,16 @@ def get_var():
                 solv = 'Yes'
         except:
                 solv = 'No'
-	return baa, faa, resid, solv, wkdir, job
+	try:
+		toobig = inf['toobig']
+	except:
+		toobig = 'No'
+	try:
+		inf['resid2'] = int(inf['resid2'])
+		resid2 = inf['resid2']
+	except:
+		resid2 = 'No'
+	return baa, faa, resid, solv, wkdir, job, toobig, resid2
 
 get_var()
 baa = get_var()[0]
@@ -101,6 +110,8 @@ resid = get_var()[2]
 solv = get_var()[3]
 wkdir = get_var()[4]
 job = get_var()[5]
+toobig = get_var()[6]
+resid2 = get_var()[7]
 pdbfile=readinput(sys.argv[1:])[1]
 outfile=readinput(sys.argv[1:])[2]
 
@@ -109,11 +120,11 @@ if job == 0:
 	if baa == 'GLY' and faa in ('ALA', 'DAA'):
 		God.makeinput(pdbfile, outfile, baa, faa, resid)
 		cleanup()
-		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv)
+		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv, strip=toobig)
 	if baa == 'GLY' and faa in ('VAL', 'SER', 'CYS', 'THR', 'ASN', 'ASP', 'ABU'):
 		God.makeinput(pdbfile, outfile, baa, 'ALA', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ALA', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ALA', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ALA', faa, resid)
 		cleanup()
@@ -121,7 +132,7 @@ if job == 0:
 	if baa == 'GLY' and faa in ('LEU', 'ILE', 'GLU', 'GLN', 'NVA', 'HCY'):
 		God.makeinput(pdbfile, outfile, baa, 'ALA', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ALA', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ALA', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ALA', 'ABU', resid)
 		cleanup()
@@ -133,7 +144,7 @@ if job == 0:
 	if baa == 'GLY' and faa in ('PRO'):
 		God.makeinput(pdbfile, outfile, baa, 'ALA', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ALA', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ALA', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ALA', 'QUA', resid)
 		cleanup()
@@ -145,7 +156,7 @@ if job == 0:
 	if baa == 'GLY' and faa in ('MET'):
 		God.makeinput(pdbfile, outfile, baa, 'ALA', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ALA', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ALA', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ALA', 'ABU', resid)
 		cleanup()
@@ -161,7 +172,7 @@ if job == 0:
 	if baa == 'GLY' and faa in ('PHE', 'TYR', 'TRP', 'HIS'):
 		God.makeinput(pdbfile, outfile, baa, 'ALA', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ALA', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ALA', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ALA', 'ABU', resid)
 		cleanup()
@@ -181,7 +192,7 @@ if job == 0:
 	if baa == 'GLY' and faa in ('ARG', 'LYS'):
 		God.makeinput(pdbfile, outfile, baa, 'ALA', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ALA', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ALA', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ALA', 'ABU', resid)
 		cleanup()
@@ -201,7 +212,7 @@ if job == 0:
 	if baa == 'GLY' and faa in ('NLE'):
 		God.makeinput(pdbfile, outfile, baa, 'ALA', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ALA', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ALA', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ALA', 'ABU', resid)
 		cleanup()
@@ -217,7 +228,7 @@ if job == 0:
 	if baa == 'GLY' and faa in ('NKI'):
 		God.makeinput(pdbfile, outfile, baa, 'ALA', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ALA', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ALA', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ALA', 'ABU', resid)
 		cleanup()
@@ -246,11 +257,11 @@ if job == 0:
 	if baa == 'ALA' and faa in ('ABU', 'ASP', 'ASN', 'CYS', 'GLY', 'QUA', 'SER', 'THR', 'VAL'):
 		God.makeinput(pdbfile, outfile, baa, faa, resid)
 		cleanup()
-		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv)
+		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv, strip=toobig)
 	if baa == 'ALA' and faa in ('NLE'):
 		God.makeinput(pdbfile, outfile, baa, 'ABU', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ABU', 'NVA', resid)
 		cleanup()
@@ -262,7 +273,7 @@ if job == 0:
 	if baa == 'ALA' and faa in ('ARG', 'LYS'):
 		God.makeinput(pdbfile, outfile, baa, 'ABU', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ABU', 'NVA', resid)
 		cleanup()
@@ -278,7 +289,7 @@ if job == 0:
 	if baa == 'ALA' and faa in ('PHE', 'TYR', 'HIS', 'TRP'):
 		God.makeinput(pdbfile, outfile, baa, 'ABU', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ABU', 'NVA', resid)
 		cleanup()
@@ -294,7 +305,7 @@ if job == 0:
 	if baa == 'ALA' and faa in ('ARG', 'LYS'):
 		God.makeinput(pdbfile, outfile, baa, 'ABU', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ABU', 'NVA', resid)
 		cleanup()
@@ -310,7 +321,7 @@ if job == 0:
 	if baa == 'ALA' and faa == 'PRO':
 		God.makeinput(pdbfile, outfile, baa, 'QUA', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'QUA', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'QUA', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'QUA', 'PRO', resid)
 		cleanup()
@@ -318,7 +329,7 @@ if job == 0:
 	if baa == 'ALA' and faa in ('ILE', 'LEU', 'GLU', 'GLN'):
 		God.makeinput(pdbfile, outfile, baa, 'ABU', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ABU', faa, resid)
 		cleanup()
@@ -326,7 +337,7 @@ if job == 0:
 	if baa == 'ALA' and faa in ('MET'):
 		God.makeinput(pdbfile, outfile, baa, 'ABU', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ABU', 'HCY', resid)
 		cleanup()
@@ -338,11 +349,11 @@ if job == 0:
 	if baa == 'DAA' and faa in ('DVV'):
 		God.makeinput(pdbfile, outfile, baa, faa, resid)
 		cleanup()
-		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv)
+		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv, strip=toobig)
 	if baa == 'ALA' and faa in ('NKI'):
 		God.makeinput(pdbfile, outfile, baa, 'ABU', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ABU', 'NVA', resid)
 		cleanup()
@@ -367,11 +378,11 @@ if job == 0:
 	if baa == 'VAL' and faa in ('ALA', 'ASN', 'ASP', 'CYS', 'ILE', 'NVA', 'LEU', 'GLU', 'GLN', 'QUA', 'SER', 'THR'):
 		God.makeinput(pdbfile, outfile, baa, faa, resid)
 		cleanup()
-		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv)
+		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv, strip=toobig)
 	if baa == 'VAL' and faa == 'GLY':
 		God.makeinput(pdbfile, outfile, baa, 'ALA', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ALA', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ALA', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ALA', 'GLY', resid)
 		cleanup()
@@ -379,7 +390,7 @@ if job == 0:
 	if baa == 'VAL' and faa == 'MET':
 		God.makeinput(pdbfile, outfile, baa, 'NVA', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NVA', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NVA', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'NVA', 'MET', resid)
 		cleanup()
@@ -387,7 +398,7 @@ if job == 0:
 	if baa == 'VAL' and faa == 'PRO':
 		God.makeinput(pdbfile, outfile, baa, 'QUA', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'QUA', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'QUA', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'QUA', 'PRO', resid)
 		cleanup()
@@ -395,7 +406,7 @@ if job == 0:
 	if baa == 'VAL' and faa in ('PHE', 'HIS', 'TYR', 'TRP'):
 		God.makeinput(pdbfile, outfile, baa, 'NVA', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NVA', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NVA', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'NVA', 'ANN', resid)
 		cleanup()
@@ -407,7 +418,7 @@ if job == 0:
 	if baa == 'VAL' and faa in ('NLE'):
 		God.makeinput(pdbfile, outfile, baa, 'NVA', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NVA', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NVA', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'NVA', faa, resid)
 		cleanup()
@@ -415,7 +426,7 @@ if job == 0:
 	if baa == 'VAL' and faa in ('ARG', 'LYS'):
 		God.makeinput(pdbfile, outfile, baa, 'NVA', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NVA', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NVA', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'NVA', 'NLE', resid)
 		cleanup()
@@ -427,7 +438,7 @@ if job == 0:
 	if baa == 'VAL' and faa in ('NKI'):
 		God.makeinput(pdbfile, outfile, baa, 'NVA', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NVA', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NVA', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'NVA', 'NLE', resid)
 		cleanup()
@@ -448,11 +459,11 @@ if job == 0:
 	if baa == 'ILE' and faa in ('VAL', 'LEU', 'ABU', 'THR', 'GLU', 'GLN', 'MET', 'ANN', 'NLE', 'NVA'):
 		God.makeinput(pdbfile, outfile, baa, faa, resid)
 		cleanup()
-		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv)
+		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv, strip=toobig)
 	if baa == 'ILE' and faa == 'ALA':
 		God.makeinput(pdbfile, outfile, baa, 'VAL', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'VAL', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'VAL', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'VAL', 'ALA', resid)
 		cleanup()
@@ -460,7 +471,7 @@ if job == 0:
 	if baa == 'ILE' and faa in ('SER', 'CYS', 'ASP', 'ASN'):
 		God.makeinput(pdbfile, outfile, baa, 'ABU', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ABU', faa, resid)
 		cleanup()
@@ -468,7 +479,7 @@ if job == 0:
 	if baa == 'ILE' and faa in ('PHE', 'TYR', 'TRP', 'HIS'):
 		God.makeinput(pdbfile, outfile, baa, 'ANN', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ANN', faa, resid)
 		cleanup()
@@ -476,7 +487,7 @@ if job == 0:
 	if baa == 'ILE' and faa in ('LYS', 'ARG'):
 		God.makeinput(pdbfile, outfile, baa, 'NLE', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NLE', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NLE', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'NLE', faa, resid)
 		cleanup()
@@ -484,7 +495,7 @@ if job == 0:
 	if baa == 'ILE' and faa == 'GLY':
 		God.makeinput(pdbfile, outfile, baa, 'VAL', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'VAL', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'VAL', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'VAL', 'ALA', resid)
 		cleanup()
@@ -496,7 +507,7 @@ if job == 0:
 	if baa == 'ILE' and faa == 'PRO':
 		God.makeinput(pdbfile, outfile, baa, 'VAL', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'VAL', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'VAL', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'VAL', 'QUA', resid)
 		cleanup()
@@ -508,7 +519,7 @@ if job == 0:
 	if baa == 'ILE' and faa in ('NKI'):
 		God.makeinput(pdbfile, outfile, baa, 'NLE', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NLE', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NLE', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'NLE', 'NMA', resid)
 		cleanup()
@@ -525,11 +536,11 @@ if job == 0:
 	if baa == 'LEU' and faa in ('ABU', 'VAL', 'ILE', 'THR', 'GLN', 'GLU', 'NLE', 'ANN', 'MET'):
 		God.makeinput(pdbfile, outfile, baa, faa, resid)
 		cleanup()
-		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv)
+		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv, strip=toobig)
 	if baa == 'LEU' and faa in ('ALA', 'SER', 'CYS', 'ASP', 'ASN'):
 		God.makeinput(pdbfile, outfile, baa, 'ABU', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ABU', faa, resid)
 		cleanup()
@@ -537,7 +548,7 @@ if job == 0:
 	if baa == 'LEU' and faa == 'PRO':
 		God.makeinput(pdbfile, outfile, baa, 'ABU', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ABU', 'QUA', resid)
 		cleanup()
@@ -549,7 +560,7 @@ if job == 0:
 	if baa == 'LEU' and faa == 'GLY':
 		God.makeinput(pdbfile, outfile, baa, 'ABU', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ABU', 'ALA', resid)
 		cleanup()
@@ -561,7 +572,7 @@ if job == 0:
 	if baa == 'LEU' and faa in ('LYS', 'ARG'):
 		God.makeinput(pdbfile, outfile, baa, 'NLE', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NLE', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NLE', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'NLE', faa, resid)
 		cleanup()
@@ -569,7 +580,7 @@ if job == 0:
 	if baa == 'LEU' and faa in ('PHE', 'TYR', 'TRP', 'HIS'):
 		God.makeinput(pdbfile, outfile, baa, 'ANN', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ANN', faa, resid)
 		cleanup()
@@ -577,7 +588,7 @@ if job == 0:
 	if baa == 'LEU' and faa in ('NKI'):
 		God.makeinput(pdbfile, outfile, baa, 'NLE', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NLE', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NLE', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'NLE', 'NMA', resid)
 		cleanup()
@@ -594,11 +605,11 @@ if job == 0:
 	if baa == 'SER' and faa in ('ALA', 'VAL', 'ABU', 'ASN', 'ASP', 'QUA', 'THR', 'CYS'):
 		God.makeinput(pdbfile, outfile, baa, faa, resid)
 		cleanup()
-		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv)
+		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv, strip=toobig)
 	if baa == 'SER' and faa in ('GLY'):
 		God.makeinput(pdbfile, outfile, baa, 'ALA', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ALA', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ALA', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ALA', faa, resid)
 		cleanup()
@@ -606,7 +617,7 @@ if job == 0:
 	if baa == 'SER' and faa in ('ILE'):
 		God.makeinput(pdbfile, outfile, baa, 'VAL', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'VAL', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'VAL', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'VAL', faa, resid)
 		cleanup()
@@ -614,7 +625,7 @@ if job == 0:
 	if baa == 'SER' and faa in ('LEU', 'GLU', 'GLN'):
 		God.makeinput(pdbfile, outfile, baa, 'ABU', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ABU', faa, resid)
 		cleanup()
@@ -622,7 +633,7 @@ if job == 0:
 	if baa == 'SER' and faa in ('NLE'):
 		God.makeinput(pdbfile, outfile, baa, 'ABU', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ABU', 'NVA', resid)
 		cleanup()
@@ -634,7 +645,7 @@ if job == 0:
 	if baa == 'SER' and faa in ('ARG', 'LYS'):
 		God.makeinput(pdbfile, outfile, baa, 'ABU', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ABU', 'NVA', resid)
 		cleanup()
@@ -650,7 +661,7 @@ if job == 0:
 	if baa == 'SER' and faa in ('TYR', 'PHE', 'HIS', 'TRP'):
 		God.makeinput(pdbfile, outfile, baa, 'ABU', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ABU', 'NVA', resid)
 		cleanup()
@@ -660,13 +671,13 @@ if job == 0:
 		cleanup()
 		Run.mutate_con('/home/pietroa/Python/Store/', 'ANN', nwdir, resid)
 		os.chdir('/home/pietroa/Python')
-		God.makeinput('Curr_run.pdb', outfile, 'NVA', faa, resid)
+		God.makeinput('Curr_run.pdb', outfile, 'ANN', faa, resid)
 		cleanup()
 		Run.mutate_con('/home/pietroa/Python/Store/', faa, nwdir, resid)
 	if baa == 'SER' and faa == 'PRO':
 		God.makeinput(pdbfile, outfile, baa, 'QUA', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'QUA', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'QUA', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'QUA', 'PRO', resid)
 		cleanup()
@@ -674,7 +685,7 @@ if job == 0:
 	if baa == 'SER' and faa in ('MET'):
 		God.makeinput(pdbfile, outfile, baa, 'ABU', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ABU', 'HCY', resid)
 		cleanup()
@@ -686,7 +697,7 @@ if job == 0:
 	if baa == 'SER' and faa in ('NKI'):
 		God.makeinput(pdbfile, outfile, baa, 'ABU', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ABU', 'NVA', resid)
 		cleanup()
@@ -708,14 +719,14 @@ if job == 0:
 		cleanup()
 		Run.mutate_con('/home/pietroa/Python/Store/', 'NKI', nwdir, resid)
 	# CYSTEINE MUTATIONS
-	if baa == 'CYS' and faa in ('ALA', 'VAL', 'ABU', 'SER', 'THR', 'ASN', 'ASP', 'QUA'):
+	if baa == 'CYS' and faa in ('ALA', 'VAL', 'ABU', 'SER', 'THR', 'ASN', 'ASP', 'QUA', 'MCY'):
 		God.makeinput(pdbfile, outfile, baa, faa, resid)
 		cleanup()
-		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv)
+		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv, strip=toobig)
 	if baa == 'CYS' and faa in ('GLY'):
 		God.makeinput(pdbfile, outfile, baa, 'ALA', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ALA', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ALA', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ALA', faa, resid)
 		cleanup()
@@ -723,7 +734,7 @@ if job == 0:
 	if baa == 'CYS' and faa in ('LEU', 'GLU', 'GLN'):
 		God.makeinput(pdbfile, outfile, baa, 'ABU', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ABU', faa, resid)
 		cleanup()
@@ -731,7 +742,7 @@ if job == 0:
 	if baa == 'CYS' and faa in ('ILE'):
 		God.makeinput(pdbfile, outfile, baa, 'VAL', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'VAL', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'VAL', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'VAL', faa, resid)
 		cleanup()
@@ -739,7 +750,7 @@ if job == 0:
 	if baa == 'CYS' and faa == 'PRO':
 		God.makeinput(pdbfile, outfile, baa, 'QUA', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'QUA', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'QUA', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'QUA', 'PRO', resid)
 		cleanup()
@@ -747,7 +758,7 @@ if job == 0:
 	if baa == 'CYS' and faa in ('NLE'):
 		God.makeinput(pdbfile, outfile, baa, 'ABU', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ABU', 'NVA', resid)
 		cleanup()
@@ -759,7 +770,7 @@ if job == 0:
 	if baa == 'CYS' and faa in ('ARG', 'LYS'):
 		God.makeinput(pdbfile, outfile, baa, 'ABU', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ABU', 'NVA', resid)
 		cleanup()
@@ -775,7 +786,7 @@ if job == 0:
 	if baa == 'CYS' and faa in ('MET'):
 		God.makeinput(pdbfile, outfile, baa, 'ABU', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ABU', 'HCY', resid)
 		cleanup()
@@ -787,7 +798,7 @@ if job == 0:
 	if baa == 'CYS' and faa in ('TYR', 'PHE', 'HIS', 'TRP'):
 		God.makeinput(pdbfile, outfile, baa, 'ABU', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ABU', 'NVA', resid)
 		cleanup()
@@ -797,13 +808,13 @@ if job == 0:
 		cleanup()
 		Run.mutate_con('/home/pietroa/Python/Store/', 'ANN', nwdir, resid)
 		os.chdir('/home/pietroa/Python')
-		God.makeinput('Curr_run.pdb', outfile, 'NVA', faa, resid)
+		God.makeinput('Curr_run.pdb', outfile, 'ANN', faa, resid)
 		cleanup()
 		Run.mutate_con('/home/pietroa/Python/Store/', faa, nwdir, resid)
 	if baa == 'SER' and faa in ('NKI'):
 		God.makeinput(pdbfile, outfile, baa, 'ABU', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ABU', 'NVA', resid)
 		cleanup()
@@ -828,11 +839,11 @@ if job == 0:
 	if baa == 'THR' and faa in ('ALA', 'VAL', 'ILE', 'LEU', 'SER', 'CYS', 'NVA', 'QUA', 'ASN', 'ASP', 'GLN', 'GLU', 'HCY'):
 		God.makeinput(pdbfile, outfile, baa, faa, resid)
 		cleanup()
-		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv)
+		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv, strip=toobig)
 	if baa == 'THR' and faa in ('GLY'):
 		God.makeinput(pdbfile, outfile, baa, 'ALA', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ALA', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ALA', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ALA', faa, resid)
 		cleanup()
@@ -840,7 +851,7 @@ if job == 0:
 	if baa == 'THR' and faa in ('NLE'):
 		God.makeinput(pdbfile, outfile, baa, 'NVA', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NVA', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NVA', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'NVA', faa, resid)
 		cleanup()
@@ -848,7 +859,7 @@ if job == 0:
 	if baa == 'THR' and faa in ('ARG', 'LYS'):
 		God.makeinput(pdbfile, outfile, baa, 'NVA', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NVA', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NVA', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'NVA', 'NLE', resid)
 		cleanup()
@@ -860,7 +871,7 @@ if job == 0:
 	if baa == 'THR' and faa in ('PHE', 'TRP', 'HIS', 'TYR'):
 		God.makeinput(pdbfile, outfile, baa, 'NVA', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NVA', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NVA', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'NVA', 'ANN', resid)
 		cleanup()
@@ -872,7 +883,7 @@ if job == 0:
 	if baa == 'THR' and faa == 'MET':
 		God.makeinput(pdbfile, outfile, baa, 'HCY', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'HCY', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'HCY', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'HCY', 'MET', resid)
 		cleanup()
@@ -880,7 +891,7 @@ if job == 0:
 	if baa == 'THR' and faa == 'PRO':
 		God.makeinput(pdbfile, outfile, baa, 'QUA', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'QUA', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'QUA', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'QUA', 'PRO', resid)
 		cleanup()
@@ -888,7 +899,7 @@ if job == 0:
 	if baa == 'THR' and faa in ('NKI'):
 		God.makeinput(pdbfile, outfile, baa, 'NVA', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NVA', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NVA', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'NVA', 'NLE', resid)
 		cleanup()
@@ -909,11 +920,11 @@ if job == 0:
 	if baa == 'ASP' and faa in ('ALA', 'VAL', 'ABU', 'SER', 'CYS', 'THR', 'ASN', 'QUA', 'GLU'):
 		God.makeinput(pdbfile, outfile, baa, faa, resid)
 		cleanup()
-		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv)
+		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv, strip=toobig)
 	if baa == 'ASP' and faa in ('PRO'):
 		God.makeinput(pdbfile, outfile, baa, 'QUA', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'QUA', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'QUA', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'QUA', faa, resid)
 		cleanup()
@@ -921,7 +932,7 @@ if job == 0:
 	if baa == 'ASP' and faa in ('GLY'):
 		God.makeinput(pdbfile, outfile, baa, 'ALA', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ALA', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ALA', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ALA', faa, resid)
 		cleanup()
@@ -929,7 +940,7 @@ if job == 0:
 	if baa == 'ASP' and faa in ('LEU', 'GLN'):
 		God.makeinput(pdbfile, outfile, baa, 'ABU', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ABU', faa, resid)
 		cleanup()
@@ -937,7 +948,7 @@ if job == 0:
 	if baa == 'ASP' and faa in ('NKI'):
 		God.makeinput(pdbfile, outfile, baa, 'ABU', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ABU', 'NVA', resid)
 		cleanup()
@@ -961,7 +972,7 @@ if job == 0:
 	if baa == 'ASP' and faa in ('NLE'):
 		God.makeinput(pdbfile, outfile, baa, 'ABU', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ABU', 'NVA', resid)
 		cleanup()
@@ -973,7 +984,7 @@ if job == 0:
 	if baa == 'ASP' and faa in ('ARG', 'LYS'):
 		God.makeinput(pdbfile, outfile, baa, 'ABU', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ABU', 'NVA', resid)
 		cleanup()
@@ -989,7 +1000,7 @@ if job == 0:
 	if baa == 'ASP' and faa in ('MET'):
 		God.makeinput(pdbfile, outfile, baa, 'ABU', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ABU', 'HCY', resid)
 		cleanup()
@@ -1001,7 +1012,7 @@ if job == 0:
 	if baa == 'ASP' and faa in ('PHE', 'TYR', 'HIS', 'TRP'):
 		God.makeinput(pdbfile, outfile, baa, 'ABU', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ABU', 'NVA', resid)
 		cleanup()
@@ -1017,7 +1028,7 @@ if job == 0:
 	if baa == 'ASP' and faa in ('ILE'):
 		God.makeinput(pdbfile, outfile, baa, 'VAL', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'VAL', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'VAL', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'VAL', faa, resid)
 		cleanup()
@@ -1026,11 +1037,11 @@ if job == 0:
 	if baa == 'ASN' and faa in ('ALA', 'VAL', 'ABU', 'SER', 'CYS', 'THR', 'ASP', 'QUA', 'GLN'):
 		God.makeinput(pdbfile, outfile, baa, faa, resid)
 		cleanup()
-		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv)
+		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv, strip=toobig)
 	if baa == 'ASN' and faa in ('GLY'):
 		God.makeinput(pdbfile, outfile, baa, 'ALA', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ALA', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ALA', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ALA', faa, resid)
 		cleanup()
@@ -1038,7 +1049,7 @@ if job == 0:
 	if baa == 'ASN' and faa in ('PRO'):
 		God.makeinput(pdbfile, outfile, baa, 'QUA', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'QUA', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'QUA', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'QUA', faa, resid)
 		cleanup()
@@ -1046,7 +1057,7 @@ if job == 0:
 	if baa == 'ASN' and faa in ('ILE'):
 		God.makeinput(pdbfile, outfile, baa, 'VAL', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'VAL', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'VAL', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'VAL', faa, resid)
 		cleanup()
@@ -1054,7 +1065,7 @@ if job == 0:
 	if baa == 'ASN' and faa in ('LEU', 'GLU'):
 		God.makeinput(pdbfile, outfile, baa, 'ABU', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ABU', faa, resid)
 		cleanup()
@@ -1062,7 +1073,7 @@ if job == 0:
 	if baa == 'ASN' and faa in ('NLE'):
 		God.makeinput(pdbfile, outfile, baa, 'ABU', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ABU', 'NVA', resid)
 		cleanup()
@@ -1074,7 +1085,7 @@ if job == 0:
 	if baa == 'ASN' and faa in ('ARG', 'LYS'):
 		God.makeinput(pdbfile, outfile, baa, 'ABU', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ABU', 'NVA', resid)
 		cleanup()
@@ -1090,7 +1101,7 @@ if job == 0:
 	if baa == 'ASN' and faa in ('MET'):
 		God.makeinput(pdbfile, outfile, baa, 'ABU', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ABU', 'HCY', resid)
 		cleanup()
@@ -1102,7 +1113,7 @@ if job == 0:
 	if baa == 'ASN' and faa in ('PHE', 'TYR', 'HIS', 'TRP'):
 		God.makeinput(pdbfile, outfile, baa, 'ABU', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ABU', 'NVA', resid)
 		cleanup()
@@ -1118,7 +1129,7 @@ if job == 0:
 	if baa == 'ASN' and faa in ('NKI'):
 		God.makeinput(pdbfile, outfile, baa, 'ABU', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ABU', 'NVA', resid)
 		cleanup()
@@ -1143,11 +1154,11 @@ if job == 0:
 	if baa == 'MET' and faa in ('NVA', 'ILE', 'LEU', 'HCY', 'NLE'):
 		God.makeinput(pdbfile, outfile, baa, faa, resid)
 		cleanup()
-		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv)
+		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv, strip=toobig)
 	if baa == 'MET' and faa in ('ALA', 'SER', 'CYS', 'ASP', 'ASN'):
 		God.makeinput(pdbfile, outfile, baa, 'HCY', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'HCY', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'HCY', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'HCY', 'ABU', resid)
 		cleanup()
@@ -1159,7 +1170,7 @@ if job == 0:
 	if baa == 'MET' and faa in ('PHE', 'HIS', 'TRP', 'TYR'):
 		God.makeinput(pdbfile, outfile, baa, 'NVA', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NVA', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NVA', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'NVA', 'ANN', resid)
 		cleanup()
@@ -1171,7 +1182,7 @@ if job == 0:
 	if baa == 'MET' and faa in ('PRO'):
 		God.makeinput(pdbfile, outfile, baa, 'HCY', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'HCY', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'HCY', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'HCY', 'ABU', resid)
 		cleanup()
@@ -1187,7 +1198,7 @@ if job == 0:
 	if baa == 'MET' and faa == 'GLY':
 		God.makeinput(pdbfile, outfile, baa, 'HCY', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'HCY', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'HCY', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'HCY', 'ABU', resid)
 		cleanup()
@@ -1203,7 +1214,7 @@ if job == 0:
 	if baa == 'MET' and faa in ('ARG', 'LYS'):
 		God.makeinput(pdbfile, outfile, baa, 'NLE', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NLE', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NLE', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'NLE', faa, resid)
 		cleanup()
@@ -1211,7 +1222,7 @@ if job == 0:
 	if baa == 'MET' and faa in ('VAL', 'THR'):
 		God.makeinput(pdbfile, outfile, baa, 'NVA', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NVA', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NVA', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'NVA', faa, resid)
 		cleanup()
@@ -1219,7 +1230,7 @@ if job == 0:
 	if baa == 'MET' and faa == 'ABU':
 		God.makeinput(pdbfile, outfile, baa, 'HCY', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'HCY', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'HCY', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'HCY', 'ABU', resid)
 		cleanup()
@@ -1227,7 +1238,7 @@ if job == 0:
 	if baa == 'MET' and faa in ('NKI'):
 		God.makeinput(pdbfile, outfile, baa, 'NVA', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NVA', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NVA', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'NVA', 'NLE', resid)
 		cleanup()
@@ -1248,11 +1259,11 @@ if job == 0:
 	if baa == 'GLU' and faa in ('ABU', 'VAL', 'ILE', 'LEU', 'THR', 'ASP', 'NVA', 'GLN'):
 		God.makeinput(pdbfile, outfile, baa, faa, resid)
 		cleanup()
-		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv)
+		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv, strip=toobig)
 	if baa == 'GLU' and faa in ('ALA', 'CYS', 'SER', 'ASN'):
 		God.makeinput(pdbfile, outfile, baa, 'ABU', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ABU', faa, resid)
 		cleanup()
@@ -1260,7 +1271,7 @@ if job == 0:
 	if baa == 'GLU' and faa in ('MET'):
 		God.makeinput(pdbfile, outfile, baa, 'NVA', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NVA', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NVA', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'NVA', 'MET', resid)
 		cleanup()
@@ -1268,7 +1279,7 @@ if job == 0:
 	if baa == 'GLU' and faa == 'PRO':
 		God.makeinput(pdbfile, outfile, baa, 'ABU', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ABU', 'QUA', resid)
 		cleanup()
@@ -1280,7 +1291,7 @@ if job == 0:
 	if baa == 'GLU' and faa == 'GLY':
 		God.makeinput(pdbfile, outfile, baa, 'ABU', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ABU', 'ALA', resid)
 		cleanup()
@@ -1292,7 +1303,7 @@ if job == 0:
 	if baa == 'GLU' and faa in ('PHE', 'HIS', 'TYR', 'TRP'):
 		God.makeinput(pdbfile, outfile, baa, 'NVA', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NVA', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NVA', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'NVA', 'ANN', resid)
 		cleanup()
@@ -1304,7 +1315,7 @@ if job == 0:
 	if baa == 'GLU' and faa in ('NLE'):
 		God.makeinput(pdbfile, outfile, baa, 'NVA', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NVA', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NVA', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'NVA', faa, resid)
 		cleanup()
@@ -1312,7 +1323,7 @@ if job == 0:
 	if baa == 'GLU' and faa in ('ARG', 'LYS'):
 		God.makeinput(pdbfile, outfile, baa, 'NVA', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NVA', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NVA', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'NVA', 'NLE', resid)
 		cleanup()
@@ -1324,7 +1335,7 @@ if job == 0:
 	if baa == 'GLU' and faa in ('NKI'):
 		God.makeinput(pdbfile, outfile, baa, 'NVA', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NVA', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NVA', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'NVA', 'NLE', resid)
 		cleanup()
@@ -1345,11 +1356,11 @@ if job == 0:
 	if baa == 'GLN' and faa in ('ABU', 'VAL', 'ILE', 'LEU', 'THR', 'ASN', 'NVA', 'GLU'):
 		God.makeinput(pdbfile, outfile, baa, faa, resid)
 		cleanup()
-		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv)
+		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv, strip=toobig)
 	if baa == 'GLN' and faa in ('ALA', 'CYS', 'SER', 'ASP'):
 		God.makeinput(pdbfile, outfile, baa, 'ABU', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ABU', faa, resid)
 		cleanup()
@@ -1357,7 +1368,7 @@ if job == 0:
 	if baa == 'GLN' and faa in ('MET'):
 		God.makeinput(pdbfile, outfile, baa, 'NVA', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NVA', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NVA', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'NVA', 'MET', resid)
 		cleanup()
@@ -1365,7 +1376,7 @@ if job == 0:
 	if baa == 'GLN' and faa == 'PRO':
 		God.makeinput(pdbfile, outfile, baa, 'ABU', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ABU', 'QUA', resid)
 		cleanup()
@@ -1377,7 +1388,7 @@ if job == 0:
 	if baa == 'GLN' and faa == 'GLY':
 		God.makeinput(pdbfile, outfile, baa, 'ABU', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ABU', 'ALA', resid)
 		cleanup()
@@ -1389,7 +1400,7 @@ if job == 0:
 	if baa == 'GLN' and faa in ('PHE', 'HIS', 'TYR', 'TRP'):
 		God.makeinput(pdbfile, outfile, baa, 'NVA', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NVA', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NVA', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'NVA', 'ANN', resid)
 		cleanup()
@@ -1401,7 +1412,7 @@ if job == 0:
 	if baa == 'GLN' and faa in ('NLE'):
 		God.makeinput(pdbfile, outfile, baa, 'NVA', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NVA', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NVA', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'NVA', faa, resid)
 		cleanup()
@@ -1409,7 +1420,7 @@ if job == 0:
 	if baa == 'GLN' and faa in ('ARG', 'LYS'):
 		God.makeinput(pdbfile, outfile, baa, 'NVA', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NVA', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NVA', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'NVA', 'NLE', resid)
 		cleanup()
@@ -1421,7 +1432,7 @@ if job == 0:
 	if baa == 'GLN' and faa in ('NKI'):
 		God.makeinput(pdbfile, outfile, baa, 'NVA', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NVA', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NVA', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'NVA', 'NLE', resid)
 		cleanup()
@@ -1442,11 +1453,11 @@ if job == 0:
 	if baa == 'PHE' and faa in ('ANN', 'TYR', 'HIS', 'TRP'):
 		God.makeinput(pdbfile, outfile, baa, faa, resid)
 		cleanup()
-		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv)
+		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv, strip=toobig)
 	if baa == 'PHE' and faa == 'PRO':
 		God.makeinput(pdbfile, outfile, baa, 'ANN', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ANN', 'NVA', resid)
 		cleanup()
@@ -1466,7 +1477,7 @@ if job == 0:
 	if baa == 'PHE' and faa in ('ILE', 'NVA', 'LEU'):
 		God.makeinput(pdbfile, outfile, baa, 'ANN', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ANN', 'NVA', resid)
 		cleanup()
@@ -1474,7 +1485,7 @@ if job == 0:
 	if baa == 'PHE' and faa == 'GLY':
 		God.makeinput(pdbfile, outfile, baa, 'ANN', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ANN', 'NVA', resid)
 		cleanup()
@@ -1491,10 +1502,10 @@ if job == 0:
 		God.makeinput('Curr_run.pdb', outfile, 'ALA', faa, resid)
 		cleanup()
 		Run.mutate_con('/home/pietroa/Python/Store/', faa, nwdir, resid)
-	if baa == 'PHE' and faa in ('VAL', 'THR', 'GLU', 'GLN', 'MET'):
+	if baa == 'PHE' and faa in ('CBA', 'VAL', 'THR', 'GLU', 'GLN', 'MET'):
 		God.makeinput(pdbfile, outfile, baa, 'ANN', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ANN', 'NVA', resid)
 		cleanup()
@@ -1506,7 +1517,7 @@ if job == 0:
 	if baa == 'PHE' and faa in ('NLE'):
 		God.makeinput(pdbfile, outfile, baa, 'ANN', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ANN', faa, resid)
 		cleanup()
@@ -1514,7 +1525,7 @@ if job == 0:
 	if baa == 'PHE' and faa in ('LYS', 'ARG'):
 		God.makeinput(pdbfile, outfile, baa, 'ANN', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ANN', 'NLE', resid)
 		cleanup()
@@ -1526,7 +1537,7 @@ if job == 0:
 	if baa == 'PHE' and faa in ('ALA', 'SER', 'CYS', 'ASP', 'ASN'):
 		God.makeinput(pdbfile, outfile, baa, 'ANN', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ANN', 'NVA', resid)
 		cleanup()
@@ -1542,7 +1553,7 @@ if job == 0:
 	if baa == 'PHE' and faa in ('NKI'):
 		God.makeinput(pdbfile, outfile, baa, 'ANN', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ANN', 'NLE', resid)
 		cleanup()
@@ -1563,7 +1574,7 @@ if job == 0:
 	if baa == 'PRO' and faa in ('ALA', 'VAL', 'ABU', 'CYS', 'SER', 'THR', 'ASN', 'ASP'):
 		God.makeinput(pdbfile, outfile, baa, 'QUA', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'QUA', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'QUA', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'QUA', faa, resid)
 		cleanup()
@@ -1571,7 +1582,7 @@ if job == 0:
 	if baa == 'PRO' and faa in ('MET'):
 		God.makeinput(pdbfile, outfile, baa, 'QUA', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'QUA', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'QUA', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'QUA', 'ABU', resid)
 		cleanup()
@@ -1587,7 +1598,7 @@ if job == 0:
 	if baa == 'PRO' and faa in ('NLE'):
 		God.makeinput(pdbfile, outfile, baa, 'QUA', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'QUA', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'QUA', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'QUA', 'ABU', resid)
 		cleanup()
@@ -1603,7 +1614,7 @@ if job == 0:
 	if baa == 'PRO' and faa in ('LYS', 'ARG'):
 		God.makeinput(pdbfile, outfile, baa, 'QUA', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'QUA', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'QUA', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'QUA', 'ABU', resid)
 		cleanup()
@@ -1623,7 +1634,7 @@ if job == 0:
 	if baa == 'PRO' and faa in ('PHE', 'TYR', 'TRP', 'HIS'):
 		God.makeinput(pdbfile, outfile, baa, 'QUA', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'QUA', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'QUA', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'QUA', 'ABU', resid)
 		cleanup()
@@ -1643,7 +1654,7 @@ if job == 0:
 	if baa == 'PRO' and faa in ('LEU', 'GLU', 'GLN'):
 		God.makeinput(pdbfile, outfile, baa, 'QUA', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'QUA', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'QUA', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'QUA', 'ABU', resid)
 		cleanup()
@@ -1655,7 +1666,7 @@ if job == 0:
 	if baa == 'PRO' and faa in ('ILE'):
 		God.makeinput(pdbfile, outfile, baa, 'QUA', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'QUA', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'QUA', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'QUA', 'VAL', resid)
 		cleanup()
@@ -1667,7 +1678,7 @@ if job == 0:
 	if baa == 'PRO' and faa in ('GLY'):
 		God.makeinput(pdbfile, outfile, baa, 'QUA', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'QUA', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'QUA', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'QUA', 'ALA', resid)
 		cleanup()
@@ -1679,7 +1690,7 @@ if job == 0:
 	if baa == 'PRO' and faa in ('NKI'):
 		God.makeinput(pdbfile, outfile, baa, 'QUA', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'QUA', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'QUA', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'QUA', 'ALA', resid)
 		cleanup()
@@ -1712,11 +1723,11 @@ if job == 0:
 	if baa == 'HIS' and faa in ('ANN', 'TYR', 'PHE', 'TRP'):
 		God.makeinput(pdbfile, outfile, baa, faa, resid)
 		cleanup()
-		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv)
+		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv, strip=toobig)
 	if baa == 'HIS' and faa == 'PRO':
 		God.makeinput(pdbfile, outfile, baa, 'ANN', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ANN', 'NVA', resid)
 		cleanup()
@@ -1736,7 +1747,7 @@ if job == 0:
 	if baa == 'HIS' and faa in ('ILE', 'NVA', 'LEU'):
 		God.makeinput(pdbfile, outfile, baa, 'ANN', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ANN', 'NVA', resid)
 		cleanup()
@@ -1744,7 +1755,7 @@ if job == 0:
 	if baa == 'HIS' and faa == 'GLY':
 		God.makeinput(pdbfile, outfile, baa, 'ANN', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ANN', 'NVA', resid)
 		cleanup()
@@ -1764,7 +1775,7 @@ if job == 0:
 	if baa == 'HIS' and faa in ('VAL', 'THR', 'GLU', 'GLN', 'MET'):
 		God.makeinput(pdbfile, outfile, baa, 'ANN', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ANN', 'NVA', resid)
 		cleanup()
@@ -1776,7 +1787,7 @@ if job == 0:
 	if baa == 'HIS' and faa in ('NLE'):
 		God.makeinput(pdbfile, outfile, baa, 'ANN', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ANN', faa, resid)
 		cleanup()
@@ -1784,7 +1795,7 @@ if job == 0:
 	if baa == 'HIS' and faa in ('LYS', 'ARG'):
 		God.makeinput(pdbfile, outfile, baa, 'ANN', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ANN', 'NLE', resid)
 		cleanup()
@@ -1796,7 +1807,7 @@ if job == 0:
 	if baa == 'HIS' and faa in ('ALA', 'SER', 'CYS', 'ASP', 'ASN'):
 		God.makeinput(pdbfile, outfile, baa, 'ANN', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ANN', 'NVA', resid)
 		cleanup()
@@ -1812,7 +1823,7 @@ if job == 0:
 	if baa == 'HIS' and faa in ('NKI'):
 		God.makeinput(pdbfile, outfile, baa, 'ANN', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ANN', 'NLE', resid)
 		cleanup()
@@ -1833,11 +1844,11 @@ if job == 0:
 	if baa == 'TRP' and faa in ('ANN', 'PHE', 'HIS', 'TYR'):
 		God.makeinput(pdbfile, outfile, baa, faa, resid)
 		cleanup()
-		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv)
+		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv, strip=toobig)
 	if baa == 'TRP' and faa == 'PRO':
 		God.makeinput(pdbfile, outfile, baa, 'ANN', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ANN', 'NVA', resid)
 		cleanup()
@@ -1857,7 +1868,7 @@ if job == 0:
 	if baa == 'TRP' and faa in ('ILE', 'NVA', 'LEU'):
 		God.makeinput(pdbfile, outfile, baa, 'ANN', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ANN', 'NVA', resid)
 		cleanup()
@@ -1865,7 +1876,7 @@ if job == 0:
 	if baa == 'TRP' and faa == 'GLY':
 		God.makeinput(pdbfile, outfile, baa, 'ANN', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ANN', 'NVA', resid)
 		cleanup()
@@ -1885,7 +1896,7 @@ if job == 0:
 	if baa == 'TRP' and faa in ('VAL', 'THR', 'GLU', 'GLN', 'MET'):
 		God.makeinput(pdbfile, outfile, baa, 'ANN', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ANN', 'NVA', resid)
 		cleanup()
@@ -1897,7 +1908,7 @@ if job == 0:
 	if baa == 'TRP' and faa in ('NLE'):
 		God.makeinput(pdbfile, outfile, baa, 'ANN', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ANN', faa, resid)
 		cleanup()
@@ -1905,7 +1916,7 @@ if job == 0:
 	if baa == 'TRP' and faa in ('LYS', 'ARG'):
 		God.makeinput(pdbfile, outfile, baa, 'ANN', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ANN', 'NLE', resid)
 		cleanup()
@@ -1917,7 +1928,7 @@ if job == 0:
 	if baa == 'TRP' and faa in ('ALA', 'SER', 'CYS', 'ASP', 'ASN'):
 		God.makeinput(pdbfile, outfile, baa, 'ANN', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ANN', 'NVA', resid)
 		cleanup()
@@ -1933,7 +1944,7 @@ if job == 0:
 	if baa == 'TRP' and faa in ('NKI'):
 		God.makeinput(pdbfile, outfile, baa, 'ANN', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ANN', 'NLE', resid)
 		cleanup()
@@ -1954,11 +1965,11 @@ if job == 0:
 	if baa == 'TYR' and faa in ('ANN', 'PHE', 'HIS', 'TRP'):
 		God.makeinput(pdbfile, outfile, baa, faa, resid)
 		cleanup()
-		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv)
+		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv, strip=toobig)
 	if baa == 'TYR' and faa == 'PRO':
 		God.makeinput(pdbfile, outfile, baa, 'ANN', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ANN', 'NVA', resid)
 		cleanup()
@@ -1978,7 +1989,7 @@ if job == 0:
 	if baa == 'TYR' and faa in ('ILE', 'NVA', 'LEU'):
 		God.makeinput(pdbfile, outfile, baa, 'ANN', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ANN', faa, resid)
 		cleanup()
@@ -1986,7 +1997,7 @@ if job == 0:
 	if baa == 'TYR' and faa == 'GLY':
 		God.makeinput(pdbfile, outfile, baa, 'ANN', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ANN', 'NVA', resid)
 		cleanup()
@@ -2006,7 +2017,7 @@ if job == 0:
 	if baa == 'TYR' and faa in ('VAL', 'THR', 'GLU', 'GLN', 'MET'):
 		God.makeinput(pdbfile, outfile, baa, 'ANN', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ANN', 'NVA', resid)
 		cleanup()
@@ -2018,7 +2029,7 @@ if job == 0:
 	if baa == 'TYR' and faa in ('NLE'):
 		God.makeinput(pdbfile, outfile, baa, 'ANN', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ANN', faa, resid)
 		cleanup()
@@ -2026,7 +2037,7 @@ if job == 0:
 	if baa == 'TYR' and faa in ('LYS', 'ARG'):
 		God.makeinput(pdbfile, outfile, baa, 'ANN', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ANN', 'NLE', resid)
 		cleanup()
@@ -2038,7 +2049,7 @@ if job == 0:
 	if baa == 'TYR' and faa in ('ALA', 'SER', 'CYS', 'ASP', 'ASN'):
 		God.makeinput(pdbfile, outfile, baa, 'ANN', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ANN', 'NVA', resid)
 		cleanup()
@@ -2054,7 +2065,7 @@ if job == 0:
 	if baa == 'TYR' and faa in ('NKI'):
 		God.makeinput(pdbfile, outfile, baa, 'ANN', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ANN', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ANN', 'NLE', resid)
 		cleanup()
@@ -2075,21 +2086,21 @@ if job == 0:
 	if baa == 'QUA' and faa in ('PRO', 'ALA', 'ASN', 'ASP', 'VAL', 'ABU', 'SER', 'CYS', 'THR'):
 		God.makeinput(pdbfile, outfile, baa, faa, resid)
 		cleanup()
-		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv)
+		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv, strip=toobig)
 	# NORVALINE MUTATIONS
-	if baa == 'NVA' and faa in ('ABU', 'ANN', 'NLE', 'MET', 'GLU', 'GLN', 'THR', 'VAL'):
+	if baa == 'NVA' and faa in ('ABU', 'ANN', 'CBA', 'NLE', 'MET', 'GLU', 'GLN', 'THR', 'VAL'):
 		God.makeinput(pdbfile, outfile, baa, faa, resid)
 		cleanup()
-		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv)
+		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv, strip=toobig)
 	# LYSINE MUTATIONS
 	if baa == 'LYS' and faa in ('NLE', 'ARG'):
 		God.makeinput(pdbfile, outfile, baa, faa, resid)
 		cleanup()
-		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv)
+		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv, strip=toobig)
 	if baa == 'LYS' and faa in ('LEU', 'ILE'):
 		God.makeinput(pdbfile, outfile, baa, 'NLE', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NLE', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NLE', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'NLE', faa, resid)
 		cleanup()
@@ -2097,7 +2108,7 @@ if job == 0:
 	if baa == 'LYS' and faa in ('PHE', 'TYR', 'TRP', 'HIS'):
 		God.makeinput(pdbfile, outfile, baa, 'NLE', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NLE', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NLE', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'NLE', 'ANN', resid)
 		cleanup()
@@ -2109,7 +2120,7 @@ if job == 0:
 	if baa == 'LYS' and faa in ('VAL', 'THR', 'GLU', 'GLN', 'MET'):
 		God.makeinput(pdbfile, outfile, baa, 'NLE', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NLE', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NLE', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'NLE', 'NVA', resid)
 		cleanup()
@@ -2121,7 +2132,7 @@ if job == 0:
 	if baa == 'LYS' and faa in ('PRO'):
 		God.makeinput(pdbfile, outfile, baa, 'NLE', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NLE', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NLE', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'NLE', 'NVA', resid)
 		cleanup()
@@ -2141,7 +2152,7 @@ if job == 0:
 	if baa == 'LYS' and faa in ('GLY'):
 		God.makeinput(pdbfile, outfile, baa, 'NLE', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NLE', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NLE', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'NLE', 'NVA', resid)
 		cleanup()
@@ -2161,7 +2172,7 @@ if job == 0:
 	if baa == 'LYS' and faa in ('ALA', 'SER', 'CYS', 'ASP', 'ASN'):
 		God.makeinput(pdbfile, outfile, baa, 'NLE', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NLE', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NLE', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'NLE', 'NVA', resid)
 		cleanup()
@@ -2177,7 +2188,7 @@ if job == 0:
 	if baa == 'LYS' and faa in ('NKI'):
 		God.makeinput(pdbfile, outfile, baa, 'NLE', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NLE', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NLE', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'NLE', 'NMA', resid)
 		cleanup()
@@ -2194,11 +2205,11 @@ if job == 0:
 	if baa == 'ARG' and faa in ('NLE', 'LYS'):
 		God.makeinput(pdbfile, outfile, baa, faa, resid)
 		cleanup()
-		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv)
+		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv, strip=toobig)
 	if baa == 'ARG' and faa in ('LEU', 'ILE'):
 		God.makeinput(pdbfile, outfile, baa, 'NLE', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NLE', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NLE', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'NLE', faa, resid)
 		cleanup()
@@ -2206,7 +2217,7 @@ if job == 0:
 	if baa == 'ARG' and faa in ('PHE', 'TYR', 'TRP', 'HIS'):
 		God.makeinput(pdbfile, outfile, baa, 'NLE', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NLE', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NLE', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'NLE', 'ANN', resid)
 		cleanup()
@@ -2218,7 +2229,7 @@ if job == 0:
 	if baa == 'ARG' and faa in ('VAL', 'THR', 'GLU', 'GLN', 'MET'):
 		God.makeinput(pdbfile, outfile, baa, 'NLE', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NLE', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NLE', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'NLE', 'NVA', resid)
 		cleanup()
@@ -2230,7 +2241,7 @@ if job == 0:
 	if baa == 'ARG' and faa in ('PRO'):
 		God.makeinput(pdbfile, outfile, baa, 'NLE', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NLE', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NLE', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'NLE', 'NVA', resid)
 		cleanup()
@@ -2250,7 +2261,7 @@ if job == 0:
 	if baa == 'ARG' and faa in ('GLY'):
 		God.makeinput(pdbfile, outfile, baa, 'NLE', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NLE', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NLE', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'NLE', 'NVA', resid)
 		cleanup()
@@ -2270,7 +2281,7 @@ if job == 0:
 	if baa == 'ARG' and faa in ('ALA', 'SER', 'CYS', 'ASP', 'ASN'):
 		God.makeinput(pdbfile, outfile, baa, 'NLE', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NLE', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NLE', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'NLE', 'NVA', resid)
 		cleanup()
@@ -2286,7 +2297,7 @@ if job == 0:
 	if baa == 'ARG' and faa in ('NKI'):
 		God.makeinput(pdbfile, outfile, baa, 'NLE', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NLE', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NLE', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'NLE', 'NMA', resid)
 		cleanup()
@@ -2299,30 +2310,35 @@ if job == 0:
 		God.makeinput('Curr_run.pdb', outfile, 'NER', 'NKI', resid)
 		cleanup()
 		Run.mutate_con('/home/pietroa/Python/Store/', 'NKI', nwdir, resid)
+	# DISULFIDE CYSTEINE MUTATIONS
+	if baa == 'CYX' and faa in ('HCX', 'MCX') :
+		God.makeinput(pdbfile, outfile, baa, faa, resid, resid2=resid2)
+		cleanup()
+		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv, strip=toobig)
 	# NORLEUCINE MUTATIONS
 	if baa == 'NLE' and faa in ('ARG', 'LYS', 'NVA', 'NMA', 'ILE', 'LEU') :
 		God.makeinput(pdbfile, outfile, baa, faa, resid)
 		cleanup()
-		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv)
+		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv, strip=toobig)
 	# NORMAURINE MUTATIONS
 	if baa == 'NMA' and faa in ('NER') :
 		God.makeinput(pdbfile, outfile, baa, faa, resid)
 		cleanup()
-		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv)
+		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv, strip=toobig)
 	# NORERITHRINE MUTATIONS
 	if baa == 'NER' and faa in ('NKI') :
 		God.makeinput(pdbfile, outfile, baa, faa, resid)
 		cleanup()
-		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv)
+		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv, strip=toobig)
 	# NORANNULINE MUTATIONS
 	if baa == 'CBA' and faa == 'NVA':
 		God.makeinput(pdbfile, outfile, baa, faa, resid)
 		cleanup()
-		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv)
+		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv, strip=toobig)
 	if baa == 'CBA' and faa == 'ALA':
 		God.makeinput(pdbfile, outfile, baa, 'NVA', resid)
 		cleanup()
-		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NVA', resid, wkdir=wkdir, solv=solv, fin=faa)
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NVA', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'NVA', 'ABU', resid)
 		cleanup()
@@ -2331,23 +2347,47 @@ if job == 0:
 		God.makeinput('Curr_run.pdb', outfile, 'ABU', 'ALA', resid)
 		cleanup()
 		Run.mutate_con('/home/pietroa/Python/Store/', 'ALA', nwdir, resid)
+	if baa == 'CBA' and faa == 'TRP':
+		God.makeinput(pdbfile, outfile, baa, 'NVA', resid)
+		cleanup()
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NVA', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
+		os.chdir('/home/pietroa/Python')
+		God.makeinput('Curr_run.pdb', outfile, 'NVA', 'ANN', resid)
+		cleanup()
+		Run.mutate_con('/home/pietroa/Python/Store/', 'ANN', nwdir, resid)
+		os.chdir('/home/pietroa/Python')
+		God.makeinput('Curr_run.pdb', outfile, 'ANN', faa, resid)
+		cleanup()
+		Run.mutate_con('/home/pietroa/Python/Store/', faa, nwdir, resid)
+	if baa == 'CBA' and faa == 'ARG':
+		God.makeinput(pdbfile, outfile, baa, 'NVA', resid)
+		cleanup()
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'NVA', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa)
+		os.chdir('/home/pietroa/Python')
+		God.makeinput('Curr_run.pdb', outfile, 'NVA', 'NLE', resid)
+		cleanup()
+		Run.mutate_con('/home/pietroa/Python/Store/', 'NLE', nwdir, resid)
+		os.chdir('/home/pietroa/Python')
+		God.makeinput('Curr_run.pdb', outfile, 'NLE', 'ARG', resid)
+		cleanup()
+		Run.mutate_con('/home/pietroa/Python/Store/', 'ARG', nwdir, resid)
 	# ANNULINE MUTATIONS
 	if baa == 'ANN' and faa in ('NVA', 'PHE', 'TRP', 'TYR', 'HIS', 'ILE', 'LEU', 'NLE'):
 		God.makeinput(pdbfile, outfile, baa, faa, resid)
 		cleanup()
-		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv)
+		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv, strip=toobig)
 	# HOMOCYSTEINE MUTATIONS
 	if baa == 'HCY' and faa == 'MET':
 		God.makeinput(pdbfile, outfile, baa, faa, resid)
 		cleanup()
-		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv)
+		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv, strip=toobig)
 	if baa == 'HCY' and faa == 'TST':
 		print "Works as it should"
 	# AMINOBUTYRIC ACID MUTATIONS
 	if baa == 'ABU' and faa in ('ALA', 'CYS', 'GLU', 'GLN', 'HCY', 'ILE', 'LEU', 'NVA', 'QUA', 'SER', 'ASP', 'ASN'):
 		God.makeinput(pdbfile, outfile, baa, faa, resid)
 		cleanup()
-		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv)
+		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv, strip=toobig)
 if job == '1':
 	struct = PDBHandler.readpdb(pdbfile)
 	box = struct.other_dict['Cryst1'].box_side()
