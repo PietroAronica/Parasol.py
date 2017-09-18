@@ -8,9 +8,11 @@ def run(cmd, output='leap.log'):
 	cmdline = "tleap -f %s >> %s"%(cmd, output)
 	os.system(cmdline)
 
-def createprmtops(ff='ff99SB+', pbradii='Null', dat='Hyb.dat', lib='VXI.lib', ion='Null', box='Null', solvbox='8.0', output='leap.log', bal='Null'):
+def createprmtops(ff1='ff99SB+', ff2='Null', pbradii='Null', dat='Hyb.dat', lib='VXI.lib', ion='Null', box='Null', solvbox='8.0', output='leap.log', bal='Null'):
 	ctrl = open('lyp.in', 'w')
-	ctrl.write("source leaprc.%s\n"%ff)
+	ctrl.write("source leaprc.%s\n"%ff1)
+	if ff2 != 'Null':
+		ctrl.write("source leaprc.%s\n"%ff2)
 	ctrl.write("source %s\n"%dat)
 	if pbradii != 'Null':
 		ctrl.write("set default pbradii %s\n"%pbradii)
@@ -20,7 +22,7 @@ def createprmtops(ff='ff99SB+', pbradii='Null', dat='Hyb.dat', lib='VXI.lib', io
 	if ion in ['Cl-', 'Na+']:
 		ctrl.write("addions Mutanda %s 0\n" %ion)
 	if box != 'Null':
-		ctrl.write("set Mutanda box %s\n" %box)
+		ctrl.write("set Mutanda box {%s %s %s}\n" %(box[0], box[1], box[2]))
 	if solvbox != 'Null':
 		ctrl.write("solvateoct Mutanda TIP3PBOX %s\n" %solvbox)
 	if bal != 'Null':
@@ -52,9 +54,11 @@ def createprmtops(ff='ff99SB+', pbradii='Null', dat='Hyb.dat', lib='VXI.lib', io
 	ctrl.close()
 	run('lyp.in', output)
 
-def stapleprmtops(box, resid, ff='ff99SB+', pbradii='Null', ion='Null', output='leap.log', bal='Null'):
+def stapleprmtops(box, resid, ff1='ff99SB+', ff2='Null', pbradii='Null', ion='Null', output='leap.log', bal='Null'):
 	ctrl = open('lyp.in', 'w')
-	ctrl.write("source leaprc.%s\n"%ff)
+	ctrl.write("source leaprc.%s\n"%ff1)
+	if ff2 != 'Null':
+		ctrl.write("source leaprc.%s\n"%ff2)
 	ctrl.write("source Param_files/Stock/Hyb_std.dat\n")
 	if pbradii != 'Null':
 		ctrl.write("set default pbradii %s\n"%pbradii)

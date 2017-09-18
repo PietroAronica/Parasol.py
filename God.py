@@ -11,7 +11,7 @@ import PDBHandler
 import Leapy
 import Run
 
-def makeinput(pdbfile, outfile, baa, faa, resid, resid2='No', atypes='Standard', newbox=8.0):
+def makeinput(pdbfile, outfile, baa, faa, resid, resid2='No', atypes='Standard', newbox=8.0, ff2='Null'):
 # Read PDB and load correct mutation module
 	struct = PDBHandler.readpdb(pdbfile)
 	Curr_mut = 'Mutation_Modules.' + baa + '_' + faa
@@ -30,10 +30,12 @@ def makeinput(pdbfile, outfile, baa, faa, resid, resid2='No', atypes='Standard',
 	else:
 		Ion = 'Neutral'
 	try:
-		oldbox = struct.other_dict['Cryst1'].box_side()
+		oldbox = struct.other_dict['Cryst1'].box_dimensions()
+		boxangle = struct.other_dict['Cryst1'].box_angle()
 		newbox = 'Null'
 	except:
 		oldbox = 'Null'
+		boxangle = 'Null'
 	if baa in ('GLU', 'ASP'):
 		bal = 'PC'
 	elif faa in ('GLU', 'ASP'):
@@ -43,6 +45,8 @@ def makeinput(pdbfile, outfile, baa, faa, resid, resid2='No', atypes='Standard',
 	elif faa in ('ARG', 'LYS'):
 		bal = 'PC'
 	else:
+		bal='Null'
+	if baa == 'ARG' and faa == 'HR1':
 		bal='Null'
 	if baa == 'ASP' and faa == 'GLU':
 		bal='Null'
@@ -61,6 +65,6 @@ def makeinput(pdbfile, outfile, baa, faa, resid, resid2='No', atypes='Standard',
 		Curr_mut.stock_add_to_all(**atypes)
 	Curr_mut.lib_make('ff99SB+', outfile)
 # Create prmtops
-	Leapy.createprmtops(ff='ff99SB+', ion=Ion, box=oldbox, solvbox=newbox, output=outfile, bal=bal)
+	Leapy.createprmtops(ff1='ff99SB+', ff2=ff2, ion=Ion, box=oldbox, solvbox=newbox, output=outfile, bal=bal)
 	Curr_mut.parmed_command()
-	Run.make_store(oldbox)
+	Run.make_store(boxangle)
