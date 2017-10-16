@@ -75,10 +75,10 @@ def mutate_con(store, faa, wkdir, resnum, strip = 'No', lipid = 'No'):
 	PDBHandler.chop(s, faa, resnum)
 	shutil.copyfile('Mut_leap.pdb', '/home/pietroa/Python/Curr_run.pdb')
 
-def staple(store, resnum, dct='/home/pietroa/Work', wkdir='None'):
+def staple(store, resid, faa, resid2, faa2, dct='/home/pietroa/Work', wkdir='None'):
 	os.chdir(dct)
 	if wkdir == 'None':
-		wkdir=datetime.datetime.now().strftime('Staple_%m-%d_%H:%M_{}-{}'.format(resnum, resnum + 4))
+		wkdir=datetime.datetime.now().strftime('Staple_%m-%d_%H:%M_{}-{}_{}-{}'.format(resid, resid2, faa, faa2))
 	try:
 		os.mkdir(wkdir)
 	except:
@@ -92,5 +92,5 @@ def staple(store, resnum, dct='/home/pietroa/Work', wkdir='None'):
 	traj.autoimage()
 	pt.write_traj('Run_1.pdb', traj, overwrite=True)
 	s = PDBHandler.readpdb('Run_1.pdb')
-	PDBHandler.chop(s, 'NLS', resnum)
-	PDBHandler.chop(s, 'NLS', resnum + 4)
+	PDBHandler.chop(s, faa, resid)
+	PDBHandler.chop(s, faa2, resid2)

@@ -99,15 +99,19 @@ def get_var():
 	except:
 		ff2 = 'No'
 	try:
-		inf['resid2'] = int(inf['resid2'])
-		resid2 = inf['resid2']
+		inf['residue2'] = int(inf['residue2'])
+		resid2 = inf['residue2']
 	except:
 		resid2 = 'No'
 	try:
 		lipid = inf['lipid']
 	except:
 		lipid = 'No'
-	return baa, faa, resid, solv, wkdir, job, toobig, resid2, ff2, lipid
+	try:
+		faa2 = inf['finalaa2']
+	except:
+		faa2 = 'None'
+	return baa, faa, resid, solv, wkdir, job, toobig, resid2, ff2, lipid, faa2
 
 get_var()
 baa = get_var()[0]
@@ -122,6 +126,7 @@ toobig = get_var()[6]
 resid2 = get_var()[7]
 ff2 = get_var()[8]
 lipid = get_var()[9]
+faa2 = get_var()[10]
 pdbfile=readinput(sys.argv[1:])[1]
 outfile=readinput(sys.argv[1:])[2]
 
@@ -746,6 +751,30 @@ if job == 0:
 		Run.mutate_con('/home/pietroa/Python/Store/', 'ANN', nwdir, resid, lipid=lipid)
 		os.chdir('/home/pietroa/Python')
 		God.makeinput('Curr_run.pdb', outfile, 'ANN', faa, resid, ff2=ff2)
+		cleanup()
+		Run.mutate_con('/home/pietroa/Python/Store/', faa, nwdir, resid, lipid=lipid)
+	if baa == 'SER' and faa in ('TZ3'):
+		God.makeinput(pdbfile, outfile, baa, 'ABU', resid, ff2=ff2)
+		cleanup()
+		nwdir = Run.mutate_beg('/home/pietroa/Python/Store/', 'ABU', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa, lipid=lipid)
+		os.chdir('/home/pietroa/Python')
+		God.makeinput('Curr_run.pdb', outfile, 'ABU', 'NVA', resid, ff2=ff2)
+		cleanup()
+		Run.mutate_con('/home/pietroa/Python/Store/', 'NVA', nwdir, resid, lipid=lipid)
+		os.chdir('/home/pietroa/Python')
+		God.makeinput('Curr_run.pdb', outfile, 'NVA', 'ANN', resid, ff2=ff2)
+		cleanup()
+		Run.mutate_con('/home/pietroa/Python/Store/', 'ANN', nwdir, resid, lipid=lipid)
+		os.chdir('/home/pietroa/Python')
+		God.makeinput('Curr_run.pdb', outfile, 'ANN', 'TZ1', resid, ff2=ff2)
+		cleanup()
+		Run.mutate_con('/home/pietroa/Python/Store/', 'TZ1', nwdir, resid, lipid=lipid)
+		os.chdir('/home/pietroa/Python')
+		God.makeinput('Curr_run.pdb', outfile, 'TZ1', 'TZ2', resid, ff2=ff2)
+		cleanup()
+		Run.mutate_con('/home/pietroa/Python/Store/', 'TZ2', nwdir, resid, lipid=lipid)
+		os.chdir('/home/pietroa/Python')
+		God.makeinput('Curr_run.pdb', outfile, 'TZ2', faa, resid, ff2=ff2)
 		cleanup()
 		Run.mutate_con('/home/pietroa/Python/Store/', faa, nwdir, resid, lipid=lipid)
 	if baa == 'SER' and faa == 'PRO':
@@ -2462,6 +2491,16 @@ if job == 0:
 		God.makeinput(pdbfile, outfile, baa, faa, resid, ff2=ff2)
 		cleanup()
 		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+	# TRIAZOLINE 1 MUTATIONS
+	if baa == 'TZ1' and faa in ('TZ2') :
+		God.makeinput(pdbfile, outfile, baa, faa, resid, ff2=ff2)
+		cleanup()
+		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+	# TRIAZOLINE 2 MUTATIONS
+	if baa == 'TZ2' and faa in ('TZ3') :
+		God.makeinput(pdbfile, outfile, baa, faa, resid, ff2=ff2)
+		cleanup()
+		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
 	# HOMOARGININE 1 MUTATIONS
 	if baa == 'HR1' and faa in ('HR2') :
 		God.makeinput(pdbfile, outfile, baa, faa, resid, ff2=ff2)
@@ -2534,7 +2573,7 @@ if job == 0:
 		cleanup()
 		Run.mutate_con('/home/pietroa/Python/Store/', 'ARG', nwdir, resid, lipid=lipid)
 	# ANNULINE MUTATIONS
-	if baa == 'ANN' and faa in ('NVA', 'PHE', 'TRP', 'TYR', 'HIS', 'ILE', 'LEU', 'NLE'):
+	if baa == 'ANN' and faa in ('NVA', 'PHE', 'TRP', 'TYR', 'HIS', 'ILE', 'LEU', 'NLE', 'TZ1'):
 		God.makeinput(pdbfile, outfile, baa, faa, resid, ff2=ff2)
 		cleanup()
 		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
@@ -2552,41 +2591,44 @@ if job == 0:
 		Run.mutate_beg('/home/pietroa/Python/Store/', faa, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
 if job == '1':
 	struct = PDBHandler.readpdb(pdbfile)
+        sp = {}
+        with open('Param_files/Stock/Staple.param', 'r') as b:
+                data = b.readlines()[1:]
+        for line in data:
+                sp[line.split()[0]] = []
+                for point in line.split()[1:]:
+                        sp[line.split()[0]].append(str(point))
+        b.close()
+	a1 = struct.residue_dict[resid].get_resname()
+	a2 = struct.residue_dict[resid2].get_resname()
+	if a1 != sp[faa][0]:
+		print('Residue {} is wrong. It should be {} but it is {}.'.format(resid, sp[faa][0], a1))
+		quit()
+	if a2 != sp[faa2][0]:
+		print('Residue {} is wrong. It should be {} but it is {}.'.format(resid2, sp[faa2][0], a2))
+		quit()
 	box = struct.other_dict['Cryst1'].box_side()
-	import Mutation_Modules.NL4_Staple as stapler
-	stapler.makevxi(struct, 'Staplebond.pdb', resid)	
+	dist = float(struct.residue_dict[resid].atom_dict[sp[faa][2]].calc_distance(struct.residue_dict[resid2].atom_dict[sp[faa2][2]]))
+	import Mutation_Modules.All_staples as stapler
+	command = getattr(stapler, 'makevxi_' + faa)
+	command(struct, 'Staplebond.pdb', resid, 'NX1')	
+	struct = PDBHandler.readpdb('Staplebond.pdb')
+	command = getattr(stapler, 'makevxi_' + faa2)
+	command(struct, 'Staplebond.pdb', resid2, 'NX2')	
+	command = getattr(stapler, 'lib_make_' + faa)
+	command('ff99SB+', outfile, 'NX1')
+	command = getattr(stapler, 'lib_make_' + faa2)
+	command('ff99SB+', outfile, 'NX2')
 	stapler.all_make()
-	stapler.stock_add_to_all()
-	Leapy.stapleprmtops(box, resid)
-	stapler.parmed_command()
+	command = getattr(stapler, 'stock_add_to_all_' + faa)
+	command(dist)
+	command = getattr(stapler, 'stock_add_to_all_' + faa2)
+	command(dist)
+	Leapy.stapleprmtops_general(box, resid, resid2, sp[faa][2], sp[faa2][2], output=outfile)
+	command = getattr(stapler, 'parmed_command_' + faa)
+	command(resid)
+	command = getattr(stapler, 'parmed_command_' + faa2)
+	command(resid2)
 	Run.make_store(box)
 	cleanup()
-	Run.staple('/home/pietroa/Python/Store/', resid)
-if job == '2':
-	struct = PDBHandler.readpdb(pdbfile)
-	a = struct.residue_dict[resid].get_resname()
-	if a == 'NKI':
-		nki = resid
-		b = struct.residue_dict[resid+7].get_resname()
-		if b != 'NLE':
-			nle = resid - 7
-		else:
-			nle = resid + 7
-        if a == 'NLE':
-		nle = resid
-                b = struct.residue_dict[resid+7].get_resname()
-                if b != 'NKI':
-			nki = resid - 7
-		else:
-			nki = resid + 7
-	box = struct.other_dict['Cryst1'].box_side()
-	dist = float(struct.residue_dict[nki].atom_dict['CF'].calc_distance(struct.residue_dict[nle].atom_dict['CE']))
-	import Mutation_Modules.NL7_Staple as stapler
-	stapler.makevxi(struct, 'Staplebond.pdb', nki, nle)	
-	stapler.all_make()
-	stapler.stock_add_to_all(dist)
-	Leapy.stapleprmtops2(box, nki, nle)
-	stapler.parmed_command()
-	Run.make_store(box)
-	cleanup()
-	Run.staple('/home/pietroa/Python/Store/', resid)
+	Run.staple('/home/pietroa/Python/Store/', resid, faa, resid2, faa2)

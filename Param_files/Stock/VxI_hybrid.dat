@@ -7,4 +7,5 @@ addAtomTypes {
         { "tc"  "C" "sp3" }
         { "th"  "H" "sp3" }
         { "ih"  "H" "sp3" }
+        { "gh"  "H" "sp3" }
 }
