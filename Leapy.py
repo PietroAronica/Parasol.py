@@ -8,15 +8,19 @@ def run(cmd, output='leap.log'):
 	cmdline = "tleap -f %s >> %s"%(cmd, output)
 	os.system(cmdline)
 
-def createprmtops(ff1='ff99SB+', ff2='Null', pbradii='Null', dat='Hyb.dat', lib='VXI.lib', ion='Null', box='Null', solvbox='8.0', output='leap.log', bal='Null'):
+def createprmtops(ff1='Param_files/Essentials/cmd.ff14SB+', ff2='No', pbradii='Null', dat='Hyb.dat', lib='VXI.lib', ion='Null', box='Null', solvbox='8.0', output='leap.log', bal='Null', extralib='None', extrafrcmod='None', extracommand='None'):
 	ctrl = open('lyp.in', 'w')
-	ctrl.write("source leaprc.%s\n"%ff1)
-	if ff2 != 'Null':
+	ctrl.write("source %s\n"%ff1)
+	if ff2 != 'No':
 		ctrl.write("source leaprc.%s\n"%ff2)
 	ctrl.write("source %s\n"%dat)
 	if pbradii != 'Null':
 		ctrl.write("set default pbradii %s\n"%pbradii)
 	ctrl.write("loadoff %s\n"%lib)
+	if extralib != 'None':
+		ctrl.write("loadoff %s\n" %extralib)
+	if extrafrcmod != 'None':
+		ctrl.write("loadamberparams %s\n" %extrafrcmod)
 	ctrl.write("loadamberparams 0_100.frcmod\n")
 	ctrl.write("Mutanda = loadpdb Mutabond.pdb\n")
 	if ion in ['Cl-', 'Na+']:
@@ -29,6 +33,12 @@ def createprmtops(ff1='ff99SB+', ff2='Null', pbradii='Null', dat='Hyb.dat', lib=
 		ctrl.write("loadamberparams Param_files/Stock/Ion.frcmod\n")
 		ctrl.write("loadoff Param_files/Stock/Ion.lib\n")
 		ctrl.write("addions Mutanda %s 1\n" %bal)
+	if extracommand != 'None':
+		exc = open(extracommand)
+		comm = exc.readlines()
+		for line in comm:
+			ctrl.write(line)
+		exc.close()
 	ctrl.write("saveamberparm Mutanda Solv_0_100.prmtop Solv_0_100.inpcrd\n")
 	ctrl.write("loadamberparams 10_90.frcmod\n")
 	ctrl.write("saveamberparm Mutanda Solv_10_90.prmtop Solv_10_90.inpcrd\n")

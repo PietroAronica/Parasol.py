@@ -82,7 +82,7 @@ def makevxi(struct, out, aa, vxi='VXI'):
 
 def lib_make(ff, outputfile, vxi='VXI', h1='h0', ng='1n', nd1='2n', ne1='3n', he1='3h', ce2='4c', he2='4h', cd2='5c', hd2='5h'):
         ctrl = open('lyp.in', 'w')
-        ctrl.write("source leaprc.%s\n"%ff)
+        ctrl.write("source %s\n"%ff)
 	ctrl.write("%s=loadpdb Param_files/LibPDB/ANN-HIS.pdb\n"%vxi)
 	ctrl.write('set %s.1.1 element "N"\n'%vxi)
 	ctrl.write('set %s.1.2 element "H"\n'%vxi)

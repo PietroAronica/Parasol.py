@@ -93,7 +93,7 @@ def makevxi(struct, out, aa, vxi='VXI'):
 
 def lib_make(ff, outputfile, vxi='VXI', amicar='ac', amioxy='ao', aminit='an', amihyd='ah', hydhyd1='yh', alcoxy='ho', alchyd='hh', hydhyd2='sh', thrhyd='fh'):
         ctrl = open('lyp.in', 'w')
-        ctrl.write("source leaprc.%s\n"%ff)
+        ctrl.write("source %s\n"%ff)
 	ctrl.write("%s=loadpdb Param_files/LibPDB/THR-GLN.pdb\n"%vxi)
 	ctrl.write('set %s.1.1 element "N"\n'%vxi)
 	ctrl.write('set %s.1.2 element "H"\n'%vxi)

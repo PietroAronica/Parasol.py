@@ -89,7 +89,7 @@ def makevxi(struct, out, aa, vxi='VXI'):
 
 def lib_make(ff, outputfile, vxi='VXI', metcar='1c', methyd='1h', hydhyd1='xh', carcar='cc', caroxy='co', hydhyd2='sh'):
         ctrl = open('lyp.in', 'w')
-        ctrl.write("source leaprc.%s\n"%ff)
+        ctrl.write("source %s\n"%ff)
 	ctrl.write("%s=loadpdb Param_files/LibPDB/ASP-ABU.pdb\n"%vxi)
 	ctrl.write('set %s.1.1 element "N"\n'%vxi)
 	ctrl.write('set %s.1.2 element "H"\n'%vxi)

@@ -3,6 +3,8 @@ import Leapy
 import os, sys
 import math
 
+HOMEDIR='/home/pietroa/Python/'
+
 _CRYST1_FORMAT_STRING = '{:6}{:9.3f}{:9.3f}{:9.3f}{:7.2f}{:7.2f}{:7.2f}\n' 
 _CONECT_FORMAT_STRING = '{:6}{:5d}{:5d}\n' 
 _ATOM_FORMAT_STRING = '{:4} {:6d} {:4} {:3} {:5}     {:7.3f} {:7.3f} {:7.3f} {:5.2f} {:5.2f}\n' 
@@ -30,6 +32,9 @@ class Atom(object):
 
 	def set_resname(self, resname):
 		self.resname = resname
+
+	def set_resnum(self, resnumber):
+		self.resnumber = resnumber
 
 	def set_name(self, name):
 		self.name = name
@@ -171,6 +176,9 @@ class Structure(object):
 	def __repr__(self):
 		return self.id
 
+	def get_residue(self, resnum):
+		return self.residue_list[resnum]
+
 	def get_reslist(self):
 		for t in self.residue_dict:
 			print t
@@ -198,7 +206,7 @@ class Ter_record(object):
 	def __init__(self, position):
 		self.position = position
 		self.tag = '{}\n'.format('TER')
-		self.id = 'Ter following residue {}'.format(position)
+		self.id = 'Ter following atom {}'.format(position)
 
 	def __repr__(self):
 		return self.id
@@ -283,22 +291,24 @@ def readpdb(file):
 			curr_atom = Atom(number, name, resname, resnumber, chainid, coord, occupancy, bfactor)
 			try:
 				if curr_residue.get_resnumber() != resnumber:
-					if resnumber in structure.residue_dict:
+					if resnumber in structure.residue_dict or resnumber is 0:
 						curr_residue = Residue(resname, resnumber+10000)
+						curr_atom.set_resnum(resnumber+10000)
 						structure.add_residue(curr_residue)	
 					else:
 						curr_residue = Residue(resname, resnumber)
 						structure.add_residue(curr_residue)	
 			except NameError:
-				if resnumber in structure.residue_dict:
+				if resnumber in structure.residue_dict or resnumber is 0:
 					curr_residue = Residue(resname, resnumber+10000)
+					curr_atom.set_resnum(resnumber+10000)
 					structure.add_residue(curr_residue)	
 				else:
 					curr_residue = Residue(resname, resnumber)
 					structure.add_residue(curr_residue)	
-			structure.residue_dict[resnumber].add_atom(curr_atom)
+			structure.residue_dict[curr_residue.get_resnumber()].add_atom(curr_atom)
 		elif record_type == "TER":
-			curr_ter = Ter_record(resnumber)
+			curr_ter = Ter_record(curr_atom.get_number())
 			structure.add_ter(curr_ter)
 		elif record_type == "CONECT":
 			atom1, atom2 = line[7:20].split()
@@ -325,7 +335,7 @@ def savepdb(struct, out):
 		for atom in res.atom_list:
 			pdb.write(atom.formatted())
 		try:
-			pdb.write(struct.other_dict[res.get_resnumber()].ter())
+			pdb.write(struct.other_dict[atom.get_number()].ter())
 		except:
 			pass
 	for oth in struct.other_dict:
@@ -339,19 +349,20 @@ def savepdb(struct, out):
 
 def sulpher(struct, pdb):
 	sulfurs = []
+        sp = {}
+        with open('{}Param_files/Stock/Staple.param'.format(HOMEDIR), 'r') as b:
+                data = b.readlines()[1:]
+        for line in data:
+                sp[line.split()[0]] = []
+                for point in line.split()[1:]:
+                        sp[line.split()[0]].append(str(point))
+        b.close()
+	import re
+	regex = re.compile('..X')
 	for res in struct.residue_list:
-		if res.get_resname() == 'CYX':
-			sulfurs.append(res.atom_dict['SG'])
-		if res.get_resname() in [ 'OEH', 'OEC', 'OET', 'I7X' ] :
-			for res2 in struct.residue_list:
-				if res2.get_resname() in ['MKC','MKT','NL7', 'I4X']:
-					curr_conect = Conect_record(res.atom_dict['CT'].get_number(), res2.atom_dict['CE'].get_number())
-					struct.add_conect(curr_conect)
-		if res.get_resname() == 'NLS':
-			res2 = res.get_resnumber() + 4
-			if struct.residue_dict[res2].get_resname() in ['NLS']:
-				curr_conect = Conect_record(res.atom_dict['CE'].get_number(), struct.residue_dict[res2].atom_dict['CE'].get_number())
-	                        struct.add_conect(curr_conect)
+		nome = res.get_resname()
+		if re.match(regex, nome):
+			sulfurs.append(res.atom_dict[sp[nome][1]])
 	for sul1 in sulfurs[:]:
 		s1 = {}
 		try:
@@ -375,7 +386,7 @@ def sulpher(struct, pdb):
 		for atom in res.atom_list:
 			pdb.write(atom.formatted())
 		try:
-			pdb.write(struct.other_dict[res.get_resnumber()].ter())
+			pdb.write(struct.other_dict[atom.get_number()].ter())
 		except:
 			pass
 	for oth in struct.other_dict:
@@ -386,68 +397,6 @@ def sulpher(struct, pdb):
 			pass
 	pdb.write('END\n')
 	pdb.close()
-
-def stapler(struct, kind):
-	if kind == 'OEH':
-		for res in struct.residue_list:
-			if res.get_resname() == 'NX1':
-				nx1 = res
-		nx1.set_resname('OEH')
-		for atom in nx1.atom_list[:]:
-		        if atom.get_name() not in ['N', 'H', 'CA', 'CB2', 'HB21', 'HB22', 'HB23', 'CB1', 'HB12', 'HB13', 'CG', 'HG2', 'HG3', 'CD', 'HD2', 'HD3', 'CE', 'HE2', 'HE3', 'CZ', 'HZ2', 'HZ3', 'CH', 'HH2', 'HH3', 'CT', 'HT', 'C', 'O']:
-                                nx1.atom_list.remove(atom)
-                for res in struct.residue_list:
-                        if res.get_resname() == 'NX2':
-                                nx2 = res
-		nx2.set_resname('NL7')
-		for atom in nx2.atom_list[:]:
-			if atom.get_name() not in ['N', 'H', 'CA', 'CB2', 'HB21', 'HB22', 'HB23', 'CB1', 'HB12', 'HB13', 'CG', 'HG2', 'HG3', 'CD', 'HD2', 'HD3', 'CE', 'HE', 'C', 'O']:
-                                nx2.atom_list.remove(atom)
-		        pdb = open('Mutated.pdb', 'w')
-        try:
-                pdb.write(struct.other_dict['Cryst1'].formatted())
-        except KeyError:
-                pass
-        for res in struct.residue_list:
-                for atom in res.atom_list:
-                        if atom.get_name() == 'PC':
-                                atom.set_name('Cl-')
-                                atom.set_resname('Cl-')
-                        if atom.get_name() == 'PN':
-                                atom.set_name('Na+')
-                                atom.set_resname('Na+')
-                        pdb.write(atom.formatted())
-                try:
-                        pdb.write(struct.other_dict[res.get_resnumber()].ter())
-                except:
-                        pass
-        for oth in struct.other_dict:
-                try:
-                        if oth.startswith('Conect'):
-                                pdb.write(struct.other_dict[oth].formatted())
-                except:
-                        pass
-        pdb.write('END\n')
-        pdb.close()
-        ctrl = open('chop.in', 'w')
-        ctrl.write("source leaprc.ff99SB+\n")
-        ctrl.write("Mut = loadpdb Mutated.pdb\n")
-        ctrl.write("savepdb Mut Mut_leap.pdb\n")
-        ctrl.write("quit\n")
-        ctrl.close()
-        Leapy.run('chop.in')
-        if struct.other_dict['Cryst1']:
-                f = open('Mut_leap.pdb', 'r+')
-                temp = f.read()
-                f.close()
-                f = open('Mut_leap.pdb', 'w+')
-                f.write(struct.other_dict['Cryst1'].formatted())
-                f.write(temp)
-                f.close()
-        s = readpdb('Mut_leap.pdb')
-        sulpher(s, 'Mut_leap.pdb')
-        os.remove('chop.in')
-
 
 def chop(struct, resid, resnum):
 	struct.residue_dict[resnum].set_resname(resid)
@@ -650,7 +599,7 @@ def chop(struct, resid, resnum):
 				atom.set_resname('Na+')
 			pdb.write(atom.formatted())
 		try:
-			pdb.write(struct.other_dict[res.get_resnumber()].ter())
+			pdb.write(struct.other_dict[atom.get_number()].ter())
 		except:
 			pass
 	for oth in struct.other_dict:

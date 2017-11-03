@@ -5,7 +5,9 @@ import shutil
 import datetime
 import pytraj as pt
 import PDBHandler
-simpath='/home/pietroa/Python/SimFiles/'
+HOMEDIR="/home/pietroa/Python/"
+WORKDIR="/home/pietroa/Work/"
+simpath='{}SimFiles/'.format(HOMEDIR)
 
 def make_store(boxangle):
 	try:
@@ -23,7 +25,7 @@ def make_store(boxangle):
 		os.system('sed -i s/9.00000000E+01/1.09471219E+02/g Solv_*.prmtop')
 		os.chdir('..')
 
-def mutate_beg(store, faa, resnum, dct='/home/pietroa/Work', wkdir='None', solv = 'No', fin=None, strip = 'No', lipid = 'No'):
+def mutate_beg(store, faa, resnum, dct=WORKDIR, wkdir='None', solv = 'No', fin=None, strip = 'No', lipid = 'No'):
 	os.chdir(dct)
 	if wkdir == 'None':
 		if fin is None:
@@ -39,11 +41,11 @@ def mutate_beg(store, faa, resnum, dct='/home/pietroa/Work', wkdir='None', solv 
 	os.chdir('To{}'.format(faa))
 	shutil.move(store, os.getcwd())
 	if solv == 'No':
-		Input = simpath + 'Method.x'
+		Input = simpath + 'Method ' + HOMEDIR
 	elif solv == 'Yes':
-		Input = simpath + 'Method_proceed.x'
+		Input = simpath + 'Method_proceed ' + HOMEDIR
 	if lipid == 'Yes':
-		Input = simpath + 'Method_lipid_proceed.x'
+		Input = simpath + 'Method_lipid_proceed ' + HOMEDIR
 	os.system(Input)
 	os.chdir('Run_1')
 	traj = pt.load('100_0.restart', top='../Store/Solv_0_100.prmtop')
@@ -53,7 +55,7 @@ def mutate_beg(store, faa, resnum, dct='/home/pietroa/Work', wkdir='None', solv 
 	pt.write_traj('Run_1.pdb', traj, overwrite=True)
 	s = PDBHandler.readpdb('Run_1.pdb')
 	PDBHandler.chop(s, faa, resnum)
-	shutil.copyfile('Mut_leap.pdb', '/home/pietroa/Python/Curr_run.pdb')
+	shutil.copyfile('Mut_leap.pdb', '{}Curr_run.pdb'.format(HOMEDIR))
 	return nwdir
 
 def mutate_con(store, faa, wkdir, resnum, strip = 'No', lipid = 'No'):
@@ -61,9 +63,9 @@ def mutate_con(store, faa, wkdir, resnum, strip = 'No', lipid = 'No'):
 	os.mkdir('To{}'.format(faa))
 	os.chdir('To{}'.format(faa))
 	shutil.move(store, os.getcwd())
-	Input = simpath + 'Method_proceed.x'
+	Input = simpath + 'Method_proceed ' + HOMEDIR
 	if lipid == 'Yes':
-		Input = simpath + 'Method_lipid_proceed.x'
+		Input = simpath + 'Method_lipid_proceed ' + HOMEDIR
 	os.system(Input)
 	os.chdir('Run_1')
 	traj = pt.load('100_0.restart', top='../Store/Solv_0_100.prmtop')
@@ -73,9 +75,9 @@ def mutate_con(store, faa, wkdir, resnum, strip = 'No', lipid = 'No'):
 	pt.write_traj('Run_1.pdb', traj, overwrite=True)
 	s = PDBHandler.readpdb('Run_1.pdb')
 	PDBHandler.chop(s, faa, resnum)
-	shutil.copyfile('Mut_leap.pdb', '/home/pietroa/Python/Curr_run.pdb')
+	shutil.copyfile('Mut_leap.pdb', '{}Curr_run.pdb'.format(HOMEDIR))
 
-def staple(store, resid, faa, resid2, faa2, dct='/home/pietroa/Work', wkdir='None'):
+def staple(store, resid, faa, resid2, faa2, dct=WORKDIR, wkdir='None'):
 	os.chdir(dct)
 	if wkdir == 'None':
 		wkdir=datetime.datetime.now().strftime('Staple_%m-%d_%H:%M_{}-{}_{}-{}'.format(resid, resid2, faa, faa2))
@@ -85,7 +87,7 @@ def staple(store, resid, faa, resid2, faa2, dct='/home/pietroa/Work', wkdir='Non
 		pass
 	os.chdir(wkdir)
 	shutil.move(store, os.getcwd())
-	Input = simpath + 'Method_proceed.x'
+	Input = simpath + 'Method_proceed ' + HOMEDIR
 	os.system(Input)
 	os.chdir('Run_1')
 	traj = pt.load('100_0.restart', top='../Store/Solv_0_100.prmtop')

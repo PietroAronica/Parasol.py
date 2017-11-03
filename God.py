@@ -11,7 +11,7 @@ import PDBHandler
 import Leapy
 import Run
 
-def makeinput(pdbfile, outfile, baa, faa, resid, resid2='No', atypes='Standard', newbox=8.0, ff2='Null'):
+def makeinput(pdbfile, outfile, baa, faa, resid, resid2='No', atypes='Standard', newbox=8.0, ff2='Null', extralib='Null', extrafrcmod='Null', extracommand='Null'):
 # Read PDB and load correct mutation module
 	struct = PDBHandler.readpdb(pdbfile)
 	Curr_mut = 'Mutation_Modules.' + baa + '_' + faa
@@ -63,8 +63,8 @@ def makeinput(pdbfile, outfile, baa, faa, resid, resid2='No', atypes='Standard',
 		Curr_mut.stock_add_to_all()
 	else:
 		Curr_mut.stock_add_to_all(**atypes)
-	Curr_mut.lib_make('ff99SB+', outfile)
+	Curr_mut.lib_make('Param_files/Essentials/cmd.ff14SB+', outfile)
 # Create prmtops
-	Leapy.createprmtops(ff1='ff99SB+', ff2=ff2, ion=Ion, box=oldbox, solvbox=newbox, output=outfile, bal=bal)
+	Leapy.createprmtops(ff1='Param_files/Essentials/cmd.ff14SB+', ff2=ff2, ion=Ion, box=oldbox, solvbox=newbox, output=outfile, bal=bal, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
 	Curr_mut.parmed_command()
 	Run.make_store(boxangle)

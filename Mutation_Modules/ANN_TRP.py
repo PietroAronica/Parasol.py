@@ -147,7 +147,7 @@ def makevxi_alt(struct, out, aa, vxi='VXI'):
 
 def lib_make(ff, outputfile, vxi='VXI', cg='1c', cd1='2c', hd1='2h', ne1='3n', he1='3h', cd2='4c', ce2='5c', ce3='6c', he3='6h', cz1='7c', hz1='7h', cz2='8c', hz2='8h', ch='9c', hh='9h'):
         ctrl = open('lyp.in', 'w')
-        ctrl.write("source leaprc.%s\n"%ff)
+        ctrl.write("source %s\n"%ff)
 	ctrl.write("%s=loadpdb Param_files/LibPDB/TRP-ANN.pdb\n"%vxi)
 	ctrl.write('set %s.1.1 element "N"\n'%vxi)
 	ctrl.write('set %s.1.2 element "H"\n'%vxi)

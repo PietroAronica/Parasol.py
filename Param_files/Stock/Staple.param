@@ -1,3 +1,9 @@
 #Properties of staple monomers (staple monomer, original residue, name of mutation residue, connecting atom)
-AMX	ASN	VX3	ND2
-ALX	ALA	VX4	CB
+ABX	ABU	CG
+ADX	ABU	CG
+AMX	ASN	ND2
+ALX	ALA	CB
+CYX	CYS	SG
+I4X	NLE	CE
+I7X	NKI	CT
+VLX	NVA	CD

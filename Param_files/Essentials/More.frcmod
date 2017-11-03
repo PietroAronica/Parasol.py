@@ -1,0 +1,126 @@
+#Additional parameters
+MASS
+CH 12.01         0.360               Sp3 carbons in square systems
+HH 1.008         0.135               H bonded to aliphatic carbon without electrwd. group
+CF 12.01         0.360               Sp2 C
+HF 1.008         0.135               H bonded to aliphatic carbon without electrwd. group
+NI 14.01         0.530
+ND 14.01         0.530
+NE 14.01         0.530
+NX 14.01         0.530
+NW 14.01         0.530
+NZ 14.01         0.530
+Cl- 35.45         3.235
+Na+ 22.99         0.250
+
+BOND
+CF-HF  344.3    1.0870       SOURCE3     789    0.0046
+CH-HH  334.5    1.0940       SOURCE3      63    0.0014
+CH-CH  286.8    1.5540       SOURCE1     742    0.0041
+CF-CF  589.7    1.3240       SOURCE1     974    0.0096
+CF-CT  328.3    1.5080       SOURCE1    2536    0.0021
+CH-CT  308.5    1.5290       SOURCE1     376    0.0000
+CT-NI  293.5    1.4910
+NI-ND  751.6    1.2300
+ND-NE 1321.4    1.1350
+CT-NX  334.7    1.4560       equivalent to c3-na in gaff
+NX-NW  535.7    1.3500       equivalent to na-nc in gaff
+NX-CC  438.8    1.3710       equivalent to na-cc in gaff
+NW-NZ  602.9    1.3150       equivalent to nc-nd in gaff
+NZ-CB  431.6    1.3760       equivalent to nd-cd in gaff
+CB-CC  504.0    1.3710       equivalent to cd-cc in gaff
+CB-H4  350.1    1.0830       equivalent to cd-h4 in gaff
+CC-H4  350.1    1.0830       equivalent to cc-h4 in gaff
+CB-CT  337.3    1.4990       equivalent to cd-c3 in gaff
+S -CC  279.3    1.7370       equivalent to ss-cc in gaff 
+CC-C   377.4    1.4620       equivalent to cc-c  in gaff
+
+ANGLE
+CF-CF-HF   50.30      119.70    SOURCE3            1
+CF-CF-CT   64.330     123.420   SOURCE3           41    2.6057
+CT-CF-HF   45.150     120.000   SOURCE3            1
+CF-CT-CT   63.530     111.440   SOURCE4         2891    1.7167
+CF-CT-HC   47.030     110.490   SOURCE3          159    0.7479
+CH-CT-HC   46.510     110.170   SOURCE3           16    0.5693
+CT-CH-CH   60.760     118.700   SOURCE4          293    1.8510
+CT-CH-HH   46.210     111.550   SOURCE3            5    0.6276
+CT-CT-CH   63.630     109.620   SOURCE3            5    2.0747
+HH-CH-HH   39.24      109.04    SOURCE3           28    0.5962
+CH-CH-HH   44.82      115.14    SOURCE3          114    0.8364
+CH-CH-CH   70.16       87.61    SOURCE3           32    1.5407
+CT-CT-NI  106.50      113.72
+HP-CT-NI   82.80      104.90
+CT-NI-ND   68.40      115.81
+NI-ND-NE   42.60      173.40    
+CA-CT-F    66.14      111.76
+HC-CT-N2   50.00      109.50
+H1-CT-CA   50.00      109.50
+S -CT-CA   61.90      110.66    equivalent to ss-c3-ca in gaff
+S -CT-S    62.40      110.57    equivalent to ss-c3-ss in gaff
+CT-CT-NX   65.73      112.81    equivalent to c3-c3-na in gaff
+CT-NX-NW   65.74      120.46    equivalent to c3-na-nc in gaff
+CT-NX-CC   62.56      125.09    equivalent to c3-na-cc in gaff
+H1-CT-NX   49.90      109.45    equivalent to h1-c3-na in gaff
+NX-NW-NZ   75.97      105.47    equivalent to na-nc-nd in gaff
+NX-CC-CB   72.91      109.42    equivalent to na-cc-cd in gaff
+NX-CC-H4   50.22      119.66    equivalent to na-cc-h4 in gaff
+NW-NX-CC   70.18      113.02    equivalent to nc-na-cc in gaff
+NW-NZ-CB   72.54      107.94    equivalent to nc-nd-cd in gaff
+NZ-CB-CC   72.01      111.75    equivalent to nd-cd-cc in gaff
+NZ-CB-H4   50.00      120.03	equivalent to h4-cd-nd in gaff
+CC-CB-H4   47.19      129.11	equivalent to cc-cd-h4 in gaff
+CB-CC-H4   47.19      129.11    equivalent to cd-cc-h4 in gaff
+CC-CB-CT   64.81      119.41    equivalent to cc-cd-c3 in gaff
+NZ-CB-CT   65.90      120.94    equivalent to nd-cd-c3 in gaff
+CB-CT-CT   63.58      111.89    equivalent to cd-c3-c3 in gaff
+CB-CT-HC   47.20      110.86    equivalent to cd-c3-hc in gaff
+CT-S -CC   61.74      100.75    equivalent to c3-ss-cc in gaff
+S -CC-C    62.30      120.51    equivalent to ca-cc-ss in gaff
+S -CC-CB   65.44      111.55    equivalent to cd-cc-ss in gaff
+CC-C -O    68.91      125.71    equivalent to cc-c -o  in gaff
+CC-C -N    70.19      111.8     equivalent to cc-c -n  in gaff
+CB-CC-C    65.25      121.42    equivalent to cd-cc-c  in gaff
+CC-CB-C    65.25      121.42    equivalent to cc-cd-c  in gaff
+C -N -C    65.33      127.1     equivalent to c -n -c  in gaff
+N -C -CB   70.19      111.86    equivalent to cd-c -n  in gaff
+C -CT-OH   68.65      108.70    equivalent to c -c3-oh in gaff
+
+DIHEDRAL
+X -CF-CT-X    6    0.000         0.000           2.000      JCC,7,(1986),230
+X -CF-CF-X    4   26.600       180.000           2.000      c2=c2 double bond, intrpol.bsd.on C6H6
+HC-CT-CH-HH   1    0.150         0.000           3.000      same as HH-c3-c3-HH
+HC-CT-CH-CH   1    0.156         0.000           3.000      same as X -c3-c3-X
+CT-CT-CH-HH   1    0.160         0.000           3.000      same as HH-c3-c3-c3
+CT-CT-CH-CH   1    0.156         0.000           3.000      same as X -c3-c3-X
+X -CH-CH-X    9    1.400         0.000           3.000      same as X-c3-c3-X
+CT-CT-NI-ND   1    0.761         0.000          -3.000
+CT-CT-NI-ND   1    0.269         0.000           1.000
+HP-CT-NI-ND   1    0.761         0.000          -3.000
+HP-CT-NI-ND   1    0.269         0.000           1.000
+CT-NI-ND-NE   1    1.167         0.000           1.000
+X -CT-NX-X    6    0.000         0.000           2.000      same as X-c3-na-X
+X -NX-NW-X    2    9.600       180.000           2.000
+X -NX-CC-X    4    6.800       180.000           2.000
+X -CB-CC-X    4   16.000       180.000           2.000
+X -NW-NZ-X    1    4.000       180.000           2.000
+X -NZ-CB-X    2    9.500       180.000           2.000
+X -CT-CB-X    6    0.000         0.000           3.000
+X -CC-C -X    4   11.500       180.000           2.000      equivalent to X -c -cc-X in gaff
+X -S -CC-X    2    6.200       180.000           2.000      equivalent to X -c -ss-X in gaff
+
+IMPROPER
+CF-CT-CF-HF         1.1          180.          2.           Junmei et al.1999
+
+NONBON
+CH          1.9080  0.0860             OPLS
+HH          1.4870  0.0157             OPLS
+CF          1.9080  0.0860             sp2 atom in the middle of C=CD-CD=C
+HF          1.4870  0.0157             OPLS
+NI          1.8240  0.1700
+ND          1.8240  0.1700
+NE          1.8240  0.1700
+NX          1.8240  0.1700
+NW          1.8240  0.1700
+NZ          1.8240  0.1700
+Cl-         2.47    0.1 
+Na+         1.8680  0.00277

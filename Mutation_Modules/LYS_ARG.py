@@ -101,7 +101,7 @@ def makevxi(struct, out, aa, vxi='VXI'):
 
 def lib_make(ff, outputfile, vxi='VXI', hd1='fh', ne='nc', he2='h2', he3='h3', cz='cn', hz1='z1', hz2='z2', hz3='z3', nh1='n1', hh1='1h', nh2='n2', hh2='2h'):
         ctrl = open('lyp.in', 'w')
-        ctrl.write("source leaprc.%s\n"%ff)
+        ctrl.write("source %s\n"%ff)
 	ctrl.write("%s=loadpdb Param_files/LibPDB/ARG-LYS.pdb\n"%vxi)
 	ctrl.write('set %s.1.1 element "N"\n'%vxi)
 	ctrl.write('set %s.1.2 element "H"\n'%vxi)

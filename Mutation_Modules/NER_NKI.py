@@ -24,7 +24,7 @@ def parmed_command(vxi='VXI'):
 	for i in range(11):
 		a = i*10
 		parm = AmberParm('Solv_{}_{}.prmtop'.format(a, 100-a))
-		changeLJPair(parm, ':{}@HH1 :{}@HF1 0 0'.format(vxi, vxi)).execute()
+		changeLJPair(parm, ':{}@HH1 :{}@HT1 0 0'.format(vxi, vxi)).execute()
                 change(parm, 'charge', ':{}@N'.format(vxi), bc['N']+((fc['N']-bc['N'])/10)*i).execute()
                 change(parm, 'charge', ':{}@H'.format(vxi), bc['H']+((fc['H']-bc['H'])/10)*i).execute()
                 change(parm, 'charge', ':{}@CA'.format(vxi), bc['CA']+((fc['CA']-bc['CA'])/10)*i).execute()
@@ -48,10 +48,10 @@ def parmed_command(vxi='VXI'):
                 change(parm, 'charge', ':{}@HH1'.format(vxi), bc['HH1']-(bc['HH1']/10)*i).execute()
                 change(parm, 'charge', ':{}@HH2'.format(vxi), bc['HH2']+((fc['HH2']-bc['HH2'])/10)*i).execute()
                 change(parm, 'charge', ':{}@HH3'.format(vxi), bc['HH3']+((fc['HH3']-bc['HH3'])/10)*i).execute()
-                change(parm, 'charge', ':{}@CF'.format(vxi), (fc['CF']/10)*i).execute()
-                change(parm, 'charge', ':{}@HF1'.format(vxi), (fc['HF1']/10)*i).execute()
-                change(parm, 'charge', ':{}@HF2'.format(vxi), (fc['HF2']/10)*i).execute()
-                change(parm, 'charge', ':{}@HF3'.format(vxi), (fc['HF3']/10)*i).execute()
+                change(parm, 'charge', ':{}@CT'.format(vxi), (fc['CT']/10)*i).execute()
+                change(parm, 'charge', ':{}@HT1'.format(vxi), (fc['HT1']/10)*i).execute()
+                change(parm, 'charge', ':{}@HT2'.format(vxi), (fc['HT2']/10)*i).execute()
+                change(parm, 'charge', ':{}@HT3'.format(vxi), (fc['HT3']/10)*i).execute()
                 change(parm, 'charge', ':{}@C'.format(vxi), bc['C']+((fc['C']-bc['C'])/10)*i).execute()
                 change(parm, 'charge', ':{}@O'.format(vxi), bc['O']+((fc['O']-bc['O'])/10)*i).execute()
 		setOverwrite(parm).execute()
@@ -70,10 +70,10 @@ def makevxi(struct, out, aa, vxi='VXI'):
                 for atom in res.atom_list:
 			if atom.get_name() == 'HH3' and res.get_resname() == vxi:
                         	pdb.write(atom.formatted())
-                        	pdb.write(atom.halfway_between('CF', CH, HH1))
-                        	pdb.write(atom.superimposed1('HF1', HH1))
-                        	pdb.write(atom.superimposed2('HF2', HH1))
-                        	pdb.write(atom.superimposed3('HF3', HH1))
+                        	pdb.write(atom.halfway_between('CT', CH, HH1))
+                        	pdb.write(atom.superimposed1('HT1', HH1))
+                        	pdb.write(atom.superimposed2('HT2', HH1))
+                        	pdb.write(atom.superimposed3('HT3', HH1))
 			else:
                         	pdb.write(atom.formatted())
                 try:
@@ -90,7 +90,7 @@ def makevxi(struct, out, aa, vxi='VXI'):
 
 def lib_make(ff, outputfile, vxi='VXI', metcar='dc', methyd='dh', hydhyd='mh'):
         ctrl = open('lyp.in', 'w')
-        ctrl.write("source leaprc.%s\n"%ff)
+        ctrl.write("source %s\n"%ff)
 	ctrl.write("%s=loadpdb Param_files/LibPDB/NER-NKI.pdb\n"%vxi)
 	ctrl.write('set %s.1.1 element "N"\n'%vxi)
 	ctrl.write('set %s.1.2 element "H"\n'%vxi)
@@ -144,10 +144,10 @@ def lib_make(ff, outputfile, vxi='VXI', metcar='dc', methyd='dh', hydhyd='mh'):
 	ctrl.write('set %s.1.21 name "HH1"\n'%vxi)
 	ctrl.write('set %s.1.22 name "HH2"\n'%vxi)
 	ctrl.write('set %s.1.23 name "HH3"\n'%vxi)
-	ctrl.write('set %s.1.24 name "CF"\n'%vxi)
-	ctrl.write('set %s.1.25 name "HF1"\n'%vxi)
-	ctrl.write('set %s.1.26 name "HF2"\n'%vxi)
-	ctrl.write('set %s.1.27 name "HF3"\n'%vxi)
+	ctrl.write('set %s.1.24 name "CT"\n'%vxi)
+	ctrl.write('set %s.1.25 name "HT1"\n'%vxi)
+	ctrl.write('set %s.1.26 name "HT2"\n'%vxi)
+	ctrl.write('set %s.1.27 name "HT3"\n'%vxi)
 	ctrl.write('set %s.1.28 name "C"\n'%vxi)
 	ctrl.write('set %s.1.29 name "O"\n'%vxi)
 	ctrl.write('set %s.1.1 type "N"\n'%vxi)
