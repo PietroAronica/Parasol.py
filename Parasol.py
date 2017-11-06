@@ -15,6 +15,7 @@ import os
 import shutil
 
 HOMEDIR="/home/pietroa/Python/"
+WORKDIR="/home/pietroa/Work/"
 
 # Define input files and output files 
 def readinput(argv):
@@ -335,22 +336,6 @@ if job == 0:
 		Run.mutate_con('{}Store/'.format(HOMEDIR), 'ANN', nwdir, resid, lipid=lipid)
 		os.chdir(HOMEDIR)
 		God.makeinput('Curr_run.pdb', outfile, 'ANN', faa, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
-		cleanup()
-		Run.mutate_con('{}Store/'.format(HOMEDIR), faa, nwdir, resid, lipid=lipid)
-	if baa == 'ALA' and faa in ('ARG', 'LYS'):
-		God.makeinput(pdbfile, outfile, baa, 'ABU', resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
-		cleanup()
-		nwdir = Run.mutate_beg('{}Store/'.format(HOMEDIR), 'ABU', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa, lipid=lipid)
-		os.chdir(HOMEDIR)
-		God.makeinput('Curr_run.pdb', outfile, 'ABU', 'NVA', resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
-		cleanup()
-		Run.mutate_con('{}Store/'.format(HOMEDIR), 'NVA', nwdir, resid, lipid=lipid)
-		os.chdir(HOMEDIR)
-		God.makeinput('Curr_run.pdb', outfile, 'NVA', 'NLE', resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
-		cleanup()
-		Run.mutate_con('{}Store/'.format(HOMEDIR), 'NLE', nwdir, resid, lipid=lipid)
-		os.chdir(HOMEDIR)
-		God.makeinput('Curr_run.pdb', outfile, 'NLE', faa, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
 		cleanup()
 		Run.mutate_con('{}Store/'.format(HOMEDIR), faa, nwdir, resid, lipid=lipid)
 	if baa == 'ALA' and faa == 'PRO':
@@ -2652,3 +2637,1181 @@ if job == '1':
 	Run.make_store(box)
 	cleanup()
 	Run.staple('{}Store/'.format(HOMEDIR), resid, faa, resid2, faa2)
+
+if job == '2':
+	#FULL PARASOL SCAN
+	#ALANINE
+	if baa == 'ALA':
+		if wkdir == 'None':
+			wkdir=datetime.datetime.now().strftime('{}Full_Parasol_Scan_of_Residue_ALA{}_%m-%d_%H:%M'.format(WORKDIR, resid)) 	
+		for amiaci in {'GLY', 'SER', 'THR', 'VAL', 'ASN', 'ASP', 'CYS'}:
+			God.makeinput(pdbfile, outfile, baa, amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'QUA', 'ABU'}:
+			God.makeinput(pdbfile, outfile, baa, amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'ILE', 'LEU', 'GLN', 'GLU'}:
+			God.makeinput('{}/ToABU/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ABU', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'NVA'}:
+			God.makeinput('{}/ToABU/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ABU', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'MET'}:
+			God.makeinput('{}/ToNVA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'NVA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'ANN', 'NLE'}:
+			God.makeinput('{}/ToNVA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'NVA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'PHE', 'HIS', 'TRP', 'TYR'}:
+			God.makeinput('{}/ToANN/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ANN', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'PRO'}:
+			God.makeinput('{}/ToQUA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'QUA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'ARG', 'LYS'}:
+			God.makeinput('{}/ToNLE/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'NLE', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+	#GLYCINE
+	if baa == 'GLY':
+		if wkdir == 'None':
+			wkdir=datetime.datetime.now().strftime('{}Full_Parasol_Scan_of_Residue_GLY{}_%m-%d_%H:%M'.format(WORKDIR, resid)) 	
+		for amiaci in {'ALA'}:
+			God.makeinput(pdbfile, outfile, baa, amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'SER', 'THR', 'VAL', 'ASN', 'ASP', 'CYS'}:
+			God.makeinput('{}/ToALA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ALA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'QUA', 'ABU'}:
+			God.makeinput('{}/ToALA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ALA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'PRO'}:
+			God.makeinput('{}/ToQUA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'QUA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'ILE', 'LEU', 'GLN', 'GLU'}:
+			God.makeinput('{}/ToABU/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ABU', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'NVA'}:
+			God.makeinput('{}/ToABU/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ABU', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'ANN', 'NLE'}:
+			God.makeinput('{}/ToNVA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'NVA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'PHE', 'HIS', 'TRP', 'TYR'}:
+			God.makeinput('{}/ToANN/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ANN', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'MET'}:
+			God.makeinput('{}/ToNVA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'NVA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'ARG', 'LYS'}:
+			God.makeinput('{}/ToNLE/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'NLE', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+	#SERINE
+	if baa == 'SER':
+		if wkdir == 'None':
+			wkdir=datetime.datetime.now().strftime('{}Full_Parasol_Scan_of_Residue_SER{}_%m-%d_%H:%M'.format(WORKDIR, resid)) 	
+		for amiaci in {'ALA', 'THR', 'VAL', 'ASN', 'ASP', 'CYS'}:
+			God.makeinput(pdbfile, outfile, baa, amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'ABU', 'QUA'}:
+			God.makeinput(pdbfile, outfile, baa, amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'GLY'}:
+			God.makeinput('{}/ToALA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ALA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'ILE', 'LEU', 'GLN', 'GLU'}:
+			God.makeinput('{}/ToABU/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ABU', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'PRO'}:
+			God.makeinput('{}/ToQUA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'QUA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'NVA'}:
+			God.makeinput('{}/ToABU/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ABU', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'ANN', 'NLE'}:
+			God.makeinput('{}/ToNVA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'NVA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'PHE', 'HIS', 'TRP', 'TYR'}:
+			God.makeinput('{}/ToANN/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ANN', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'MET'}:
+			God.makeinput('{}/ToNVA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'NVA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'ARG', 'LYS'}:
+			God.makeinput('{}/ToNLE/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'NLE', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+	#CYSTEINE
+	if baa == 'CYS':
+		if wkdir == 'None':
+			wkdir=datetime.datetime.now().strftime('{}Full_Parasol_Scan_of_Residue_CYS{}_%m-%d_%H:%M'.format(WORKDIR, resid)) 	
+		for amiaci in {'ALA', 'THR', 'VAL', 'ASN', 'ASP', 'SER'}:
+			God.makeinput(pdbfile, outfile, baa, amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'ABU', 'QUA'}:
+			God.makeinput(pdbfile, outfile, baa, amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'GLY'}:
+			God.makeinput('{}/ToALA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ALA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'ILE', 'LEU', 'GLN', 'GLU'}:
+			God.makeinput('{}/ToABU/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ABU', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'PRO'}:
+			God.makeinput('{}/ToQUA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'QUA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'NVA'}:
+			God.makeinput('{}/ToABU/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ABU', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'ANN', 'NLE'}:
+			God.makeinput('{}/ToNVA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'NVA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'PHE', 'HIS', 'TRP', 'TYR'}:
+			God.makeinput('{}/ToANN/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ANN', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'MET'}:
+			God.makeinput('{}/ToNVA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'NVA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'ARG', 'LYS'}:
+			God.makeinput('{}/ToNLE/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'NLE', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+	#VALINE
+	if baa == 'VAL':
+		if wkdir == 'None':
+			wkdir=datetime.datetime.now().strftime('{}Full_Parasol_Scan_of_Residue_VAL{}_%m-%d_%H:%M'.format(WORKDIR, resid)) 	
+		for amiaci in {'ALA', 'THR', 'SER', 'ASN', 'ASP', 'CYS', 'LEU', 'ILE', 'GLN', 'GLU'}:
+			God.makeinput(pdbfile, outfile, baa, amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'NVA', 'QUA'}:
+			God.makeinput(pdbfile, outfile, baa, amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'GLY'}:
+			God.makeinput('{}/ToALA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ALA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'PRO'}:
+			God.makeinput('{}/ToQUA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'QUA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'ANN', 'NLE'}:
+			God.makeinput('{}/ToNVA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'NVA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'PHE', 'HIS', 'TRP', 'TYR'}:
+			God.makeinput('{}/ToANN/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ANN', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'MET'}:
+			God.makeinput('{}/ToNVA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'NVA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'ARG', 'LYS'}:
+			God.makeinput('{}/ToNLE/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'NLE', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+	#THREONINE
+	if baa == 'THR':
+		if wkdir == 'None':
+			wkdir=datetime.datetime.now().strftime('{}Full_Parasol_Scan_of_Residue_THR{}_%m-%d_%H:%M'.format(WORKDIR, resid)) 	
+		for amiaci in {'ALA', 'VAL', 'SER', 'ASN', 'ASP', 'CYS', 'LEU', 'ILE', 'GLN', 'GLU'}:
+			God.makeinput(pdbfile, outfile, baa, amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'NVA', 'QUA'}:
+			God.makeinput(pdbfile, outfile, baa, amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'GLY'}:
+			God.makeinput('{}/ToALA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ALA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'PRO'}:
+			God.makeinput('{}/ToQUA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'QUA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'ANN', 'NLE'}:
+			God.makeinput('{}/ToNVA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'NVA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'PHE', 'HIS', 'TRP', 'TYR'}:
+			God.makeinput('{}/ToANN/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ANN', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'MET'}:
+			God.makeinput('{}/ToNVA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'NVA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'ARG', 'LYS'}:
+			God.makeinput('{}/ToNLE/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'NLE', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+	#ISOLEUCINE
+	if baa == 'ILE':
+		if wkdir == 'None':
+			wkdir=datetime.datetime.now().strftime('{}Full_Parasol_Scan_of_Residue_ILE{}_%m-%d_%H:%M'.format(WORKDIR, resid)) 	
+		for amiaci in {'MET', 'VAL', 'THR', 'LEU', 'GLN', 'GLU'}:
+			God.makeinput(pdbfile, outfile, baa, amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'ANN', 'NLE'}:
+			God.makeinput(pdbfile, outfile, baa, amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'ALA', 'SER', 'CYS', 'ASP', 'ASN'}:
+			God.makeinput('{}/ToVAL/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'VAL', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'GLY'}:
+			God.makeinput('{}/ToALA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ALA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'QUA'}:
+			God.makeinput('{}/ToVAL/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'VAL', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'PRO'}:
+			God.makeinput('{}/ToQUA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'QUA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'PHE', 'HIS', 'TRP', 'TYR'}:
+			God.makeinput('{}/ToANN/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ANN', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'ARG', 'LYS'}:
+			God.makeinput('{}/ToNLE/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'NLE', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+	#LEUCINE
+	if baa == 'LEU':
+		if wkdir == 'None':
+			wkdir=datetime.datetime.now().strftime('{}Full_Parasol_Scan_of_Residue_LEU{}_%m-%d_%H:%M'.format(WORKDIR, resid)) 	
+		for amiaci in {'MET', 'VAL', 'THR', 'ILE', 'GLN', 'GLU'}:
+			God.makeinput(pdbfile, outfile, baa, amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'ANN', 'NLE', 'ABU'}:
+			God.makeinput(pdbfile, outfile, baa, amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'ALA', 'SER', 'CYS', 'ASP', 'ASN'}:
+			God.makeinput('{}/ToABU/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ABU', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'GLY'}:
+			God.makeinput('{}/ToALA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ALA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'QUA'}:
+			God.makeinput('{}/ToABU/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ABU', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'PRO'}:
+			God.makeinput('{}/ToQUA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'QUA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'PHE', 'HIS', 'TRP', 'TYR'}:
+			God.makeinput('{}/ToANN/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ANN', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'ARG', 'LYS'}:
+			God.makeinput('{}/ToNLE/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'NLE', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+	#ASPARAGINE
+	if baa == 'ASN':
+		if wkdir == 'None':
+			wkdir=datetime.datetime.now().strftime('{}Full_Parasol_Scan_of_Residue_ASN{}_%m-%d_%H:%M'.format(WORKDIR, resid)) 	
+		for amiaci in {'ALA', 'THR', 'VAL', 'SER', 'ASP', 'CYS', 'GLN'}:
+			God.makeinput(pdbfile, outfile, baa, amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'ABU', 'QUA'}:
+			God.makeinput(pdbfile, outfile, baa, amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'GLY'}:
+			God.makeinput('{}/ToALA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ALA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'ILE', 'LEU', 'GLU'}:
+			God.makeinput('{}/ToABU/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ABU', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'PRO'}:
+			God.makeinput('{}/ToQUA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'QUA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'NVA'}:
+			God.makeinput('{}/ToABU/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ABU', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'ANN', 'NLE'}:
+			God.makeinput('{}/ToNVA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'NVA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'PHE', 'HIS', 'TRP', 'TYR'}:
+			God.makeinput('{}/ToANN/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ANN', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'MET'}:
+			God.makeinput('{}/ToNVA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'NVA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'ARG', 'LYS'}:
+			God.makeinput('{}/ToNLE/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'NLE', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+	#ASPARTIC ACID
+	if baa == 'ASP':
+		if wkdir == 'None':
+			wkdir=datetime.datetime.now().strftime('{}Full_Parasol_Scan_of_Residue_ASP{}_%m-%d_%H:%M'.format(WORKDIR, resid)) 	
+		for amiaci in {'ALA', 'THR', 'VAL', 'SER', 'ASN', 'CYS', 'GLU'}:
+			God.makeinput(pdbfile, outfile, baa, amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'ABU', 'QUA'}:
+			God.makeinput(pdbfile, outfile, baa, amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'GLY'}:
+			God.makeinput('{}/ToALA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ALA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'ILE', 'LEU', 'GLU'}:
+			God.makeinput('{}/ToABU/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ABU', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'PRO'}:
+			God.makeinput('{}/ToQUA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'QUA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'NVA'}:
+			God.makeinput('{}/ToABU/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ABU', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'ANN', 'NLE'}:
+			God.makeinput('{}/ToNVA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'NVA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'PHE', 'HIS', 'TRP', 'TYR'}:
+			God.makeinput('{}/ToANN/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ANN', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'MET'}:
+			God.makeinput('{}/ToNVA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'NVA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'ARG', 'LYS'}:
+			God.makeinput('{}/ToNLE/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'NLE', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+	#GLUTAMIC ACID
+	if baa == 'GLU':
+		if wkdir == 'None':
+			wkdir=datetime.datetime.now().strftime('{}Full_Parasol_Scan_of_Residue_GLU{}_%m-%d_%H:%M'.format(WORKDIR, resid)) 	
+		for amiaci in {'ASP', 'GLN', 'ILE', 'LEU', 'THR', 'VAL'}:
+			God.makeinput(pdbfile, outfile, baa, amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'NVA', 'ABU'}:
+			God.makeinput(pdbfile, outfile, baa, amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'ALA', 'SER', 'CYS', 'ASN'}:
+			God.makeinput('{}/ToABU/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ABU', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'GLY'}:
+			God.makeinput('{}/ToALA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ALA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'QUA'}:
+			God.makeinput('{}/ToABU/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ABU', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'PRO'}:
+			God.makeinput('{}/ToQUA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'QUA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'ANN', 'NLE'}:
+			God.makeinput('{}/ToNVA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'NVA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'PHE', 'HIS', 'TRP', 'TYR'}:
+			God.makeinput('{}/ToANN/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ANN', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'ARG', 'LYS'}:
+			God.makeinput('{}/ToNLE/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'NLE', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+	#GLUTAMINE
+	if baa == 'GLN':
+		if wkdir == 'None':
+			wkdir=datetime.datetime.now().strftime('{}Full_Parasol_Scan_of_Residue_GLN{}_%m-%d_%H:%M'.format(WORKDIR, resid)) 	
+		for amiaci in {'ASN', 'GLU', 'ILE', 'LEU', 'THR', 'VAL'}:
+			God.makeinput(pdbfile, outfile, baa, amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'NVA', 'ABU'}:
+			God.makeinput(pdbfile, outfile, baa, amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'ALA', 'SER', 'CYS', 'ASP'}:
+			God.makeinput('{}/ToABU/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ABU', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'GLY'}:
+			God.makeinput('{}/ToALA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ALA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'QUA'}:
+			God.makeinput('{}/ToABU/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ABU', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'PRO'}:
+			God.makeinput('{}/ToQUA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'QUA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'ANN', 'NLE'}:
+			God.makeinput('{}/ToNVA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'NVA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'PHE', 'HIS', 'TRP', 'TYR'}:
+			God.makeinput('{}/ToANN/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ANN', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'ARG', 'LYS'}:
+			God.makeinput('{}/ToNLE/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'NLE', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+	#METHIONINE
+	if baa == 'MET':
+		if wkdir == 'None':
+			wkdir=datetime.datetime.now().strftime('{}Full_Parasol_Scan_of_Residue_MET{}_%m-%d_%H:%M'.format(WORKDIR, resid)) 	
+		for amiaci in {'ILE', 'LEU'}:
+			God.makeinput(pdbfile, outfile, baa, amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'NVA', 'NLE'}:
+			God.makeinput(pdbfile, outfile, baa, amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'ANN', 'ABU'}:
+			God.makeinput('{}/ToNVA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'NVA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'ALA', 'SER', 'CYS', 'ASP'}:
+			God.makeinput('{}/ToABU/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ABU', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'GLY'}:
+			God.makeinput('{}/ToALA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ALA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'QUA'}:
+			God.makeinput('{}/ToABU/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ABU', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'PRO'}:
+			God.makeinput('{}/ToQUA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'QUA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'PHE', 'HIS', 'TRP', 'TYR'}:
+			God.makeinput('{}/ToANN/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ANN', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'ARG', 'LYS'}:
+			God.makeinput('{}/ToNLE/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'NLE', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+	#PROLINE
+	if baa == 'PRO':
+		if wkdir == 'None':
+			wkdir=datetime.datetime.now().strftime('{}Full_Parasol_Scan_of_Residue_PRO{}_%m-%d_%H:%M'.format(WORKDIR, resid)) 	
+		for amiaci in {'QUA'}:
+			God.makeinput(pdbfile, outfile, baa, amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'ASN', 'ASP', 'ALA', 'CYS', 'SER', 'THR', 'VAL'}:
+			God.makeinput('{}/ToQUA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'QUA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'ABU'}:
+			God.makeinput('{}/ToQUA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'QUA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'ILE', 'LEU', 'GLN', 'GLU'}:
+			God.makeinput('{}/ToABU/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ABU', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'NVA'}:
+			God.makeinput('{}/ToABU/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ABU', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'MET'}:
+			God.makeinput('{}/ToNVA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'NVA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'ANN', 'NLE'}:
+			God.makeinput('{}/ToNVA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'NVA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'PHE', 'HIS', 'TRP', 'TYR'}:
+			God.makeinput('{}/ToANN/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ANN', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'ARG', 'LYS'}:
+			God.makeinput('{}/ToNLE/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'NLE', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+	#PHENYLALANINE
+	if baa == 'PHE':
+		if wkdir == 'None':
+			wkdir=datetime.datetime.now().strftime('{}Full_Parasol_Scan_of_Residue_PHE{}_%m-%d_%H:%M'.format(WORKDIR, resid)) 	
+		for amiaci in {'TYR', 'TRP', 'HIS'}:
+			God.makeinput(pdbfile, outfile, baa, amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'ANN'}:
+			God.makeinput(pdbfile, outfile, baa, amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'ILE', 'LEU'}:
+			God.makeinput('{}/ToANN/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ANN', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'NVA'}:
+			God.makeinput('{}/ToANN/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ANN', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'VAL', 'THR', 'MET', 'GLU', 'GLN'}:
+			God.makeinput('{}/ToNVA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'NVA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'ABU', 'NLE'}:
+			God.makeinput('{}/ToNVA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'NVA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'ALA', 'SER', 'CYS', 'ASN', 'ASP'}:
+			God.makeinput('{}/ToABU/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ABU', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'GLY'}:
+			God.makeinput('{}/ToALA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ALA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'QUA'}:
+			God.makeinput('{}/ToABU/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ABU', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'PRO'}:
+			God.makeinput('{}/ToQUA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'QUA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'ARG', 'LYS'}:
+			God.makeinput('{}/ToNLE/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'NLE', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+	#HISTIDINE
+	if baa == 'HIS':
+		if wkdir == 'None':
+			wkdir=datetime.datetime.now().strftime('{}Full_Parasol_Scan_of_Residue_HIS{}_%m-%d_%H:%M'.format(WORKDIR, resid)) 	
+		for amiaci in {'TYR', 'TRP', 'PHE'}:
+			God.makeinput(pdbfile, outfile, baa, amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'ANN'}:
+			God.makeinput(pdbfile, outfile, baa, amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'ILE', 'LEU'}:
+			God.makeinput('{}/ToANN/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ANN', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'NVA'}:
+			God.makeinput('{}/ToANN/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ANN', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'VAL', 'THR', 'MET', 'GLU', 'GLN'}:
+			God.makeinput('{}/ToNVA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'NVA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'ABU', 'NLE'}:
+			God.makeinput('{}/ToNVA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'NVA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'ALA', 'SER', 'CYS', 'ASN', 'ASP'}:
+			God.makeinput('{}/ToABU/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ABU', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'GLY'}:
+			God.makeinput('{}/ToALA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ALA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'QUA'}:
+			God.makeinput('{}/ToABU/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ABU', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'PRO'}:
+			God.makeinput('{}/ToQUA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'QUA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'ARG', 'LYS'}:
+			God.makeinput('{}/ToNLE/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'NLE', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+	#TRYPTOPHAN
+	if baa == 'TRP':
+		if wkdir == 'None':
+			wkdir=datetime.datetime.now().strftime('{}Full_Parasol_Scan_of_Residue_TRP{}_%m-%d_%H:%M'.format(WORKDIR, resid)) 	
+		for amiaci in {'TYR', 'PHE', 'HIS'}:
+			God.makeinput(pdbfile, outfile, baa, amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'ANN'}:
+			God.makeinput(pdbfile, outfile, baa, amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'ILE', 'LEU'}:
+			God.makeinput('{}/ToANN/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ANN', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'NVA'}:
+			God.makeinput('{}/ToANN/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ANN', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'VAL', 'THR', 'MET', 'GLU', 'GLN'}:
+			God.makeinput('{}/ToNVA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'NVA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'ABU', 'NLE'}:
+			God.makeinput('{}/ToNVA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'NVA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'ALA', 'SER', 'CYS', 'ASN', 'ASP'}:
+			God.makeinput('{}/ToABU/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ABU', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'GLY'}:
+			God.makeinput('{}/ToALA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ALA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'QUA'}:
+			God.makeinput('{}/ToABU/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ABU', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'PRO'}:
+			God.makeinput('{}/ToQUA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'QUA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'ARG', 'LYS'}:
+			God.makeinput('{}/ToNLE/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'NLE', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+	#TYROSINE
+	if baa == 'TYR':
+		if wkdir == 'None':
+			wkdir=datetime.datetime.now().strftime('{}Full_Parasol_Scan_of_Residue_TYR{}_%m-%d_%H:%M'.format(WORKDIR, resid)) 	
+		for amiaci in {'PHE', 'TRP', 'HIS'}:
+			God.makeinput(pdbfile, outfile, baa, amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'ANN'}:
+			God.makeinput(pdbfile, outfile, baa, amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'ILE', 'LEU'}:
+			God.makeinput('{}/ToANN/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ANN', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'NVA'}:
+			God.makeinput('{}/ToANN/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ANN', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'VAL', 'THR', 'MET', 'GLU', 'GLN'}:
+			God.makeinput('{}/ToNVA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'NVA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'ABU', 'NLE'}:
+			God.makeinput('{}/ToNVA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'NVA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'ALA', 'SER', 'CYS', 'ASN', 'ASP'}:
+			God.makeinput('{}/ToABU/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ABU', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'GLY'}:
+			God.makeinput('{}/ToALA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ALA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'QUA'}:
+			God.makeinput('{}/ToABU/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ABU', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'PRO'}:
+			God.makeinput('{}/ToQUA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'QUA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'ARG', 'LYS'}:
+			God.makeinput('{}/ToNLE/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'NLE', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+	#ARGININE
+	if baa == 'ARG':
+		if wkdir == 'None':
+			wkdir=datetime.datetime.now().strftime('{}Full_Parasol_Scan_of_Residue_ARG{}_%m-%d_%H:%M'.format(WORKDIR, resid)) 	
+		for amiaci in {'LYS'}:
+			God.makeinput(pdbfile, outfile, baa, amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'NLE'}:
+			God.makeinput(pdbfile, outfile, baa, amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'ILE', 'LEU'}:
+			God.makeinput('{}/ToNLE/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'NLE', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'ANN', 'NVA'}:
+			God.makeinput('{}/ToNLE/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'NLE', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'PHE', 'HIS', 'TRP', 'TYR'}:
+			God.makeinput('{}/ToANN/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ANN', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'VAL', 'THR', 'MET', 'GLU', 'GLN'}:
+			God.makeinput('{}/ToNVA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'NVA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'ABU'}:
+			God.makeinput('{}/ToNVA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'NVA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'ALA', 'SER', 'CYS', 'ASN', 'ASP'}:
+			God.makeinput('{}/ToABU/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ABU', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'GLY'}:
+			God.makeinput('{}/ToALA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ALA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'QUA'}:
+			God.makeinput('{}/ToABU/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ABU', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'PRO'}:
+			God.makeinput('{}/ToQUA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'QUA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+	#LYSINE
+	if baa == 'LYS':
+		if wkdir == 'None':
+			wkdir=datetime.datetime.now().strftime('{}Full_Parasol_Scan_of_Residue_LYS{}_%m-%d_%H:%M'.format(WORKDIR, resid)) 	
+		for amiaci in {'ARG'}:
+			God.makeinput(pdbfile, outfile, baa, amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'NLE'}:
+			God.makeinput(pdbfile, outfile, baa, amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'ILE', 'LEU'}:
+			God.makeinput('{}/ToNLE/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'NLE', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'ANN', 'NVA'}:
+			God.makeinput('{}/ToNLE/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'NLE', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'PHE', 'HIS', 'TRP', 'TYR'}:
+			God.makeinput('{}/ToANN/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ANN', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'VAL', 'THR', 'MET', 'GLU', 'GLN'}:
+			God.makeinput('{}/ToNVA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'NVA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'ABU'}:
+			God.makeinput('{}/ToNVA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'NVA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'ALA', 'SER', 'CYS', 'ASN', 'ASP'}:
+			God.makeinput('{}/ToABU/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ABU', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'GLY'}:
+			God.makeinput('{}/ToALA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ALA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
+		for amiaci in {'QUA'}:
+			God.makeinput('{}/ToABU/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'ABU', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			os.chdir(HOMEDIR)
+		for amiaci in {'PRO'}:
+			God.makeinput('{}/ToQUA/Run_1/Mut_leap.pdb'.format(wkdir), outfile, 'QUA', amiaci, resid, ff2=ff2, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
+			cleanup()
+			Run.mutate_beg('{}Store/'.format(HOMEDIR), amiaci, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+			shutil.copyfile('{}Curr_run.pdb'.format(HOMEDIR), '{}/{}{}.pdb'.format(wkdir, amiaci, resid))
+			os.chdir(HOMEDIR)
