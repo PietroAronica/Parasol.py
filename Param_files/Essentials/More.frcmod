@@ -37,6 +37,7 @@ CC-C   377.4    1.4620       equivalent to cc-c  in gaff
 
 ANGLE
 CF-CF-HF   50.30      119.70    SOURCE3            1
+HF-CF-HF   50.30      119.70    SOURCE3            1
 CF-CF-CT   64.330     123.420   SOURCE3           41    2.6057
 CT-CF-HF   45.150     120.000   SOURCE3            1
 CF-CT-CT   63.530     111.440   SOURCE4         2891    1.7167

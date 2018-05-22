@@ -110,6 +110,8 @@ loadOff /home/pietroa/Python/Param_files/Essentials/ExtraAA.lib
 loadOff /home/pietroa/Python/Param_files/Essentials/D-AA.lib
 loadOff /home/pietroa/Python/Param_files/Essentials/N-Methylated_AA.lib
 loadOff /home/pietroa/Python/Param_files/Essentials/Staple_monomers.lib
+loadOff /home/pietroa/Python/Param_files/Essentials/Alpha-Methylated_Amino_Acids.lib
+loadOff /home/pietroa/Python/Param_files/Essentials/Beta-Amino_Acids.lib
 #
 #       Load water and ions
 # 

@@ -3,10 +3,10 @@
 import Frcmod_creator
 import PDBHandler
 import Leapy
-from ParmedTools.ParmedActions import *
-from chemistry.amber.readparm import *
+from parmed.tools.actions import *
+from parmed.amber.readparm import *
 
-def parmed_command(vxi='VXI'):
+def parmed_command(vxi='VXI', lipid='No'):
 	bc = {}
         with open('Param_files/AminoAcid/LYS.param', 'r') as b:
                 data = b.readlines()[1:]
@@ -68,10 +68,10 @@ def makevxi(struct, out, aa, vxi='VXI'):
                         	pdb.write(atom.superimposed1('HE1', NZ))
 			else:
                         	pdb.write(atom.formatted())
-                try:
-                        pdb.write(struct.other_dict[res.get_resnumber()].ter())
-                except:
-                        pass
+	                try:
+        	                pdb.write(struct.other_dict[atom.get_number()].ter())
+                	except:
+                        	pass
         for oth in struct.other_dict:
                 try:
                         if oth.startswith('Conect'):
@@ -80,7 +80,7 @@ def makevxi(struct, out, aa, vxi='VXI'):
                         pass
         pdb.write('END\n')
 
-def lib_make(ff, outputfile, vxi='VXI', amnnit='dn', amnhyd='dh', hydhyd='mh', lyshyd='fh'):
+def lib_make(ff, outputfile, vxi='VXI', amnnit='dn', amnhyd='dh', hydhyd='mh', lyshyd='hf'):
         ctrl = open('lyp.in', 'w')
         ctrl.write("source %s\n"%ff)
         ctrl.write("%s=loadpdb Param_files/LibPDB/NLE-LYS.pdb\n"%vxi)
@@ -197,7 +197,7 @@ def lac(x, y, i):
         num = y+((x-y)/10)*i
         return num
 
-def stock_add_to_all(amnnit='dn', amnhyd='dh', hydhyd='mh', lyshyd='fh'):
+def stock_add_to_all(amnnit='dn', amnhyd='dh', hydhyd='mh', lyshyd='hf'):
         Frcmod_creator.make_hyb()
         Frcmod_creator.TYPE_insert(amnnit, 'N', 'sp3')
         Frcmod_creator.TYPE_insert(amnhyd, 'H', 'sp3')
@@ -223,7 +223,7 @@ def stock_add_to_all(amnnit='dn', amnhyd='dh', hydhyd='mh', lyshyd='fh'):
                 Frcmod_creator.BOND_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}'.format(amnnit, amnhyd), cal(p['NA_H'][0], p['H_mHC'][0], i), cal(p['NA_H'][1], p['H_mHC'][1], i))
                 Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format('CT', amnnit, amnhyd), cal(p['C_C_H'][0], p['Dritt'][0], i), cal(p['C_C_H'][1], p['Dritt'][1], i))
                 Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format(amnhyd, amnnit, amnhyd), cal(p['H_C_H'][0], p['Close'][0], i), cal(p['H_C_H'][1], p['Close'][1], i))
-                Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format('CT', 'CT', amnnit), cal(p['C_C_H'][0], p['C_C_N'][0], i), cal(p['C_C_H'][1], p['C_C_N'][1], i))
+                Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format('CT', 'CT', amnnit), cal(p['C_C_N'][0], p['C_C_H'][0], i), cal(p['C_C_N'][1], p['C_C_H'][1], i))
                 Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format(lyshyd, 'CT', amnnit), cal(p['C_C_H'][0], p['C_C_H'][0], i), cal(p['C_C_H'][1], p['C_C_H'][1], i))
                 Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format(lyshyd, 'CT', hydhyd), cal(p['H_C_H'][0], p['H_C_H'][0], i), cal(p['H_C_H'][1], p['H_C_H'][1], i))
                 Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format(lyshyd, 'CT', lyshyd), cal(p['H_C_H'][0], p['H_C_H'][0], i), cal(p['H_C_H'][1], p['H_C_H'][1], i))

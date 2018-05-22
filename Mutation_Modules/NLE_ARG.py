@@ -3,10 +3,10 @@
 import Frcmod_creator
 import PDBHandler
 import Leapy
-from ParmedTools.ParmedActions import *
-from chemistry.amber.readparm import *
+from parmed.tools.actions import *
+from parmed.amber.readparm import *
 
-def parmed_command(vxi='VXI'):
+def parmed_command(vxi='VXI', lipid='No'):
 	bc = {}
         with open('Param_files/AminoAcid/NLE.param', 'r') as b:
                 data = b.readlines()[1:]
@@ -15,8 +15,12 @@ def parmed_command(vxi='VXI'):
 		bc[key] = float(value)
         b.close()
 	fc = {}
-        with open('Param_files/AminoAcid/ARG.param', 'r') as b:
-                data = b.readlines()[1:]
+	if lipid == 'Yes':
+	        with open('Param_files/AminoAcid/ARG.param.0', 'r') as b:
+        	        data = b.readlines()[1:]
+	else:
+	        with open('Param_files/AminoAcid/ARG.param', 'r') as b:
+        	        data = b.readlines()[1:]
         for line in data:
 		key, value = line.split()
 		fc[key] = float(value)
@@ -89,10 +93,10 @@ def makevxi(struct, out, aa, vxi='VXI'):
 				pdb.write(atom.superimposed2('HH22', HE2)) 
 			else:
                         	pdb.write(atom.formatted())
-                try:
-                        pdb.write(struct.other_dict[res.get_resnumber()].ter())
-                except:
-                        pass
+	                try:
+        	                pdb.write(struct.other_dict[atom.get_number()].ter())
+                	except:
+                        	pass
         for oth in struct.other_dict:
                 try:
                         if oth.startswith('Conect'):
@@ -101,7 +105,7 @@ def makevxi(struct, out, aa, vxi='VXI'):
                         pass
         pdb.write('END\n')
 
-def lib_make(ff, outputfile, vxi='VXI', hd1='fh', ne='rn', he='rh', cz='rc', he1='1h', he2='2h', he3='3h', nh1='1n', hh1='5h', nh2='2n', hh2='6h'):
+def lib_make(ff, outputfile, vxi='VXI', hd1='hf', ne='rn', he='rh', cz='rc', he1='1h', he2='2h', he3='3h', nh1='1n', hh1='5h', nh2='2n', hh2='6h'):
         ctrl = open('lyp.in', 'w')
         ctrl.write("source %s\n"%ff)
 	ctrl.write("%s=loadpdb Param_files/LibPDB/NLE-ARG.pdb\n"%vxi)
@@ -235,7 +239,7 @@ def lac(x, y, i):
 	num = y+((x-y)/10)*i
 	return num
 
-def stock_add_to_all(hd1='fh', ne='rn', he='rh', cz='rc', he1='1h', he2='2h', he3='3h', nh1='1n', hh1='5h', nh2='2n', hh2='6h'):
+def stock_add_to_all(hd1='hf', ne='rn', he='rh', cz='rc', he1='1h', he2='2h', he3='3h', nh1='1n', hh1='5h', nh2='2n', hh2='6h'):
 	Frcmod_creator.make_hyb()
 	Frcmod_creator.TYPE_insert(hd1, 'H', 'sp3')
 	Frcmod_creator.TYPE_insert(ne, 'N', 'sp2')

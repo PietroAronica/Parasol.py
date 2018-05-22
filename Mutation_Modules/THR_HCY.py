@@ -3,10 +3,10 @@
 import Frcmod_creator
 import PDBHandler
 import Leapy
-from ParmedTools.ParmedActions import *
-from chemistry.amber.readparm import *
+from parmed.tools.actions import *
+from parmed.amber.readparm import *
 
-def parmed_command(vxi='VXI'):
+def parmed_command(vxi='VXI', lipid='No'):
 	bc = {}
         with open('Param_files/AminoAcid/THR.param', 'r') as b:
                 data = b.readlines()[1:]
@@ -71,10 +71,10 @@ def makevxi(struct, out, aa, vxi='VXI'):
                         	pdb.write(atom.superimposed1('HD', HG21))
 			else:
                         	pdb.write(atom.formatted())
-                try:
-                        pdb.write(struct.other_dict[res.get_resnumber()].ter())
-                except:
-                        pass
+	                try:
+        	                pdb.write(struct.other_dict[atom.get_number()].ter())
+                	except:
+                        	pass
         for oth in struct.other_dict:
                 try:
                         if oth.startswith('Conect'):
@@ -83,7 +83,7 @@ def makevxi(struct, out, aa, vxi='VXI'):
                         pass
         pdb.write('END\n')
 
-def lib_make(ff, outputfile, vxi='VXI', thisul='cs', thihyd='ch', hydhyd1='yh', alcoxy='ho', alchyd='hh', hydhyd2='sh', thrhyd='fh', cyshyd='gh'):
+def lib_make(ff, outputfile, vxi='VXI', thisul='sc', thihyd='ch', hydhyd1='yh', alcoxy='oh', alchyd='hh', hydhyd2='sh', thrhyd='hf', cyshyd='gh'):
         ctrl = open('lyp.in', 'w')
         ctrl.write("source %s\n"%ff)
 	ctrl.write("%s=loadpdb Param_files/LibPDB/THR-HCY.pdb\n"%vxi)
@@ -177,7 +177,7 @@ def lac(x, y, i):
         num = y+((x-y)/10)*i
         return num
 
-def stock_add_to_all(vxi='VXI', thisul='cs', thihyd='ch', hydhyd1='yh', alcoxy='ho', alchyd='hh', hydhyd2='sh', thrhyd='fh', cyshyd='gh'):
+def stock_add_to_all(vxi='VXI', thisul='sc', thihyd='ch', hydhyd1='yh', alcoxy='oh', alchyd='hh', hydhyd2='sh', thrhyd='hf', cyshyd='gh'):
 	Frcmod_creator.make_hyb()
 	Frcmod_creator.TYPE_insert(alcoxy, 'O', 'sp3')
 	Frcmod_creator.TYPE_insert(alchyd, 'H', 'sp3')

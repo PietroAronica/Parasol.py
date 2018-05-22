@@ -4,11 +4,13 @@ import os, sys
 from optparse import OptionParser
 from subprocess import Popen, PIPE
 
+HOMEDIR="/home/pietroa/Python/"
+
 def run(cmd, output='leap.log'):
 	cmdline = "tleap -f %s >> %s"%(cmd, output)
 	os.system(cmdline)
 
-def createprmtops(ff1='Param_files/Essentials/cmd.ff14SB+', ff2='No', pbradii='Null', dat='Hyb.dat', lib='VXI.lib', ion='Null', box='Null', solvbox='8.0', output='leap.log', bal='Null', extralib='None', extrafrcmod='None', extracommand='None'):
+def createprmtops(ff1='Param_files/Essentials/cmd.ff14SB+', ff2='No', pbradii='Null', dat='Hyb.dat', lib='VXI.lib', ion='Null', box='Null', solvbox='8.0', output='leap.log', bal='Null', extralib='Null', extrafrcmod='Null', extracommand='Null', extraprep='Null'):
 	ctrl = open('lyp.in', 'w')
 	ctrl.write("source %s\n"%ff1)
 	if ff2 != 'No':
@@ -17,9 +19,17 @@ def createprmtops(ff1='Param_files/Essentials/cmd.ff14SB+', ff2='No', pbradii='N
 	if pbradii != 'Null':
 		ctrl.write("set default pbradii %s\n"%pbradii)
 	ctrl.write("loadoff %s\n"%lib)
-	if extralib != 'None':
+	ctrl.write("loadoff {}Param_files/Essentials/D-AA.lib\n".format(HOMEDIR))
+	ctrl.write("loadoff {}Param_files/Essentials/N-Methylated_AA.lib\n".format(HOMEDIR))
+	ctrl.write("loadoff {}Param_files/Essentials/ExtraAA.lib\n".format(HOMEDIR))
+	ctrl.write("loadoff {}Param_files/Essentials/Staple_monomers.lib\n".format(HOMEDIR))
+	ctrl.write("Extra = loadamberparams {}Param_files/Essentials/Extra.frcmod\n".format(HOMEDIR))
+	ctrl.write("More = loadamberparams {}Param_files/Essentials/More.frcmod\n".format(HOMEDIR))
+	if extraprep != 'Null':
+		ctrl.write("loadamberprep %s\n" %extraprep)
+	if extralib != 'Null':
 		ctrl.write("loadoff %s\n" %extralib)
-	if extrafrcmod != 'None':
+	if extrafrcmod != 'Null':
 		ctrl.write("loadamberparams %s\n" %extrafrcmod)
 	ctrl.write("loadamberparams 0_100.frcmod\n")
 	ctrl.write("Mutanda = loadpdb Mutabond.pdb\n")
@@ -27,13 +37,13 @@ def createprmtops(ff1='Param_files/Essentials/cmd.ff14SB+', ff2='No', pbradii='N
 		ctrl.write("addions Mutanda %s 0\n" %ion)
 	if box != 'Null':
 		ctrl.write("set Mutanda box {%s %s %s}\n" %(box[0], box[1], box[2]))
-	if solvbox != 'Null':
+	if solvbox != 'Null' and 0:
 		ctrl.write("solvateoct Mutanda TIP3PBOX %s\n" %solvbox)
 	if bal != 'Null':
 		ctrl.write("loadamberparams Param_files/Stock/Ion.frcmod\n")
 		ctrl.write("loadoff Param_files/Stock/Ion.lib\n")
 		ctrl.write("addions Mutanda %s 1\n" %bal)
-	if extracommand != 'None':
+	if extracommand != 'Null':
 		exc = open(extracommand)
 		comm = exc.readlines()
 		for line in comm:
@@ -64,7 +74,7 @@ def createprmtops(ff1='Param_files/Essentials/cmd.ff14SB+', ff2='No', pbradii='N
 	ctrl.close()
 	run('lyp.in', output)
 
-def stapleprmtops(box, resid, ff1='ff99SB+', ff2='Null', pbradii='Null', ion='Null', output='leap.log', bal='Null'):
+def stapleprmtops(box, resid, ff1='ff14SB+', ff2='Null', pbradii='Null', ion='Null', output='leap.log', bal='Null'):
 	ctrl = open('lyp.in', 'w')
 	ctrl.write("source leaprc.%s\n"%ff1)
 	if ff2 != 'Null':
@@ -108,7 +118,7 @@ def stapleprmtops(box, resid, ff1='ff99SB+', ff2='Null', pbradii='Null', ion='Nu
 	ctrl.close()
 	run('lyp.in', output)
 
-def stapleprmtops2(box, nki, nle, ff='ff99SB+', pbradii='Null', ion='Null', output='leap.log', bal='Null'):
+def stapleprmtops2(box, nki, nle, ff='ff14SB+', pbradii='Null', ion='Null', output='leap.log', bal='Null'):
 	ctrl = open('lyp.in', 'w')
 	ctrl.write("source leaprc.%s\n"%ff)
 	ctrl.write("source Param_files/Stock/Hyb_std.dat\n")
@@ -150,7 +160,7 @@ def stapleprmtops2(box, nki, nle, ff='ff99SB+', pbradii='Null', ion='Null', outp
 	ctrl.close()
 	run('lyp.in', output)
 
-def stapleprmtops_general(box, firstres, secondres, conatom1, conatom2, ff='ff99SB+', pbradii='Null', ion='Null', output='leap.log', bal='Null'):
+def stapleprmtops_general(box, firstres, secondres, conatom1, conatom2, ff='ff14SB+', pbradii='Null', ion='Null', output='leap.log', bal='Null'):
 	ctrl = open('lyp.in', 'w')
 	ctrl.write("source leaprc.%s\n"%ff)
 	ctrl.write("source Param_files/Stock/Hyb_std.dat\n")
@@ -158,6 +168,12 @@ def stapleprmtops_general(box, firstres, secondres, conatom1, conatom2, ff='ff99
 		ctrl.write("set default pbradii %s\n"%pbradii)
 	ctrl.write("loadoff NX1.lib\n")
 	ctrl.write("loadoff NX2.lib\n")
+	ctrl.write("loadoff {}Param_files/Essentials/D-AA.lib\n".format(HOMEDIR))
+	ctrl.write("loadoff {}Param_files/Essentials/N-Methylated_AA.lib\n".format(HOMEDIR))
+	ctrl.write("loadoff {}Param_files/Essentials/ExtraAA.lib\n".format(HOMEDIR))
+	ctrl.write("loadoff {}Param_files/Essentials/Staple_monomers.lib\n".format(HOMEDIR))
+	ctrl.write("Extra = loadamberparams {}Param_files/Essentials/Extra.frcmod\n".format(HOMEDIR))
+	ctrl.write("More = loadamberparams {}Param_files/Essentials/More.frcmod\n".format(HOMEDIR))
 	ctrl.write("loadamberparams 0_100.frcmod\n")
 	ctrl.write("Mutanda = loadpdb Staplebond.pdb\n")
 	if ion in ['Cl-', 'Na+']:

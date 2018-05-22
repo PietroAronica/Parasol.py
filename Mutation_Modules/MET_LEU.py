@@ -3,10 +3,10 @@
 import Frcmod_creator
 import PDBHandler
 import Leapy
-from ParmedTools.ParmedActions import *
-from chemistry.amber.readparm import *
+from parmed.tools.actions import *
+from parmed.amber.readparm import *
 
-def parmed_command(vxi='VXI'):
+def parmed_command(vxi='VXI', lipid='No'):
 	bc = {}
         with open('Param_files/AminoAcid/MET.param', 'r') as b:
                 data = b.readlines()[1:]
@@ -78,10 +78,10 @@ def makevxi(struct, out, aa, vxi='VXI'):
                         	pdb.write(atom.change_name('HD13'))
 			else:
                         	pdb.write(atom.formatted())
-                try:
-                        pdb.write(struct.other_dict[res.get_resnumber()].ter())
-                except:
-                        pass
+	                try:
+        	                pdb.write(struct.other_dict[atom.get_number()].ter())
+                	except:
+                        	pass
         for oth in struct.other_dict:
                 try:
                         if oth.startswith('Conect'):
@@ -90,7 +90,7 @@ def makevxi(struct, out, aa, vxi='VXI'):
                         pass
         pdb.write('END\n')
 
-def lib_make(ff, outputfile, vxi='VXI', metcar='dc', methyd='dh', hydhyd='mh', estsul='ss', mthhyd='fh'):
+def lib_make(ff, outputfile, vxi='VXI', metcar='cd', methyd='dh', hydhyd='mh', estsul='ss', mthhyd='hf'):
         ctrl = open('lyp.in', 'w')
         ctrl.write("source %s\n"%ff)
 	ctrl.write("%s=loadpdb Param_files/LibPDB/LEU-MET.pdb\n"%vxi)
@@ -200,7 +200,7 @@ def lac(x, y, i):
 	num = y+((x-y)/10)*i
 	return num
 
-def stock_add_to_all(metcar='dc', methyd='dh', hydhyd='mh', estsul='ss', mthhyd='fh'):
+def stock_add_to_all(metcar='cd', methyd='dh', hydhyd='mh', estsul='ss', mthhyd='hf'):
 	Frcmod_creator.make_hyb()
 	Frcmod_creator.TYPE_insert(estsul, 'S', 'sp3')
 	Frcmod_creator.TYPE_insert(mthhyd, 'H', 'sp3')

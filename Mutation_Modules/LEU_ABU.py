@@ -3,10 +3,10 @@
 import Frcmod_creator
 import PDBHandler
 import Leapy
-from ParmedTools.ParmedActions import *
-from chemistry.amber.readparm import *
+from parmed.tools.actions import *
+from parmed.amber.readparm import *
 
-def parmed_command(vxi='VXI'):
+def parmed_command(vxi='VXI', lipid='No'):
 	bc = {}
         with open('Param_files/AminoAcid/LEU.param', 'r') as b:
                 data = b.readlines()[1:]
@@ -69,10 +69,10 @@ def makevxi(struct, out, aa, vxi='VXI'):
                         	pdb.write(atom.superimposed1('HG3', CD2))
 			else:
                         	pdb.write(atom.formatted())
-                try:
-                        pdb.write(struct.other_dict[res.get_resnumber()].ter())
-                except:
-                        pass
+	                try:
+        	                pdb.write(struct.other_dict[atom.get_number()].ter())
+                	except:
+                        	pass
         for oth in struct.other_dict:
                 try:
                         if oth.startswith('Conect'):

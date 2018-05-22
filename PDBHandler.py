@@ -30,6 +30,12 @@ class Atom(object):
 	def get_name(self):
 		return self.name
 
+	def get_resname(self):
+		return self.resname
+
+	def get_resnum(self):
+		return self.resnumber
+
 	def set_resname(self, resname):
 		self.resname = resname
 
@@ -130,6 +136,48 @@ class Atom(object):
 		z = (2*atom2.get_coord()[2] + atom1.get_coord()[2])/3
 		return _ATOM_FORMAT_STRING.format('ATOM', self.number, name, self.resname, self.resnumber, x, y, z, self.occupancy, self.bfactor)
 
+	def thirdone_between1(self, name, atom1, atom2):
+		x = (atom2.get_coord()[0] + 2*atom1.get_coord()[0])/3 - 0.001
+		y = (atom2.get_coord()[1] + 2*atom1.get_coord()[1])/3 - 0.001
+		z = (atom2.get_coord()[2] + 2*atom1.get_coord()[2])/3 - 0.001
+		return _ATOM_FORMAT_STRING.format('ATOM', self.number, name, self.resname, self.resnumber, x, y, z, self.occupancy, self.bfactor)
+
+	def thirdtwo_between1(self, name, atom1, atom2):
+		x = (2*atom2.get_coord()[0] + atom1.get_coord()[0])/3 - 0.001
+		y = (2*atom2.get_coord()[1] + atom1.get_coord()[1])/3 - 0.001
+		z = (2*atom2.get_coord()[2] + atom1.get_coord()[2])/3 - 0.001
+		return _ATOM_FORMAT_STRING.format('ATOM', self.number, name, self.resname, self.resnumber, x, y, z, self.occupancy, self.bfactor)
+
+	def quarterone_between1(self, name, atom1, atom2):
+		x = (atom2.get_coord()[0] + 3*atom1.get_coord()[0])/4
+		y = (atom2.get_coord()[1] + 3*atom1.get_coord()[1])/4
+		z = (atom2.get_coord()[2] + 3*atom1.get_coord()[2])/4
+		return _ATOM_FORMAT_STRING.format('ATOM', self.number, name, self.resname, self.resnumber, x, y, z, self.occupancy, self.bfactor)
+
+	def quarterone_between2(self, name, atom1, atom2):
+		x = (atom2.get_coord()[0] + 3*atom1.get_coord()[0])/4 + 0.001
+		y = (atom2.get_coord()[1] + 3*atom1.get_coord()[1])/4 + 0.001
+		z = (atom2.get_coord()[2] + 3*atom1.get_coord()[2])/4 + 0.001
+		return _ATOM_FORMAT_STRING.format('ATOM', self.number, name, self.resname, self.resnumber, x, y, z, self.occupancy, self.bfactor)
+
+	def quarterone_between3(self, name, atom1, atom2):
+		x = (atom2.get_coord()[0] + 3*atom1.get_coord()[0])/4 - 0.001
+		y = (atom2.get_coord()[1] + 3*atom1.get_coord()[1])/4 - 0.001
+		z = (atom2.get_coord()[2] + 3*atom1.get_coord()[2])/4 - 0.001
+		return _ATOM_FORMAT_STRING.format('ATOM', self.number, name, self.resname, self.resnumber, x, y, z, self.occupancy, self.bfactor)
+
+	def quartertwo_between1(self, name, atom1, atom2):
+		x = (3*atom2.get_coord()[0] + atom1.get_coord()[0])/4
+		y = (3*atom2.get_coord()[1] + atom1.get_coord()[1])/4
+		z = (3*atom2.get_coord()[2] + atom1.get_coord()[2])/4
+		return _ATOM_FORMAT_STRING.format('ATOM', self.number, name, self.resname, self.resnumber, x, y, z, self.occupancy, self.bfactor)
+
+	def quartertwo_between2(self, name, atom1, atom2):
+		x = (3*atom2.get_coord()[0] + atom1.get_coord()[0])/4 + 0.001
+		y = (3*atom2.get_coord()[1] + atom1.get_coord()[1])/4 + 0.001
+		z = (3*atom2.get_coord()[2] + atom1.get_coord()[2])/4 + 0.001
+		return _ATOM_FORMAT_STRING.format('ATOM', self.number, name, self.resname, self.resnumber, x, y, z, self.occupancy, self.bfactor)
+
 class Residue(object):
 	def __init__(self, resname, resnumber):
 		self.resname = resname
@@ -152,6 +200,11 @@ class Residue(object):
 	def get_resnumber(self):
 		return self.resnumber
 
+	def set_resnumber(self, resnumber):
+		self.resnumber = resnumber
+		for atom in self.atom_list:
+			atom.set_resnum(resnumber)
+
 	def get_id(self):
 		return self.id
 
@@ -167,6 +220,8 @@ class Residue(object):
 class Structure(object):
 	def __init__(self, name):
 		self.name = name
+		self.atom_list = []
+		self.atom_dict = {}
 		self.residue_list = []
 		self.residue_dict = {}
 		self.other_list = []
@@ -183,6 +238,11 @@ class Structure(object):
 		for t in self.residue_dict:
 			print t
 	
+	def add_atom(self, atom):
+		atom_number = atom.get_number()
+		self.atom_list.append(atom)
+		self.atom_dict[atom_number] = atom
+
 	def add_residue(self, residue):
 		residue_number = residue.get_resnumber()
 		self.residue_list.append(residue)
@@ -205,6 +265,7 @@ class Structure(object):
 class Ter_record(object):
 	def __init__(self, position):
 		self.position = position
+		self.kind = 'TER'
 		self.tag = '{}\n'.format('TER')
 		self.id = 'Ter following atom {}'.format(position)
 
@@ -227,6 +288,7 @@ class Cryst1_record(object):
 		self.xangle = xangle
 		self.yangle = yangle
 		self.zangle = zangle
+		self.kind = 'Cryst1'
 		self.id = 'Cryst1 Record'
 
 	def __repr__(self):
@@ -251,6 +313,7 @@ class Conect_record(object):
 	def __init__(self, atom1, atom2):
 		self.atom1 = int(atom1)
 		self.atom2 = int(atom2)
+		self.kind = 'Conect'
 		self.id = 'Conect Record between atoms {} and {}'.format(atom1, atom2)
 
 	def __repr__(self):
@@ -307,6 +370,7 @@ def readpdb(file):
 					curr_residue = Residue(resname, resnumber)
 					structure.add_residue(curr_residue)	
 			structure.residue_dict[curr_residue.get_resnumber()].add_atom(curr_atom)
+			structure.add_atom(curr_atom)
 		elif record_type == "TER":
 			curr_ter = Ter_record(curr_atom.get_number())
 			structure.add_ter(curr_ter)
@@ -398,6 +462,125 @@ def sulpher(struct, pdb):
 	pdb.write('END\n')
 	pdb.close()
 
+def glyadder(struct, resid, resnum, end):
+	struct.residue_dict[resnum].atom_dict['N1'].set_resname('GLY')
+	if end == 'C':
+		struct.residue_dict[resnum].atom_dict['N1'].set_resnum(resnum+1)
+	struct.residue_dict[resnum].atom_dict['N1'].set_name('N')
+	struct.residue_dict[resnum].atom_dict['H1'].set_resname('GLY')
+	if end == 'C':
+		struct.residue_dict[resnum].atom_dict['H1'].set_resnum(resnum+1)
+	struct.residue_dict[resnum].atom_dict['H1'].set_name('H')
+	struct.residue_dict[resnum].atom_dict['CA1'].set_resname('GLY')
+	if end == 'C':
+		struct.residue_dict[resnum].atom_dict['CA1'].set_resnum(resnum+1)
+	struct.residue_dict[resnum].atom_dict['CA1'].set_name('CA')
+	struct.residue_dict[resnum].atom_dict['HA12'].set_resname('GLY')
+	if end == 'C':
+		struct.residue_dict[resnum].atom_dict['HA12'].set_resnum(resnum+1)
+	struct.residue_dict[resnum].atom_dict['HA12'].set_name('HA2')
+	struct.residue_dict[resnum].atom_dict['HA13'].set_resname('GLY')
+	if end == 'C':
+		struct.residue_dict[resnum].atom_dict['HA13'].set_resnum(resnum+1)
+	struct.residue_dict[resnum].atom_dict['HA13'].set_name('HA3')
+	struct.residue_dict[resnum].atom_dict['C1'].set_resname('GLY')
+	if end == 'C':
+		struct.residue_dict[resnum].atom_dict['C1'].set_resnum(resnum+1)
+	struct.residue_dict[resnum].atom_dict['C1'].set_name('C')
+	struct.residue_dict[resnum].atom_dict['O1'].set_resname('GLY')
+	if end == 'C':
+		struct.residue_dict[resnum].atom_dict['O1'].set_resnum(resnum+1)
+	struct.residue_dict[resnum].atom_dict['O1'].set_name('O')
+	for atom in struct.residue_dict[resnum].atom_list[:]:
+		if atom.get_resname() == 'VXI':
+			atom.set_resname(resid)
+			if end == 'N':	
+				atom.set_resnum(resnum+1)
+	for res in struct.residue_list[:]:
+		if res.get_resnumber() > resnum:
+			res.set_resnumber(res.get_resnumber()+1)
+        pdb = open('Mutated.pdb', 'w')
+        try:
+                pdb.write(struct.other_dict['Cryst1'].formatted())
+        except KeyError:
+                pass
+        for res in struct.residue_list:
+                for atom in res.atom_list:
+                        if atom.get_name() == 'PC':
+                                atom.set_name('Cl-')
+                                atom.set_resname('Cl-')
+                        if atom.get_name() == 'PN':
+                                atom.set_name('Na+')
+                                atom.set_resname('Na+')
+                        pdb.write(atom.formatted())
+                try:
+                        pdb.write(struct.other_dict[atom.get_number()].ter())
+                except:
+                        pass
+        for oth in struct.other_dict:
+                try:
+                        if oth.startswith('Conect'):
+                                pdb.write(struct.other_dict[oth].formatted())
+                except:
+                        pass
+        pdb.write('END\n')
+        pdb.close()
+	ctrl = open('chop.in', 'w')
+	ctrl.write("source {}Param_files/Essentials/cmd.ff14SB+\n".format(HOMEDIR))
+        ctrl.write("source leaprc.lipid14\n")
+	ctrl.write("Mut = loadpdb Mutated.pdb\n")
+	ctrl.write("savepdb Mut Mut_leap.pdb\n")
+	ctrl.write("quit\n")
+	ctrl.close()
+	Leapy.run('chop.in')
+	if struct.other_dict['Cryst1']:
+		f = open('Mut_leap.pdb', 'r+')
+		temp = f.read()
+		f.close()
+		f = open('Mut_leap.pdb', 'w+')
+		f.write(struct.other_dict['Cryst1'].formatted())
+		f.write(temp)
+		f.close()
+	s = readpdb('Mut_leap.pdb')
+	sulpher(s, 'Mut_leap.pdb')
+	os.remove('chop.in')
+
+def cut_to_gly(struct, resnum):
+	for atom in struct.residue_dict[resnum].atom_list[:]:
+		if atom.get_name() in ['CB']:
+			atom.set_name('HA3')
+		if atom.get_name() in ['HA']:
+			atom.set_name('HA2')
+		if atom.get_name() not in ['N', 'H', 'CA', 'HA2', 'HA3', 'C', 'O']:
+			struct.residue_dict[resnum].atom_list.remove(atom)
+	struct.residue_dict[resnum].set_resname('GLY')
+	return struct
+
+def cut_to_gly_PRO(struct, resnum):
+	for atom in struct.residue_dict[resnum].atom_list[:]:
+		if atom.get_name() in ['CB']:
+			atom.set_name('HA3')
+		if atom.get_name() in ['HA']:
+			atom.set_name('HA2')
+		if atom.get_name() in ['CD']:
+			atom.set_name('H')
+		if atom.get_name() not in ['N', 'H', 'CA', 'HA2', 'HA3', 'C', 'O']:
+			struct.residue_dict[resnum].atom_list.remove(atom)
+	struct.residue_dict[resnum].set_resname('GLY')
+	return struct
+
+def invert_CYX(struct, resnum):
+	for atom in struct.residue_dict[resnum].atom_list[:]:
+		if atom.get_name() in ['CB']:
+			atom.set_name('HA1')
+		if atom.get_name() in ['HA']:
+			atom.set_name('CB')
+		if atom.get_name() in ['HA1']:
+			atom.set_name('HA')
+		if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'SG', 'C', 'O']:
+			struct.residue_dict[resnum].atom_list.remove(atom)
+	return struct
+
 def chop(struct, resid, resnum):
 	struct.residue_dict[resnum].set_resname(resid)
 	if resid == 'ABU':
@@ -408,9 +591,14 @@ def chop(struct, resid, resnum):
 		for atom in struct.residue_dict[resnum].atom_list[:]:
 			if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'HB1', 'HB2', 'HB3', 'C', 'O']:
 				struct.residue_dict[resnum].atom_list.remove(atom)	
+		struct.residue_dict[resnum].set_resname('ALA')
 	if resid in ('ALX'):
 		for atom in struct.residue_dict[resnum].atom_list[:]:
 			if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'HB2', 'HB3', 'C', 'O']:
+				struct.residue_dict[resnum].atom_list.remove(atom)	
+	if resid in 'AIB':
+		for atom in struct.residue_dict[resnum].atom_list[:]:
+			if atom.get_name() not in ['N', 'H', 'CA', 'CB2', 'HB21', 'HB22', 'HB23', 'CB1', 'HB11', 'HB12', 'HB13', 'C', 'O']:
 				struct.residue_dict[resnum].atom_list.remove(atom)	
 	if resid == 'ANN':
 		for atom in struct.residue_dict[resnum].atom_list[:]:
@@ -419,6 +607,18 @@ def chop(struct, resid, resnum):
 	if resid == 'ARG':
 		for atom in struct.residue_dict[resnum].atom_list[:]:
 			if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'HB2', 'HB3', 'CG', 'HG2', 'HG3', 'CD', 'HD2', 'HD3', 'NE', 'HE', 'CZ', 'NH1', 'HH11', 'HH12', 'NH2', 'HH21', 'HH22', 'C', 'O']:
+				struct.residue_dict[resnum].atom_list.remove(atom)	
+	if resid == 'AMI':
+		for atom in struct.residue_dict[resnum].atom_list[:]:
+			if atom.get_name() not in ['N', 'H', 'CA', 'CB2', 'HB21', 'HB22', 'HB23', 'CB1', 'HB1', 'CG2', 'HG21', 'HG22', 'HG23', 'CG1', 'HG12', 'HG13', 'CD1', 'HD11', 'HD12', 'HD13', 'HG13', 'C', 'O']:
+				struct.residue_dict[resnum].atom_list.remove(atom)	
+	if resid == 'AML':
+		for atom in struct.residue_dict[resnum].atom_list[:]:
+			if atom.get_name() not in ['N', 'H', 'CA', 'CB2', 'HB21', 'HB22', 'HB23', 'CB1', 'HB12', 'HB13', 'CG', 'HG', 'CD1', 'HD11', 'HD12', 'HD13', 'CD2', 'HD21', 'HD22', 'HD23', 'C', 'O']:
+				struct.residue_dict[resnum].atom_list.remove(atom)	
+	if resid == 'AMV':
+		for atom in struct.residue_dict[resnum].atom_list[:]:
+			if atom.get_name() not in ['N', 'H', 'CA', 'CB2', 'HB21', 'HB22', 'HB23', 'CB1', 'HB1', 'CG1', 'HG11', 'HG12', 'HG13', 'CG2', 'HG21', 'HG22', 'HG23', 'C', 'O']:
 				struct.residue_dict[resnum].atom_list.remove(atom)	
 	if resid == 'AMX':
 		for atom in struct.residue_dict[resnum].atom_list[:]:
@@ -432,6 +632,14 @@ def chop(struct, resid, resnum):
 		for atom in struct.residue_dict[resnum].atom_list[:]:
 			if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'HB2', 'HB3', 'CG', 'OD1', 'OD2', 'C', 'O']:
 				struct.residue_dict[resnum].atom_list.remove(atom)	
+	if resid == 'B1F':
+		for atom in struct.residue_dict[resnum].atom_list[:]:
+			if atom.get_name() not in ['N', 'H', 'CA1', 'HA1', 'CB', 'HB2', 'HB3', 'CG', 'CD1', 'HD1', 'CD2', 'HD2', 'CE1', 'HE1', 'CE2', 'HE2', 'CZ', 'HZ', 'CA2', 'HA21', 'HA22', 'C', 'O']:
+				struct.residue_dict[resnum].atom_list.remove(atom)	
+	if resid == 'B1L':
+		for atom in struct.residue_dict[resnum].atom_list[:]:
+			if atom.get_name() not in ['N', 'H', 'CA1', 'HA1', 'CB', 'HB2', 'HB3', 'CG', 'HG', 'CD1', 'HD11', 'HD12', 'HD13', 'CD2', 'HD21', 'HD22', 'HD23', 'CA2', 'HA21', 'HA22', 'C', 'O']:
+				struct.residue_dict[resnum].atom_list.remove(atom)	
 	if resid == 'CBA':
 		for atom in struct.residue_dict[resnum].atom_list[:]:
 			if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'HB2', 'HB3', 'CG', 'HG', 'CD1', 'HD11', 'HD12', 'CD2', 'HD21', 'HD21', 'CE', 'HE2', 'HE3', 'C', 'O']:
@@ -439,6 +647,26 @@ def chop(struct, resid, resnum):
 	if resid == 'CYS':
 		for atom in struct.residue_dict[resnum].atom_list[:]:
 			if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'HB2', 'HB3', 'SG', 'HG', 'C', 'O']:
+				struct.residue_dict[resnum].atom_list.remove(atom)	
+	if resid == 'CYX':
+		for atom in struct.residue_dict[resnum].atom_list[:]:
+			if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'HB2', 'HB3', 'SG', 'C', 'O']:
+				struct.residue_dict[resnum].atom_list.remove(atom)	
+	if resid == 'DAB':
+		for atom in struct.residue_dict[resnum].atom_list[:]:
+			if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'HB2', 'HB3', 'CG', 'HG2', 'HG3', 'ND', 'HD1', 'HD2', 'C', 'O']:
+				struct.residue_dict[resnum].atom_list.remove(atom)	
+	if resid == 'DBN':
+		for atom in struct.residue_dict[resnum].atom_list[:]:
+			if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'HB2', 'HB3', 'CG', 'HG2', 'HG3', 'ND', 'NE', 'NZ', 'C', 'O']:
+				struct.residue_dict[resnum].atom_list.remove(atom)	
+	if resid == 'DPR':
+		for atom in struct.residue_dict[resnum].atom_list[:]:
+			if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'HB2', 'HB3', 'NG', 'HG1', 'HG2', 'C', 'O']:
+				struct.residue_dict[resnum].atom_list.remove(atom)	
+	if resid == 'ECX':
+		for atom in struct.residue_dict[resnum].atom_list[:]:
+			if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'HB2', 'HB3', 'SG', 'CD', 'HD2', 'HD3', 'CE', 'HE2', 'HE3', 'C', 'O']:
 				struct.residue_dict[resnum].atom_list.remove(atom)	
 	if resid == 'GLN':
 		for atom in struct.residue_dict[resnum].atom_list[:]:
@@ -540,9 +768,17 @@ def chop(struct, resid, resnum):
 		for atom in struct.residue_dict[resnum].atom_list[:]:
 			if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'HB2', 'HB3', 'CG', 'HG2', 'HG3', 'CD', 'HD1', 'HD2', 'HD3', 'C', 'O']:
 				struct.residue_dict[resnum].atom_list.remove(atom)	
+	if resid == 'NVD':
+		for atom in struct.residue_dict[resnum].atom_list[:]:
+			if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'HB2', 'HB3', 'CG', 'HG', 'CD', 'HD1', 'HD2', 'C', 'O']:
+				struct.residue_dict[resnum].atom_list.remove(atom)	
 	if resid == 'PHE':
 		for atom in struct.residue_dict[resnum].atom_list[:]:
 			if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'HB2', 'HB3', 'CG', 'CD1', 'HD1', 'CD2', 'HD2', 'CE1', 'HE1', 'CE2', 'HE2', 'CZ', 'HZ', 'C', 'O']:
+				struct.residue_dict[resnum].atom_list.remove(atom)	
+	if resid == 'PRA':
+		for atom in struct.residue_dict[resnum].atom_list[:]:
+			if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'HB2', 'HB3', 'CG', 'CD', 'HD', 'C', 'O']:
 				struct.residue_dict[resnum].atom_list.remove(atom)	
 	if resid == 'PRO':
 		for atom in struct.residue_dict[resnum].atom_list[:]:
@@ -611,21 +847,24 @@ def chop(struct, resid, resnum):
 	pdb.write('END\n')
 	pdb.close()
 	ctrl = open('chop.in', 'w')
-        ctrl.write("source leaprc.ff99SB+\n")
+	ctrl.write("source {}Param_files/Essentials/cmd.ff14SB+\n".format(HOMEDIR))
         ctrl.write("source leaprc.lipid14\n")
 	ctrl.write("Mut = loadpdb Mutated.pdb\n")
 	ctrl.write("savepdb Mut Mut_leap.pdb\n")
 	ctrl.write("quit\n")
 	ctrl.close()
 	Leapy.run('chop.in')
-	if struct.other_dict['Cryst1']:
-		f = open('Mut_leap.pdb', 'r+')
-		temp = f.read()
-		f.close()
-		f = open('Mut_leap.pdb', 'w+')
-		f.write(struct.other_dict['Cryst1'].formatted())
-		f.write(temp)
-		f.close()
+	try:
+		if struct.other_dict['Cryst1']:
+			f = open('Mut_leap.pdb', 'r+')
+			temp = f.read()
+			f.close()
+			f = open('Mut_leap.pdb', 'w+')
+			f.write(struct.other_dict['Cryst1'].formatted())
+			f.write(temp)
+			f.close()
+	except:
+		pass
 	s = readpdb('Mut_leap.pdb')
 	sulpher(s, 'Mut_leap.pdb')
 	os.remove('chop.in')

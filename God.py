@@ -11,7 +11,13 @@ import PDBHandler
 import Leapy
 import Run
 
-def makeinput(pdbfile, outfile, baa, faa, resid, resid2='No', atypes='Standard', newbox=8.0, ff2='Null', extralib='Null', extrafrcmod='Null', extracommand='Null'):
+def makeinput(pdbfile, outfile, baa, faa, resid, resid2='No', atypes='Standard', newbox=8.0, ff1='Standard', ff2='Null', lipid='No', extralib='Null', extrafrcmod='Null', extracommand='Null', extraprep='Null'):
+# Set forcefield to be used
+	if ff1 == 'Standard':
+		ff1 = 'Param_files/Essentials/cmd.ff14SB+'
+# If newbox not given, set to 8.0
+	if newbox == 'None':
+		newbox = 8.0
 # Read PDB and load correct mutation module
 	struct = PDBHandler.readpdb(pdbfile)
 	Curr_mut = 'Mutation_Modules.' + baa + '_' + faa
@@ -52,6 +58,18 @@ def makeinput(pdbfile, outfile, baa, faa, resid, resid2='No', atypes='Standard',
 		bal='Null'
 	if baa == 'GLU' and faa == 'ASP':
 		bal='Null'
+# Determine if it is terminal
+	Term = 'None'
+	try:
+		struct.residue_dict[resid].atom_dict['H3']
+		Term = 'N'
+	except:
+		pass
+	try:
+		struct.residue_dict[resid].atom_dict['OXT']
+		Term = 'C'
+	except:
+		pass
 # Make Mutated PDB (Mutabond)
 	Curr_mut.makevxi(struct, 'Mutabond.pdb', resid)
 	if resid2 != 'No':
@@ -59,12 +77,27 @@ def makeinput(pdbfile, outfile, baa, faa, resid, resid2='No', atypes='Standard',
 		Curr_mut.makevxi(struct, 'Mutabond.pdb', resid2)
 # Create parameters and lib files
 	Curr_mut.all_make()
-	if atypes == 'Standard':
-		Curr_mut.stock_add_to_all()
-	else:
-		Curr_mut.stock_add_to_all(**atypes)
-	Curr_mut.lib_make('Param_files/Essentials/cmd.ff14SB+', outfile)
+	if Term == 'N':
+			Curr_mut.stock_add_to_all_N()
+	elif Term == 'C':
+			Curr_mut.stock_add_to_all_C()
+	else:	
+		if atypes == 'Standard':
+			Curr_mut.stock_add_to_all()
+		else:
+			Curr_mut.stock_add_to_all(**atypes)
+	if Term == 'N':
+		Curr_mut.lib_make_N(ff1, outfile)
+	elif Term == 'C':
+		Curr_mut.lib_make_C(ff1, outfile)
+	else:	
+		Curr_mut.lib_make(ff1, outfile)
 # Create prmtops
-	Leapy.createprmtops(ff1='Param_files/Essentials/cmd.ff14SB+', ff2=ff2, ion=Ion, box=oldbox, solvbox=newbox, output=outfile, bal=bal, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand)
-	Curr_mut.parmed_command()
+	Leapy.createprmtops(ff1=ff1, ff2=ff2, ion=Ion, box=oldbox, solvbox=newbox, output=outfile, bal=bal, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand, extraprep=extraprep)
+	if Term == 'N':
+		Curr_mut.parmed_command_N(lipid=lipid)
+	elif Term == 'C':
+		Curr_mut.parmed_command_C(lipid=lipid)
+	else:	
+		Curr_mut.parmed_command(lipid=lipid)
 	Run.make_store(boxangle)

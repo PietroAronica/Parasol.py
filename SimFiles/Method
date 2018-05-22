@@ -1,5 +1,5 @@
 #!/bin/bash
-RUNS=$1
+RUNS=1
 MINPROGRAM=sander
 PROGRAM=pmemd.cuda_SPFP
 HOMEDIR=$1

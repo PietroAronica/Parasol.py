@@ -3,10 +3,10 @@
 import Frcmod_creator
 import PDBHandler
 import Leapy
-from ParmedTools.ParmedActions import *
-from chemistry.amber.readparm import *
+from parmed.tools.actions import *
+from parmed.amber.readparm import *
 
-def parmed_command(vxi='VXI'):
+def parmed_command(vxi='VXI', lipid='No'):
 	bc = {}
         with open('Param_files/AminoAcid/PHE.param', 'r') as b:
                 data = b.readlines()[1:]
@@ -67,10 +67,10 @@ def makevxi(struct, out, aa, vxi='VXI'):
 				pdb.write(atom.superimposed2('HH', HZ)) 
 			else:
 				pdb.write(atom.formatted())
-                try:
-                        pdb.write(struct.other_dict[res.get_resnumber()].ter())
-                except:
-                        pass
+	                try:
+        	                pdb.write(struct.other_dict[atom.get_number()].ter())
+                	except:
+                        	pass
         for oth in struct.other_dict:
                 try:
                         if oth.startswith('Conect'):
@@ -79,7 +79,7 @@ def makevxi(struct, out, aa, vxi='VXI'):
                         pass
         pdb.write('END\n')
 
-def lib_make(ff, outputfile, vxi='VXI', hz='zh', oh='ho', hh='hh'):
+def lib_make(ff, outputfile, vxi='VXI', cz='cz', hz='hz', oh='oh', hh='hh'):
         ctrl = open('lyp.in', 'w')
         ctrl.write("source %s\n"%ff)
 	ctrl.write("%s=loadpdb Param_files/LibPDB/PHE-TYR.pdb\n"%vxi)
@@ -143,7 +143,7 @@ def lib_make(ff, outputfile, vxi='VXI', hz='zh', oh='ho', hh='hh'):
 	ctrl.write('set %s.1.14 type "HA"\n'%vxi)
 	ctrl.write('set %s.1.15 type "CA"\n'%vxi)
 	ctrl.write('set %s.1.16 type "HA"\n'%vxi)
-	ctrl.write('set %s.1.17 type "CA"\n'%vxi)
+	ctrl.write('set %s.1.17 type "%s"\n'%(vxi, cz))
 	ctrl.write('set %s.1.18 type "%s"\n'%(vxi, hz))
 	ctrl.write('set %s.1.19 type "%s"\n'%(vxi, oh))
 	ctrl.write('set %s.1.20 type "%s"\n'%(vxi, hh))
@@ -194,8 +194,9 @@ def lac(x, y, i):
 	num = y+((x-y)/10)*i
 	return num
 
-def stock_add_to_all(hz='zh', oh='ho', hh='hh'):
+def stock_add_to_all(cz='cz', hz='hz', oh='oh', hh='hh'):
 	Frcmod_creator.make_hyb()
+	Frcmod_creator.TYPE_insert(cz, 'C', 'sp2')
 	Frcmod_creator.TYPE_insert(hz, 'H', 'sp3')
 	Frcmod_creator.TYPE_insert(oh, 'O', 'sp3')
 	Frcmod_creator.TYPE_insert(hh, 'H', 'sp3')
@@ -209,24 +210,32 @@ def stock_add_to_all(hz='zh', oh='ho', hh='hh'):
 	b.close()
 	for i in range(11):
 		a = i*10
+		Frcmod_creator.MASS_insert('{}_{}.frcmod'.format(a, 100-a), cz, cal(p['CA'][0], p['C'][0], i), cal(p['CA'][1], p['C'][1], i))
 		Frcmod_creator.MASS_insert('{}_{}.frcmod'.format(a, 100-a), hz, cal(p['HA'][0], p['0_H'][0], i), cal(p['HA'][1], p['0_H'][1], i))
 		Frcmod_creator.MASS_insert('{}_{}.frcmod'.format(a, 100-a), oh, cal(p['0_O'][0], p['OH'][0], i), cal(p['0_O'][1], p['OH'][1], i))
 		Frcmod_creator.MASS_insert('{}_{}.frcmod'.format(a, 100-a), hh, cal(p['0_H'][0], p['HO'][0], i), cal(p['0_O'][1], p['HO'][1], i))
-		Frcmod_creator.BOND_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}'.format('CA', hz), cal(p['CA_HA'][0], p['HA_sOH'][0], i), cal(p['CA_HA'][1], p['HA_sOH'][1], i))
-		Frcmod_creator.BOND_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}'.format('CA', oh), cal(p['OH_mHA'][0], p['CA_OH'][0], i), cal(p['OH_mHA'][1], p['CA_OH'][1], i))
+		Frcmod_creator.BOND_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}'.format('CA', cz), cal(p['CA_CA'][0], p['CA_C'][0], i), cal(p['CA_CA'][1], p['CA_C'][1], i))
+		Frcmod_creator.BOND_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}'.format(cz, hz), cal(p['CA_HA'][0], p['HA_sOH'][0], i), cal(p['CA_HA'][1], p['HA_sOH'][1], i))
+		Frcmod_creator.BOND_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}'.format(cz, oh), cal(p['OH_mHA'][0], p['CA_OH'][0], i), cal(p['OH_mHA'][1], p['CA_OH'][1], i))
 		Frcmod_creator.BOND_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}'.format(oh, hh), cal(p['HO_mHA'][0], p['OH_HO'][0], i), cal(p['HO_mHA'][1], p['OH_HO'][1], i))
-		Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format('CA', 'CA', hz), cal(p['F_CA_CA_HA'][0], p['F_CA_CA_HA'][0], i), cal(p['F_CA_CA_HA'][1], p['F_CA_CA_HA'][1], i))
-		Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format('CA', 'CA', oh), cal(p['F_CA_CA_HA'][0], p['F_CA_CA_HA'][0], i), cal(p['F_CA_CA_HA'][1], p['F_CA_CA_HA'][1], i))
-		Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format(hz, 'CA', oh), cal(p['Close'][0], p['Close'][0], i), cal(p['Close'][1], p['Close'][1], i))
-		Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format('CA', oh, hh), cal(p['Dritt'][0], p['CA_O_H'][0], i), cal(p['Dritt'][1], p['CA_O_H'][1], i))
-                Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format(hz, 'CA', oh, hh), cal(p['0_Dihe'][0], p['0_Dihe'][0], i), cal(p['0_Dihe'][1], p['0_Dihe'][1], i), cal(p['0_Dihe'][2], p['0_Dihe'][2], i), cal(p['0_Dihe'][3], p['0_Dihe'][3], i))
-                Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format('CA', 'CA', oh, hh), cal(p['0_6'][0], p['Ring_Tyr'][0], i), cal(p['0_6'][1], p['Ring_Tyr'][1], i), cal(p['0_6'][2], p['Ring_Tyr'][2], i), cal(p['0_6'][3], p['Ring_Tyr'][3], i))
-                Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format('CA', 'CA', 'CA', oh), cal(p['Ring_0'][0], p['Ring_Dihe'][0], i), cal(p['Ring_0'][1], p['Ring_Dihe'][1], i), cal(p['Ring_0'][2], p['Ring_Dihe'][2], i), cal(p['Ring_0'][3], p['Ring_Dihe'][3], i))
-                Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format('HA', 'CA', 'CA', oh), cal(p['Ring_0'][0], p['Ring_Dihe'][0], i), cal(p['Ring_0'][1], p['Ring_Dihe'][1], i), cal(p['Ring_0'][2], p['Ring_Dihe'][2], i), cal(p['Ring_0'][3], p['Ring_Dihe'][3], i))
-		Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format('CA', 'CA', 'CA', hz), cal(p['Ring_Dihe'][0], p['Ring_0'][0], i), cal(p['Ring_Dihe'][1], p['Ring_0'][1], i), cal(p['Ring_Dihe'][2], p['Ring_0'][2], i), cal(p['Ring_Dihe'][3], p['Ring_0'][3], i))
-		Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format('HA', 'CA', 'CA', hz), cal(p['Ring_Dihe'][0], p['Ring_0'][0], i), cal(p['Ring_Dihe'][1], p['Ring_0'][1], i), cal(p['Ring_Dihe'][2], p['Ring_0'][2], i), cal(p['Ring_Dihe'][3], p['Ring_0'][3], i))
-		Frcmod_creator.IMPROPER_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format('X ', 'X ', 'CA', hz), cal(p['Ring_imp'][0], p['Imp_0'][0], i), cal(p['Ring_imp'][1], p['Imp_0'][1], i), cal(p['Ring_imp'][2], p['Imp_0'][2], i))
-		Frcmod_creator.IMPROPER_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format('X ', 'X ', 'CA', oh), cal(p['Imp_0'][0], p['Ring_imp'][0], i), cal(p['Imp_0'][1], p['Ring_imp'][1], i), cal(p['Imp_0'][2], p['Ring_imp'][2], i))
+		Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format('CA', cz, 'CA'), cal(p['F_CA_CA_HA'][0], p['F_CA_CA_HA'][0], i), cal(p['F_CA_CA_HA'][1], p['F_CA_CA_HA'][1], i))
+		Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format('HA', 'CA', cz), cal(p['F_CA_CA_HA'][0], p['F_CA_CA_HA'][0], i), cal(p['F_CA_CA_HA'][1], p['F_CA_CA_HA'][1], i))
+		Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format('CA', 'CA', cz), cal(p['F_CA_CA_HA'][0], p['F_CA_CA_HA'][0], i), cal(p['F_CA_CA_HA'][1], p['F_CA_CA_HA'][1], i))
+		Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format('CA', cz, hz), cal(p['F_CA_CA_HA'][0], p['F_CA_CA_HA'][0], i), cal(p['F_CA_CA_HA'][1], p['F_CA_CA_HA'][1], i))
+		Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format('CA', cz, oh), cal(p['F_CA_CA_HA'][0], p['F_CA_CA_HA'][0], i), cal(p['F_CA_CA_HA'][1], p['F_CA_CA_HA'][1], i))
+		Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format(hz, cz, oh), cal(p['Close'][0], p['Close'][0], i), cal(p['Close'][1], p['Close'][1], i))
+		Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format(cz, oh, hh), cal(p['Dritt'][0], p['CA_O_H'][0], i), cal(p['Dritt'][1], p['CA_O_H'][1], i))
+                Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format(hz, cz, oh, hh), cal(p['0_Dihe'][0], p['0_Dihe'][0], i), cal(p['0_Dihe'][1], p['0_Dihe'][1], i), cal(p['0_Dihe'][2], p['0_Dihe'][2], i), cal(p['0_Dihe'][3], p['0_Dihe'][3], i))
+                Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format('CA', cz, oh, hh), cal(p['0_6'][0], p['Ring_Tyr'][0], i), cal(p['0_6'][1], p['Ring_Tyr'][1], i), cal(p['0_6'][2], p['Ring_Tyr'][2], i), cal(p['0_6'][3], p['Ring_Tyr'][3], i))
+                Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format('CA', 'CA', cz, 'CA'), cal(p['Ring_Dihe'][0], p['Ring_Dihe'][0], i), cal(p['Ring_Dihe'][1], p['Ring_Dihe'][1], i), cal(p['Ring_Dihe'][2], p['Ring_Dihe'][2], i), cal(p['Ring_Dihe'][3], p['Ring_Dihe'][3], i))
+                Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format('HA', 'CA', cz, 'CA'), cal(p['Ring_Dihe'][0], p['Ring_Dihe'][0], i), cal(p['Ring_Dihe'][1], p['Ring_Dihe'][1], i), cal(p['Ring_Dihe'][2], p['Ring_Dihe'][2], i), cal(p['Ring_Dihe'][3], p['Ring_Dihe'][3], i))
+                Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format('CA', 'CA', cz, oh), cal(p['Ring_0'][0], p['Ring_Dihe'][0], i), cal(p['Ring_0'][1], p['Ring_Dihe'][1], i), cal(p['Ring_0'][2], p['Ring_Dihe'][2], i), cal(p['Ring_0'][3], p['Ring_Dihe'][3], i))
+                Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format('HA', 'CA', cz, oh), cal(p['Ring_0'][0], p['Ring_Dihe'][0], i), cal(p['Ring_0'][1], p['Ring_Dihe'][1], i), cal(p['Ring_0'][2], p['Ring_Dihe'][2], i), cal(p['Ring_0'][3], p['Ring_Dihe'][3], i))
+		Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format('CA', 'CA', cz, hz), cal(p['Ring_Dihe'][0], p['Ring_0'][0], i), cal(p['Ring_Dihe'][1], p['Ring_0'][1], i), cal(p['Ring_Dihe'][2], p['Ring_0'][2], i), cal(p['Ring_Dihe'][3], p['Ring_0'][3], i))
+		Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format('HA', 'CA', cz, hz), cal(p['Ring_Dihe'][0], p['Ring_0'][0], i), cal(p['Ring_Dihe'][1], p['Ring_0'][1], i), cal(p['Ring_Dihe'][2], p['Ring_0'][2], i), cal(p['Ring_Dihe'][3], p['Ring_0'][3], i))
+		Frcmod_creator.IMPROPER_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format('X ', 'X ', cz, hz), cal(p['Ring_imp'][0], p['Imp_0'][0], i), cal(p['Ring_imp'][1], p['Imp_0'][1], i), cal(p['Ring_imp'][2], p['Imp_0'][2], i))
+		Frcmod_creator.IMPROPER_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format('X ', 'X ', cz, oh), cal(p['Imp_0'][0], p['Ring_imp'][0], i), cal(p['Imp_0'][1], p['Ring_imp'][1], i), cal(p['Imp_0'][2], p['Ring_imp'][2], i))
+		Frcmod_creator.NONBON_insert('{}_{}.frcmod'.format(a, 100-a), cz, cal(p['CA'][2], p['C'][2], i), cal(p['CA'][3], p['C'][3], i))
 		Frcmod_creator.NONBON_insert('{}_{}.frcmod'.format(a, 100-a), hz, cal(p['HA'][2], p['0_H'][2], i), cal(p['HA'][3], p['0_H'][3], i))
 		Frcmod_creator.NONBON_insert('{}_{}.frcmod'.format(a, 100-a), oh, cal(p['0_O'][2], p['OH'][2], i), cal(p['0_O'][3], p['OH'][3], i))
 		Frcmod_creator.NONBON_insert('{}_{}.frcmod'.format(a, 100-a), hh, cal(p['0_H'][2], p['HO'][2], i), cal(p['0_O'][3], p['HO'][3], i))

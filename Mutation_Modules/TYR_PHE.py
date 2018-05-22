@@ -3,10 +3,10 @@
 import Frcmod_creator
 import PDBHandler
 import Leapy
-from ParmedTools.ParmedActions import *
-from chemistry.amber.readparm import *
+from parmed.tools.actions import *
+from parmed.amber.readparm import *
 
-def parmed_command(vxi='VXI'):
+def parmed_command(vxi='VXI', lipid='No'):
 	bc = {}
         with open('Param_files/AminoAcid/TYR.param', 'r') as b:
                 data = b.readlines()[1:]
@@ -66,10 +66,10 @@ def makevxi(struct, out, aa, vxi='VXI'):
 				pdb.write(atom.superimposed1('HZ', OH)) 
 			else:
 				pdb.write(atom.formatted())
-                try:
-                        pdb.write(struct.other_dict[res.get_resnumber()].ter())
-                except:
-                        pass
+	                try:
+        	                pdb.write(struct.other_dict[atom.get_number()].ter())
+                	except:
+                        	pass
         for oth in struct.other_dict:
                 try:
                         if oth.startswith('Conect'):
@@ -78,7 +78,7 @@ def makevxi(struct, out, aa, vxi='VXI'):
                         pass
         pdb.write('END\n')
 
-def lib_make(ff, outputfile, vxi='VXI', hz='zh', oh='ho', hh='hh'):
+def lib_make(ff, outputfile, vxi='VXI', hz='hz', oh='oh', hh='hh'):
         ctrl = open('lyp.in', 'w')
         ctrl.write("source %s\n"%ff)
 	ctrl.write("%s=loadpdb Param_files/LibPDB/PHE-TYR.pdb\n"%vxi)
@@ -96,11 +96,11 @@ def lib_make(ff, outputfile, vxi='VXI', hz='zh', oh='ho', hh='hh'):
 	ctrl.write('set %s.1.12 element "H"\n'%vxi)
 	ctrl.write('set %s.1.13 element "C"\n'%vxi)
 	ctrl.write('set %s.1.14 element "H"\n'%vxi)
-	ctrl.write('set %s.1.15 element "C"\n'%vxi)
+	ctrl.write('set %s.1.15 element "O"\n'%vxi)
 	ctrl.write('set %s.1.16 element "H"\n'%vxi)
 	ctrl.write('set %s.1.17 element "C"\n'%vxi)
 	ctrl.write('set %s.1.18 element "H"\n'%vxi)
-	ctrl.write('set %s.1.19 element "O"\n'%vxi)
+	ctrl.write('set %s.1.19 element "C"\n'%vxi)
 	ctrl.write('set %s.1.20 element "H"\n'%vxi)
 	ctrl.write('set %s.1.21 element "C"\n'%vxi)
 	ctrl.write('set %s.1.22 element "O"\n'%vxi)
@@ -114,16 +114,16 @@ def lib_make(ff, outputfile, vxi='VXI', hz='zh', oh='ho', hh='hh'):
 	ctrl.write('set %s.1.8 name "CG"\n'%vxi)
 	ctrl.write('set %s.1.9 name "CD1"\n'%vxi)
 	ctrl.write('set %s.1.10 name "HD1"\n'%vxi)
-	ctrl.write('set %s.1.11 name "CD2"\n'%vxi)
-	ctrl.write('set %s.1.12 name "HD2"\n'%vxi)
-	ctrl.write('set %s.1.13 name "CE1"\n'%vxi)
-	ctrl.write('set %s.1.14 name "HE1"\n'%vxi)
-	ctrl.write('set %s.1.15 name "CE2"\n'%vxi)
-	ctrl.write('set %s.1.16 name "HE2"\n'%vxi)
-	ctrl.write('set %s.1.17 name "CZ"\n'%vxi)
-	ctrl.write('set %s.1.18 name "HZ"\n'%vxi)
-	ctrl.write('set %s.1.19 name "OH"\n'%vxi)
-	ctrl.write('set %s.1.20 name "HH"\n'%vxi)
+	ctrl.write('set %s.1.11 name "CE1"\n'%vxi)
+	ctrl.write('set %s.1.12 name "HE1"\n'%vxi)
+	ctrl.write('set %s.1.13 name "CZ"\n'%vxi)
+	ctrl.write('set %s.1.14 name "HZ"\n'%vxi)
+	ctrl.write('set %s.1.15 name "OH"\n'%vxi)
+	ctrl.write('set %s.1.16 name "HH"\n'%vxi)
+	ctrl.write('set %s.1.17 name "CE2"\n'%vxi)
+	ctrl.write('set %s.1.18 name "HE2"\n'%vxi)
+	ctrl.write('set %s.1.19 name "CD2"\n'%vxi)
+	ctrl.write('set %s.1.20 name "HD2"\n'%vxi)
 	ctrl.write('set %s.1.21 name "C"\n'%vxi)
 	ctrl.write('set %s.1.22 name "O"\n'%vxi)
 	ctrl.write('set %s.1.1 type "N"\n'%vxi)
@@ -139,13 +139,13 @@ def lib_make(ff, outputfile, vxi='VXI', hz='zh', oh='ho', hh='hh'):
 	ctrl.write('set %s.1.11 type "CA"\n'%vxi)
 	ctrl.write('set %s.1.12 type "HA"\n'%vxi)
 	ctrl.write('set %s.1.13 type "CA"\n'%vxi)
-	ctrl.write('set %s.1.14 type "HA"\n'%vxi)
-	ctrl.write('set %s.1.15 type "CA"\n'%vxi)
-	ctrl.write('set %s.1.16 type "HA"\n'%vxi)
+	ctrl.write('set %s.1.14 type "%s"\n'%(vxi, hz))
+	ctrl.write('set %s.1.15 type "%s"\n'%(vxi, oh))
+	ctrl.write('set %s.1.16 type "%s"\n'%(vxi, hh))
 	ctrl.write('set %s.1.17 type "CA"\n'%vxi)
-	ctrl.write('set %s.1.18 type "%s"\n'%(vxi, hz))
-	ctrl.write('set %s.1.19 type "%s"\n'%(vxi, oh))
-	ctrl.write('set %s.1.20 type "%s"\n'%(vxi, hh))
+	ctrl.write('set %s.1.18 type "HA"\n'%vxi)
+	ctrl.write('set %s.1.19 type "CA"\n'%vxi)
+	ctrl.write('set %s.1.20 type "HA"\n'%vxi)
 	ctrl.write('set %s.1.21 type "C"\n'%vxi)
 	ctrl.write('set %s.1.22 type "O"\n'%vxi)
 	ctrl.write('bond %s.1.1 %s.1.2\n'%(vxi, vxi))
@@ -157,15 +157,15 @@ def lib_make(ff, outputfile, vxi='VXI', hz='zh', oh='ho', hh='hh'):
 	ctrl.write('bond %s.1.5 %s.1.7\n'%(vxi, vxi))
 	ctrl.write('bond %s.1.5 %s.1.8\n'%(vxi, vxi))
 	ctrl.write('bond %s.1.8 %s.1.9\n'%(vxi, vxi))
-	ctrl.write('bond %s.1.8 %s.1.11\n'%(vxi, vxi))
+	ctrl.write('bond %s.1.8 %s.1.19\n'%(vxi, vxi))
 	ctrl.write('bond %s.1.9 %s.1.10\n'%(vxi, vxi))
-	ctrl.write('bond %s.1.9 %s.1.13\n'%(vxi, vxi))
+	ctrl.write('bond %s.1.9 %s.1.11\n'%(vxi, vxi))
 	ctrl.write('bond %s.1.11 %s.1.12\n'%(vxi, vxi))
-	ctrl.write('bond %s.1.11 %s.1.15\n'%(vxi, vxi))
+	ctrl.write('bond %s.1.11 %s.1.13\n'%(vxi, vxi))
 	ctrl.write('bond %s.1.13 %s.1.14\n'%(vxi, vxi))
+	ctrl.write('bond %s.1.13 %s.1.15\n'%(vxi, vxi))
 	ctrl.write('bond %s.1.13 %s.1.17\n'%(vxi, vxi))
 	ctrl.write('bond %s.1.15 %s.1.16\n'%(vxi, vxi))
-	ctrl.write('bond %s.1.15 %s.1.17\n'%(vxi, vxi))
 	ctrl.write('bond %s.1.17 %s.1.18\n'%(vxi, vxi))
 	ctrl.write('bond %s.1.17 %s.1.19\n'%(vxi, vxi))
 	ctrl.write('bond %s.1.19 %s.1.20\n'%(vxi, vxi))
@@ -193,7 +193,7 @@ def lac(x, y, i):
 	num = y+((x-y)/10)*i
 	return num
 
-def stock_add_to_all(hz='zh', oh='ho', hh='hh'):
+def stock_add_to_all(hz='hz', oh='oh', hh='hh'):
 	Frcmod_creator.make_hyb()
 	Frcmod_creator.TYPE_insert(hz, 'H', 'sp3')
 	Frcmod_creator.TYPE_insert(oh, 'O', 'sp3')

@@ -3,10 +3,10 @@
 import Frcmod_creator
 import PDBHandler
 import Leapy
-from ParmedTools.ParmedActions import *
-from chemistry.amber.readparm import *
+from parmed.tools.actions import *
+from parmed.amber.readparm import *
 
-def parmed_command(vxi='VXI'):
+def parmed_command(vxi='VXI', lipid='No'):
 	bc = {}
         with open('Param_files/AminoAcid/ILE.param', 'r') as b:
                 data = b.readlines()[1:]
@@ -89,10 +89,10 @@ def makevxi(struct, out, aa, vxi='VXI'):
                                 pdb.write(atom.halfway_after2('HE22', CG1, HG12))
 			else:
                         	pdb.write(atom.formatted())
-                try:
-                        pdb.write(struct.other_dict[res.get_resnumber()].ter())
-                except:
-                        pass
+	                try:
+        	                pdb.write(struct.other_dict[atom.get_number()].ter())
+                	except:
+                        	pass
         for oth in struct.other_dict:
                 try:
                         if oth.startswith('Conect'):
@@ -101,7 +101,7 @@ def makevxi(struct, out, aa, vxi='VXI'):
                         pass
         pdb.write('END\n')
 
-def lib_make(ff, outputfile, vxi='VXI', metcar1='1c', methyd1='1h', hydhyd1='xh', metcar2='2c', methyd2='2h', hydhyd2='yh', amicar='ac', amioxy='ao', aminit='an', amihyd='ah', hydhyd3='sh'):
+def lib_make(ff, outputfile, vxi='VXI', metcar1='1c', methyd1='1h', hydhyd1='xh', metcar2='2c', methyd2='2h', hydhyd2='yh', amicar='ca', amioxy='oa', aminit='na', amihyd='ha', hydhyd3='sh'):
         ctrl = open('lyp.in', 'w')
         ctrl.write("source %s\n"%ff)
 	ctrl.write("%s=loadpdb Param_files/LibPDB/ILE-GLN.pdb\n"%vxi)
@@ -231,7 +231,7 @@ def lac(x, y, i):
         num = y+((x-y)/10)*i
         return num
 
-def stock_add_to_all(vxi='VXI', metcar1='1c', methyd1='1h', hydhyd1='xh', metcar2='2c', methyd2='2h', hydhyd2='yh', amicar='ac', amioxy='ao', aminit='an', amihyd='ah', hydhyd3='sh'):
+def stock_add_to_all(vxi='VXI', metcar1='1c', methyd1='1h', hydhyd1='xh', metcar2='2c', methyd2='2h', hydhyd2='yh', amicar='ca', amioxy='oa', aminit='na', amihyd='ha', hydhyd3='sh'):
 	Frcmod_creator.make_hyb()
 	Frcmod_creator.TYPE_insert(metcar1, 'C', 'sp3')
 	Frcmod_creator.TYPE_insert(methyd1, 'H', 'sp3')

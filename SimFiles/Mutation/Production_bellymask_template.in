@@ -1,0 +1,11 @@
+Equilibration stage 3: Long equilibration
+ &cntrl
+  imin = 0, ntb = 0,
+  igb = 0
+  tempi = 300.0, temp0 = 300.0
+  nstlim=5000, dt=0.0005,
+  ntpr=5000, ntwx=500, ntwr=10000,
+  cut=999.0
+  ibelly=1
+  bellymask = ':XXX'
+ /

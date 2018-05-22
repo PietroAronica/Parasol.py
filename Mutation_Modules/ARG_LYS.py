@@ -3,10 +3,10 @@
 import Frcmod_creator
 import PDBHandler
 import Leapy
-from ParmedTools.ParmedActions import *
-from chemistry.amber.readparm import *
+from parmed.tools.actions import *
+from parmed.amber.readparm import *
 
-def parmed_command(vxi='VXI'):
+def parmed_command(vxi='VXI', lipid='No'):
 	bc = {}
         with open('Param_files/AminoAcid/ARG.param', 'r') as b:
                 data = b.readlines()[1:]
@@ -84,10 +84,10 @@ def makevxi(struct, out, aa, vxi='VXI'):
 				pdb.write(atom.superimposed1('HZ3', NE)) 
 			else:
                         	pdb.write(atom.formatted())
-                try:
-                        pdb.write(struct.other_dict[res.get_resnumber()].ter())
-                except:
-                        pass
+	                try:
+        	                pdb.write(struct.other_dict[atom.get_number()].ter())
+                	except:
+                        	pass
         for oth in struct.other_dict:
                 try:
                         if oth.startswith('Conect'):
@@ -96,7 +96,7 @@ def makevxi(struct, out, aa, vxi='VXI'):
                         pass
         pdb.write('END\n')
 
-def lib_make(ff, outputfile, vxi='VXI', hd1='fh', ne='nc', he2='h2', he3='h3', cz='cn', hz1='z1', hz2='z2', hz3='z3', nh1='n1', hh1='1h', nh2='n2', hh2='2h'):
+def lib_make(ff, outputfile, vxi='VXI', hd1='hf', ne='nc', he2='h2', he3='h3', cz='cn', hz1='z1', hz2='z2', hz3='z3', nh1='n1', hh1='1h', nh2='n2', hh2='2h'):
         ctrl = open('lyp.in', 'w')
         ctrl.write("source %s\n"%ff)
 	ctrl.write("%s=loadpdb Param_files/LibPDB/ARG-LYS.pdb\n"%vxi)
@@ -234,7 +234,7 @@ def lac(x, y, i):
 	num = y+((x-y)/10)*i
 	return num
 
-def stock_add_to_all(hd1='fh', ne='nc', he2='h2', he3='h3', cz='cn', hz1='z1', hz2='z2', hz3='z3', nh1='n1', hh1='1h', nh2='n2', hh2='2h'):
+def stock_add_to_all(hd1='hf', ne='nc', he2='h2', he3='h3', cz='cn', hz1='z1', hz2='z2', hz3='z3', nh1='n1', hh1='1h', nh2='n2', hh2='2h'):
 	Frcmod_creator.make_hyb()
 	Frcmod_creator.TYPE_insert(hd1, 'H', 'sp3')
 	Frcmod_creator.TYPE_insert(ne, 'N', 'sp2')
