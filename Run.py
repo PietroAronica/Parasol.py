@@ -88,6 +88,33 @@ def add_gly(store, baa, resnum, terminus, dct=WORKDIR, wkdir='None', solv = 'No'
 	shutil.copyfile('Mut_leap.pdb', '{}Curr_run.pdb'.format(HOMEDIR))
 	return nwdir
 
+def glyremover(store, baa, resnum, dct=WORKDIR, wkdir='None', solv = 'No', fin=None, strip = 'No', lipid = 'No'):
+	os.chdir(dct)
+	try:
+		os.mkdir(wkdir)
+	except:
+		pass
+	os.chdir(wkdir)
+	nwdir = os.getcwd()
+	shutil.move(store, os.getcwd())
+#	if solv == 'No':
+	Input = simpath + 'Method_glyremover ' + HOMEDIR
+#	elif solv == 'Yes':
+#		Input = simpath + 'Method_proceed ' + HOMEDIR
+#	if lipid == 'Yes':
+#		Input = simpath + 'Method_lipid_proceed ' + HOMEDIR
+	os.system(Input)
+	os.chdir('Run_1')
+	traj = pt.load('100_0.restart', top='../Store/Solv_0_100.prmtop')
+	if strip != 'No':
+		traj.strip(':WAT,Cl-,Na+')
+	traj.autoimage()
+	pt.write_traj('Run_1.pdb', traj, overwrite=True)
+	s = PDBHandler.readpdb('Run_1.pdb')
+	PDBHandler.glyremover(s, resnum)
+	shutil.copyfile('Mut_leap.pdb', '{}Curr_run.pdb'.format(HOMEDIR))
+	return nwdir
+
 def mutate_con(store, faa, wkdir, resnum, strip = 'No', lipid = 'No', bellymask = 'No'):
 	os.chdir(wkdir)
 	os.mkdir('To{}'.format(faa))

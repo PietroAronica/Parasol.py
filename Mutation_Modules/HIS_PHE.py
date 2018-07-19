@@ -49,6 +49,7 @@ def parmed_command(vxi='VXI', lipid='No'):
 
 def makevxi(struct, out, aa, vxi='VXI'):
         struct.residue_dict[aa].set_resname(vxi)
+	CG  = struct.residue_dict[aa].atom_dict['CG']
 	CE1 = struct.residue_dict[aa].atom_dict['CE1']
 	NE2 = struct.residue_dict[aa].atom_dict['NE2']
 	pdb = open(out, 'w')
@@ -60,7 +61,7 @@ def makevxi(struct, out, aa, vxi='VXI'):
 		for atom in res.atom_list:
 			if atom.get_name() == 'ND1' and res.get_resname() == vxi:
 				pdb.write(atom.change_name('CD1')) 
-				pdb.write(atom.superimposed1('HD1', CE1)) 
+				pdb.write(atom.superimposed1('HD1', CG)) 
 			elif atom.get_name() == 'NE2' and res.get_resname() == vxi:
 				pdb.write(atom.change_name('CE2')) 
 			elif atom.get_name() == 'HE2' and res.get_resname() == vxi:
@@ -81,7 +82,36 @@ def makevxi(struct, out, aa, vxi='VXI'):
                         pass
         pdb.write('END\n')
 
-def lib_make(ff, outputfile, vxi='VXI', cg='0c', nd1='1n', hd1='1h', cd2='2c', hd2='2h', ce1='3c', he1='3h', ne2='4c', he2='4h', cz='5c', hz='5h'):
+def variablemake(sym='^'):
+	var1 = sym + '1'
+	var2 = sym + '2'
+	var3 = sym + '3'
+	var4 = sym + '4'
+	var5 = sym + '5'
+	var6 = sym + '6'
+	var7 = sym + '7'
+	var8 = sym + '8'
+	var9 = sym + '9'
+	var10 = sym + '0'
+	var11 = sym + 'a'
+	var12 = sym + 'b'
+	var13 = sym + 'c'
+	var14 = sym + 'd'
+	var15 = sym + 'e'
+	return var1, var2, var3, var4, var5, var6, var7, var8, var9, var10, var11, var12, var13, var14, var15
+
+def lib_make(ff, outputfile, vxi='VXI', var=variablemake()):
+	cg = var[0]
+	nd1 = var[1]
+	hd1 = var[2]
+	cd2 = var[3]
+	hd2 = var[4]
+	ce1 = var[5]
+	he1 = var[6]
+	ne2 = var[7]
+	he2 = var[8]
+	cz = var[9]
+	hz = var[10]
         ctrl = open('lyp.in', 'w')
         ctrl.write("source %s\n"%ff)
 	ctrl.write("%s=loadpdb Param_files/LibPDB/PHE-HIS.pdb\n"%vxi)
@@ -188,7 +218,18 @@ def lac(y, x, i):
 	num = x+((y-x)/10)*i
 	return num
 
-def stock_add_to_all(cg='0c', nd1='1n', hd1='1h', cd2='2c', hd2='2h', ce1='3c', he1='3h', ne2='4c', he2='4h', cz='5c', hz='5h'):
+def stock_add_to_all(var=variablemake()):
+	cg = var[0]
+	nd1 = var[1]
+	hd1 = var[2]
+	cd2 = var[3]
+	hd2 = var[4]
+	ce1 = var[5]
+	he1 = var[6]
+	ne2 = var[7]
+	he2 = var[8]
+	cz = var[9]
+	hz = var[10]
 	Frcmod_creator.make_hyb()
 	Frcmod_creator.TYPE_insert(cg, 'C', 'sp2')
 	Frcmod_creator.TYPE_insert(nd1, 'N', 'sp2')
@@ -238,11 +279,11 @@ def stock_add_to_all(cg='0c', nd1='1n', hd1='1h', cd2='2c', hd2='2h', ce1='3c', 
 		Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format('HC', 'CT', cg), lac(p['C_C_H'][0], p['C_C_H'][0], i), lac(p['C_C_H'][1], p['C_C_H'][1], i))
 		Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format('CT', cg, nd1), lac(p['F_CT_CA_CA'][0], p['F_CT_CA_CA'][0], i), lac(p['F_CT_CA_CA'][1], p['F_CT_CA_CA'][1], i))
 		Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format('CT', cg, cd2), lac(p['F_CT_CA_CA'][0], p['F_CT_CA_CA'][0], i), lac(p['F_CT_CA_CA'][1], p['F_CT_CA_CA'][1], i))
-		Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format(cg, nd1, hd1), lac(p['F_CA_CA_HA'][0], p['C_C_O2'][0], i), lac(p['F_CA_CA_HA'][1], p['C_C_O2'][1], i))
+		Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format(cg, nd1, hd1), lac(p['F_CA_CA_HA'][0], p['Close'][0], i), lac(p['F_CA_CA_HA'][1], p['Close'][1], i))
 		Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format(cg, nd1, ce1), lac(p['F_CA_CA_CA'][0], p['C_C_O2'][0], i), lac(p['F_CA_CA_CA'][1], p['C_C_O2'][1], i))
 		Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format(cg, cd2, hd2), lac(p['F_CA_CA_HA'][0], p['F_CA_CA_HA'][0], i), lac(p['F_CA_CA_HA'][1], p['F_CA_CA_HA'][1], i))
 		Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format(cg, cd2, ne2), lac(p['F_CA_CA_CA'][0], p['F_CT_CA_CA'][0], i), lac(p['F_CA_CA_CA'][1], p['F_CT_CA_CA'][1], i))
-		Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format(hd1, nd1, ce1), lac(p['F_CA_CA_HA'][0], p['Close'][0], i), lac(p['F_CA_CA_HA'][1], p['Close'][1], i))
+		Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format(hd1, nd1, ce1), lac(p['F_CA_CA_HA'][0], p['C_C_O2'][0], i), lac(p['F_CA_CA_HA'][1], p['C_C_O2'][1], i))
 		Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format(nd1, ce1, he1), lac(p['F_CA_CA_HA'][0], p['F_CA_CA_HA'][0], i), lac(p['F_CA_CA_CA'][1], p['F_CA_CA_HA'][1], i))
 		Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format(nd1, ce1, cz), lac(p['F_CA_CA_CA'][0], p['F_CT_CA_CA'][0], i), lac(p['F_CA_CA_CA'][1], p['F_CT_CA_CA'][1], i))
 		Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format(he1, ce1, cz), lac(p['F_CA_CA_HA'][0], p['F_CA_CA_HA'][0], i), lac(p['F_CA_CA_CA'][1], p['F_CA_CA_HA'][1], i))

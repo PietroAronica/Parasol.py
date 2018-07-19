@@ -77,7 +77,24 @@ def makevxi(struct, out, aa, vxi='VXI'):
                         pass
         pdb.write('END\n')
 
-def lib_make(ff, outputfile, vxi='VXI', difcar='cd', difhyd='hd', hyd1='h1', hyd2='h2', newcar='cn', newhyd='hn'):
+def variablemake(sym='^'):
+	var1 = sym + '1'
+	var2 = sym + '2'
+	var3 = sym + '3'
+	var4 = sym + '4'
+	var5 = sym + '5'
+	var6 = sym + '6'
+	var7 = sym + '7'
+	var8 = sym + '8'
+	return var1, var2, var3, var4, var5, var6, var7, var8
+
+def lib_make(ff, outputfile, vxi='VXI', var=variablemake()):
+	difcar = var[0]
+	difhyd = var[1]
+	hyd1 = var[2]
+	hyd2 = var[3]
+	newcar = var[4]
+	newhyd = var[5]
         ctrl = open('lyp.in', 'w')
         ctrl.write("source %s\n"%ff)
 	ctrl.write("%s=loadpdb Param_files/LibPDB/ABU-NVD.pdb\n"%vxi)
@@ -167,7 +184,13 @@ def lac(x, y, i):
 	num = y+((x-y)/10)*i
 	return num
 
-def stock_add_to_all(difcar='cd', difhyd='hd', hyd1='h1', hyd2='h2', newcar='cn', newhyd='hn'):
+def stock_add_to_all(var=variablemake()):
+	difcar = var[0]
+	difhyd = var[1]
+	hyd1 = var[2]
+	hyd2 = var[3]
+	newcar = var[4]
+	newhyd = var[5]
 	Frcmod_creator.make_hyb()
 	Frcmod_creator.TYPE_insert(difcar, 'C', 'sp2')
 	Frcmod_creator.TYPE_insert(difhyd, 'H', 'sp3')

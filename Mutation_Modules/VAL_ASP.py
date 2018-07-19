@@ -93,7 +93,37 @@ def makevxi(struct, out, aa, vxi='VXI'):
                         pass
         pdb.write('END\n')
 
-def lib_make(ff, outputfile, vxi='VXI', metcar1='1c', methyd1='1h', hydhyd1='xh', metcar2='2c', methyd2='2h', hydhyd2='yh', carcar='cc', caroxy='oc', hydhyd3='sh'):
+def variablemake(sym='^'):
+	var1 = sym + '1'
+	var2 = sym + '2'
+	var3 = sym + '3'
+	var4 = sym + '4'
+	var5 = sym + '5'
+	var6 = sym + '6'
+	var7 = sym + '7'
+	var8 = sym + '8'
+	var9 = sym + '9'
+	var10 = sym + '0'
+	var11 = sym + 'a'
+	var12 = sym + 'b'
+	var13 = sym + 'c'
+	var14 = sym + 'd'
+	var15 = sym + 'e'
+	var16 = sym + 'f'
+	var17 = sym + 'g'
+	var18 = sym + 'h'
+	return var1, var2, var3, var4, var5, var6, var7, var8, var9, var10, var11, var12, var13, var14, var15, var16, var17, var18
+
+def lib_make(ff, outputfile, vxi='VXI', var=variablemake()):
+	metcar1 = var[0]
+	methyd1 = var[1]
+	hydhyd1 = var[2]
+	metcar2 = var[3]
+	methyd2 = var[4]
+	hydhyd2 = var[5]
+	carcar = var[6]
+	caroxy = var[7]
+	hydhyd3 = var[8]
         ctrl = open('lyp.in', 'w')
         ctrl.write("source %s\n"%ff)
 	ctrl.write("%s=loadpdb Param_files/LibPDB/VAL-ASP.pdb\n"%vxi)
@@ -203,7 +233,16 @@ def lac(y, x, i):
 	num = x+((y-x)/10)*i
 	return num
 
-def stock_add_to_all(metcar1='1c', methyd1='1h', hydhyd1='xh', metcar2='2c', methyd2='2h', hydhyd2='yh', carcar='cc', caroxy='oc', hydhyd3='sh'):
+def stock_add_to_all(var=variablemake()):
+	metcar1 = var[0]
+	methyd1 = var[1]
+	hydhyd1 = var[2]
+	metcar2 = var[3]
+	methyd2 = var[4]
+	hydhyd2 = var[5]
+	carcar = var[6]
+	caroxy = var[7]
+	hydhyd3 = var[8]
 	Frcmod_creator.make_hyb()
 	Frcmod_creator.TYPE_insert(carcar, 'C', 'sp2')
 	Frcmod_creator.TYPE_insert(caroxy, 'O', 'sp2')

@@ -88,7 +88,28 @@ def makevxi(struct, out, aa, vxi='VXI'):
                         pass
         pdb.write('END\n')
 
-def lib_make(ff, outputfile, vxi='VXI', oldcar='co', oldoxy='oo', newnit='nn', newhyd='nh', newalp='c1', newhl1='h1', newhl2='h2', newcar='nc', newoxy='no'):
+def variablemake(sym='^'):
+	var1 = sym + '1'
+	var2 = sym + '2'
+	var3 = sym + '3'
+	var4 = sym + '4'
+	var5 = sym + '5'
+	var6 = sym + '6'
+	var7 = sym + '7'
+	var8 = sym + '8'
+	var9 = sym + '9'
+	return var1, var2, var3, var4, var5, var6, var7, var8, var9
+
+def lib_make(ff, outputfile, vxi='VXI', var=variablemake()):
+	oldcar = var[0]
+	oldoxy = var[1]
+	newnit = var[2]
+	newhyd = var[3]
+	newalp = var[4]
+	newhl1 = var[5]
+	newhl2 = var[6]
+	newcar = var[7]
+	newoxy = var[8]
         ctrl = open('lyp.in', 'w')
         ctrl.write("source %s\n"%ff)
 	ctrl.write("%s=loadpdb Param_files/LibPDB/ALA_X_GLY.pdb\n"%vxi)
@@ -182,7 +203,16 @@ def lac(x, y, i):
         num = y+((x-y)/10)*i
         return num
 
-def stock_add_to_all(oldcar='co', oldoxy='oo', newnit='nn', newhyd='nh', newalp='c1', newhl1='h1', newhl2='h2', newcar='nc', newoxy='no'):
+def stock_add_to_all(var=variablemake())
+	oldcar = var[0]
+	oldoxy = var[1]
+	newnit = var[2]
+	newhyd = var[3]
+	newalp = var[4]
+	newhl1 = var[5]
+	newhl2 = var[6]
+	newcar = var[7]
+	newoxy = var[8]
         Frcmod_creator.make_hyb()
         Frcmod_creator.TYPE_insert(oldcar, 'C', 'sp2')
         Frcmod_creator.TYPE_insert(oldoxy, 'O', 'sp3')

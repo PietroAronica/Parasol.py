@@ -133,7 +133,7 @@ addPdbResMap {
   { 0 "CYX" "NCYX" } { 1 "CYX" "CCYX" }
   { 0 "GLN" "NGLN" } { 1 "GLN" "CGLN" }
   { 0 "GLU" "NGLU" } { 1 "GLU" "CGLU" }
-  { 0 "GLY" "NGLY" } { 1 "GLY" "CGLY" }
+#  { 0 "GLY" "NGLY" } { 1 "GLY" "CGLY" }
   { 0 "HID" "NHID" } { 1 "HID" "CHID" }
   { 0 "HIE" "NHIE" } { 1 "HIE" "CHIE" }
   { 0 "HIP" "NHIP" } { 1 "HIP" "CHIP" }

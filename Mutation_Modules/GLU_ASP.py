@@ -75,7 +75,27 @@ def makevxi(struct, out, aa, vxi='VXI'):
                         pass
         pdb.write('END\n')
 
-def lib_make(ff, outputfile, vxi='VXI', intcar='ic', inthyd='ih'):
+def variablemake(sym='^'):
+	var1 = sym + '1'
+	var2 = sym + '2'
+	var3 = sym + '3'
+	var4 = sym + '4'
+	var5 = sym + '5'
+	var6 = sym + '6'
+	var7 = sym + '7'
+	var8 = sym + '8'
+	var9 = sym + '9'
+	var10 = sym + '0'
+	var11 = sym + 'a'
+	var12 = sym + 'b'
+	var13 = sym + 'c'
+	var14 = sym + 'd'
+	var15 = sym + 'e'
+	return var1, var2, var3, var4, var5, var6, var7, var8, var9, var10, var11, var12, var13, var14, var15
+
+def lib_make(ff, outputfile, vxi='VXI', var=variablemake()):
+	intcar = var[0]
+	inthyd = var[1]
         ctrl = open('lyp.in', 'w')
         ctrl.write("source %s\n"%ff)
 	ctrl.write("%s=loadpdb Param_files/LibPDB/ASP-GLU.pdb\n"%vxi)
@@ -161,7 +181,9 @@ def lac(y, x, i):
 	num = x+((y-x)/10)*i
 	return num
 
-def stock_add_to_all(intcar='ic', inthyd='ih'):
+def stock_add_to_all(var=variablemake()):
+	intcar = var[0]
+	inthyd = var[1]
 	Frcmod_creator.make_hyb()
 	Frcmod_creator.TYPE_insert(intcar, 'C', 'sp3')
 	Frcmod_creator.TYPE_insert(inthyd, 'H', 'sp3')

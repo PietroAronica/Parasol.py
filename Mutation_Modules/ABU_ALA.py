@@ -69,7 +69,16 @@ def makevxi(struct, out, aa, vxi='VXI'):
                         pass
         pdb.write('END\n')
 
-def lib_make(ff, outputfile, vxi='VXI', metcar='cd', methyd='dh', hydhyd='mh'):
+def variablemake(sym='^'):
+	var1 = sym + '1'
+	var2 = sym + '2'
+	var3 = sym + '3'
+	return var1, var2, var3
+
+def lib_make(ff, outputfile, vxi='VXI', var=variablemake()):
+ 	metcar = var[0]
+ 	methyd = var[1]
+ 	hydhyd = var[2]
         ctrl = open('lyp.in', 'w')
         ctrl.write("source %s\n"%ff)
 	ctrl.write("%s=loadpdb Param_files/LibPDB/ABU-ALA.pdb\n"%vxi)
@@ -151,7 +160,10 @@ def lac(x, y, i):
         num = y+((x-y)/10)*i
         return num
 
-def stock_add_to_all(metcar='cd', methyd='dh', hydhyd='mh'):
+def stock_add_to_all(var=variablemake()):
+	metcar = var[0]
+	methyd = var[1]
+	hydhyd = var[2]
         Frcmod_creator.make_hyb()
         Frcmod_creator.TYPE_insert(metcar, 'C', 'sp3')
         Frcmod_creator.TYPE_insert(methyd, 'H', 'sp3')

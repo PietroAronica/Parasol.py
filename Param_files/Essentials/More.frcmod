@@ -34,6 +34,9 @@ CC-H4  350.1    1.0830       equivalent to cc-h4 in gaff
 CB-CT  337.3    1.4990       equivalent to cd-c3 in gaff
 S -CC  279.3    1.7370       equivalent to ss-cc in gaff 
 CC-C   377.4    1.4620       equivalent to cc-c  in gaff
+EP-Cl  600.0    1.9500       Sigma hole and Chlorine
+EP-Br  600.0    2.2200       Sigma hole and Bromine
+EP-I   600.0    2.3500       Sigma hole and Iodine
 
 ANGLE
 CF-CF-HF   50.30      119.70    SOURCE3            1
@@ -85,6 +88,12 @@ CC-CB-C    65.25      121.42    equivalent to cc-cd-c  in gaff
 C -N -C    65.33      127.1     equivalent to c -n -c  in gaff
 N -C -CB   70.19      111.86    equivalent to cd-c -n  in gaff
 C -CT-OH   68.65      108.70    equivalent to c -c3-oh in gaff
+CA-CT-OS   68.19      108.89    equivalent to ca-c3-os in gaff
+ca-cc-ca   65.99      120.10    equivalent to ca-ca-cc in gaff
+X -Cl-EP   150.0      180.00    EP Chlorine Angle
+X -Br-EP   150.0      180.00    EP Bromine Angle
+X -I -EP   150.0      180.00    EP Iodine Angle
+I -CT-H1    50.0      106.50    Equivalant to Br-CT-H1 in FF14SB
 
 DIHEDRAL
 X -CF-CT-X    6    0.000         0.000           2.000      JCC,7,(1986),230
@@ -108,6 +117,9 @@ X -NZ-CB-X    2    9.500       180.000           2.000
 X -CT-CB-X    6    0.000         0.000           3.000
 X -CC-C -X    4   11.500       180.000           2.000      equivalent to X -c -cc-X in gaff
 X -S -CC-X    2    6.200       180.000           2.000      equivalent to X -c -ss-X in gaff
+X -X -Cl-EP   1    0.000       000.000           1.000      Chlorine EP dihedral
+X -X -Br-EP   1    0.000       000.000           1.000      Bromine EP dihedral
+X -X -I -EP   1    0.000       000.000           1.000      Iodine EP dihedral
 
 IMPROPER
 CF-CT-CF-HF         1.1          180.          2.           Junmei et al.1999

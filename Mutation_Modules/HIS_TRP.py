@@ -98,7 +98,40 @@ def makevxi(struct, out, aa, vxi='VXI'):
                         pass
         pdb.write('END\n')
 
-def lib_make(ff, outputfile, vxi='VXI', cg='1c', cd1='2c', hd1='2h', ne1='3n', he1='3h', cd2='4c', ce2='5c', ce3='6c', he3='6h', cz1='7c', hz1='7h', cz2='8c', hz2='8h', ch='9c', hh='9h'):
+def variablemake(sym='^'):
+	var1 = sym + '1'
+	var2 = sym + '2'
+	var3 = sym + '3'
+	var4 = sym + '4'
+	var5 = sym + '5'
+	var6 = sym + '6'
+	var7 = sym + '7'
+	var8 = sym + '8'
+	var9 = sym + '9'
+	var10 = sym + '0'
+	var11 = sym + 'a'
+	var12 = sym + 'b'
+	var13 = sym + 'c'
+	var14 = sym + 'd'
+	var15 = sym + 'e'
+	return var1, var2, var3, var4, var5, var6, var7, var8, var9, var10, var11, var12, var13, var14, var15
+
+def lib_make(ff, outputfile, vxi='VXI', var=variablemake()):
+	cg = var[0]
+	cd1 = var[1]
+	hd1 = var[2]
+	ne1 = var[3]
+	he1 = var[4]
+	cd2 = var[5]
+	ce2 = var[6]
+	ce3 = var[7]
+	he3 = var[8]
+	cz1 = var[9]
+	hz1 = var[10]
+	cz2 = var[11]
+	hz2 = var[12]
+	ch = var[13]
+	hh = var[14]
         ctrl = open('lyp.in', 'w')
         ctrl.write("source %s\n"%ff)
 	ctrl.write("%s=loadpdb Param_files/LibPDB/HIS-TRP.pdb\n"%vxi)
@@ -222,7 +255,22 @@ def lac(x, y, i):
 	num = y+((x-y)/10)*i
 	return num
 
-def stock_add_to_all(cg='1c', cd1='2c', hd1='2h', ne1='3n', he1='3h', cd2='4c', ce2='5c', ce3='6c', he3='6h', cz1='7c', hz1='7h', cz2='8c', hz2='8h', ch='9c', hh='9h'):
+def stock_add_to_all(var=variablemake()):
+	cg = var[0]
+	cd1 = var[1]
+	hd1 = var[2]
+	ne1 = var[3]
+	he1 = var[4]
+	cd2 = var[5]
+	ce2 = var[6]
+	ce3 = var[7]
+	he3 = var[8]
+	cz1 = var[9]
+	hz1 = var[10]
+	cz2 = var[11]
+	hz2 = var[12]
+	ch = var[13]
+	hh = var[14]
 	Frcmod_creator.make_hyb()
 	Frcmod_creator.TYPE_insert(cg, 'C', 'sp2')
 	Frcmod_creator.TYPE_insert(cd1, 'C', 'sp2')

@@ -182,7 +182,7 @@ outfile=readinput(sys.argv[1:])[2]
 
 if job == 0:
 # GLYCINE MUTATIONS
-	if baa == 'GLY' and faa in ('ALA', 'DAA'):
+	if baa == 'GLY' and faa in ('ALA', 'DAA', 'BAA'):
 		God.makeinput(pdbfile, outfile, baa, faa, resid, newbox=boxsize, ff1=ff1, ff2=ff2, lipid=lipid, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand, extraprep=extraprep)
 		cleanup()
 		Run.mutate_beg('{}Store/'.format(HOMEDIR), faa, resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa, lipid=lipid, bellymask=bellymask)
@@ -276,6 +276,30 @@ if job == 0:
 		Run.mutate_con('{}Store/'.format(HOMEDIR), 'TZ1', nwdir, resid, lipid=lipid, bellymask=bellymask)
 		os.chdir(HOMEDIR)
 		God.makeinput('Curr_run.pdb', outfile, 'TZ1', faa, resid, newbox=boxsize, ff1=ff1, ff2=ff2, lipid=lipid, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand, extraprep=extraprep)
+		cleanup()
+		Run.mutate_con('{}Store/'.format(HOMEDIR), faa, nwdir, resid, lipid=lipid, bellymask=bellymask)
+	if baa == 'GLY' and faa in ('KN3'):
+		God.makeinput(pdbfile, outfile, baa, 'ALA', resid, newbox=boxsize, ff1=ff1, ff2=ff2, lipid=lipid, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand, extraprep=extraprep)
+		cleanup()
+		nwdir = Run.mutate_beg('{}Store/'.format(HOMEDIR), 'ALA', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa, lipid=lipid, bellymask=bellymask)
+		os.chdir(HOMEDIR)
+		God.makeinput('Curr_run.pdb', outfile, 'ALA', 'ABU', resid, newbox=boxsize, ff1=ff1, ff2=ff2, lipid=lipid, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand, extraprep=extraprep)
+		cleanup()
+		Run.mutate_con('{}Store/'.format(HOMEDIR), 'ABU', nwdir, resid, lipid=lipid, bellymask=bellymask)
+		os.chdir(HOMEDIR)
+		God.makeinput('Curr_run.pdb', outfile, 'ABU', 'NVA', resid, newbox=boxsize, ff1=ff1, ff2=ff2, lipid=lipid, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand, extraprep=extraprep)
+		cleanup()
+		Run.mutate_con('{}Store/'.format(HOMEDIR), 'NVA', nwdir, resid, lipid=lipid, bellymask=bellymask)
+		os.chdir(HOMEDIR)
+		God.makeinput('Curr_run.pdb', outfile, 'NVA', 'NLE', resid, newbox=boxsize, ff1=ff1, ff2=ff2, lipid=lipid, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand, extraprep=extraprep)
+		cleanup()
+		Run.mutate_con('{}Store/'.format(HOMEDIR), 'NLE', nwdir, resid, lipid=lipid, bellymask=bellymask)
+		os.chdir(HOMEDIR)
+		God.makeinput('Curr_run.pdb', outfile, 'NLE', 'LYS', resid, newbox=boxsize, ff1=ff1, ff2=ff2, lipid=lipid, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand, extraprep=extraprep)
+		cleanup()
+		Run.mutate_con('{}Store/'.format(HOMEDIR), 'LYS', nwdir, resid, lipid=lipid, bellymask=bellymask)
+		os.chdir(HOMEDIR)
+		God.makeinput('Curr_run.pdb', outfile, 'LYS', faa, resid, newbox=boxsize, ff1=ff1, ff2=ff2, lipid=lipid, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand, extraprep=extraprep)
 		cleanup()
 		Run.mutate_con('{}Store/'.format(HOMEDIR), faa, nwdir, resid, lipid=lipid, bellymask=bellymask)
 	if baa == 'GLY' and faa in ('ARG', 'LYS'):
@@ -409,6 +433,14 @@ if job == 0:
 		Run.mutate_con('{}Store/'.format(HOMEDIR), 'TZ1', nwdir, resid, lipid=lipid, bellymask=bellymask)
 		os.chdir(HOMEDIR)
 		God.makeinput('Curr_run.pdb', outfile, 'TZ1', faa, resid, newbox=boxsize, ff1=ff1, ff2=ff2, lipid=lipid, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand, extraprep=extraprep)
+		cleanup()
+		Run.mutate_con('{}Store/'.format(HOMEDIR), faa, nwdir, resid, lipid=lipid, bellymask=bellymask)
+	if baa == 'ALA' and faa == 'HCY':
+		God.makeinput(pdbfile, outfile, baa, 'CYS', resid, newbox=boxsize, ff1=ff1, ff2=ff2, lipid=lipid, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand, extraprep=extraprep)
+		cleanup()
+		nwdir = Run.mutate_beg('{}Store/'.format(HOMEDIR), 'CYS', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa, lipid=lipid, bellymask=bellymask)
+		os.chdir(HOMEDIR)
+		God.makeinput('Curr_run.pdb', outfile, 'CYS', faa, resid, newbox=boxsize, ff1=ff1, ff2=ff2, lipid=lipid, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand, extraprep=extraprep)
 		cleanup()
 		Run.mutate_con('{}Store/'.format(HOMEDIR), faa, nwdir, resid, lipid=lipid, bellymask=bellymask)
 	if baa == 'ALA' and faa == 'PRO':
@@ -900,7 +932,7 @@ if job == 0:
 		cleanup()
 		Run.mutate_con('{}Store/'.format(HOMEDIR), 'NKI', nwdir, resid, lipid=lipid, bellymask=bellymask)
 	# CYSTEINE MUTATIONS
-	if baa == 'CYS' and faa in ('ALA', 'VAL', 'ABU', 'SER', 'THR', 'ASN', 'ASP', 'QUA', 'MCY'):
+	if baa == 'CYS' and faa in ('ALA', 'VAL', 'ABU', 'SER', 'THR', 'ASN', 'ASP', 'QUA', 'MCY', 'HCY'):
 		God.makeinput(pdbfile, outfile, baa, faa, resid, newbox=boxsize, ff1=ff1, ff2=ff2, lipid=lipid, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand, extraprep=extraprep)
 		cleanup()
 		Run.mutate_beg('{}Store/'.format(HOMEDIR), faa, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid, bellymask=bellymask)
@@ -1140,6 +1172,14 @@ if job == 0:
 		nwdir = Run.mutate_beg('{}Store/'.format(HOMEDIR), 'QUA', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa, lipid=lipid, bellymask=bellymask)
 		os.chdir(HOMEDIR)
 		God.makeinput('Curr_run.pdb', outfile, 'QUA', faa, resid, newbox=boxsize, ff1=ff1, ff2=ff2, lipid=lipid, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand, extraprep=extraprep)
+		cleanup()
+		Run.mutate_con('{}Store/'.format(HOMEDIR), faa, nwdir, resid, lipid=lipid, bellymask=bellymask)
+	if baa == 'ASP' and faa in ('HCY'):
+		God.makeinput(pdbfile, outfile, baa, 'CYS', resid, newbox=boxsize, ff1=ff1, ff2=ff2, lipid=lipid, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand, extraprep=extraprep)
+		cleanup()
+		nwdir = Run.mutate_beg('{}Store/'.format(HOMEDIR), 'CYS', resid, wkdir=wkdir, solv=solv, strip=toobig, fin=faa, lipid=lipid, bellymask=bellymask)
+		os.chdir(HOMEDIR)
+		God.makeinput('Curr_run.pdb', outfile, 'CYS', faa, resid, newbox=boxsize, ff1=ff1, ff2=ff2, lipid=lipid, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand, extraprep=extraprep)
 		cleanup()
 		Run.mutate_con('{}Store/'.format(HOMEDIR), faa, nwdir, resid, lipid=lipid, bellymask=bellymask)
 	if baa == 'ASP' and faa in ('GLY'):
@@ -1663,7 +1703,7 @@ if job == 0:
 		cleanup()
 		Run.mutate_con('{}Store/'.format(HOMEDIR), 'NKI', nwdir, resid, lipid=lipid, bellymask=bellymask)
 	# PHENYLALANINE MUTATIONS
-	if baa == 'PHE' and faa in ('ANN', 'TYR', 'HIS', 'TRP', 'B1F', 'B2F'):
+	if baa == 'PHE' and faa in ('ANN', 'TYR', 'HIS', 'TRP', 'B1F', 'B2F', 'NAL'):
 		God.makeinput(pdbfile, outfile, baa, faa, resid, newbox=boxsize, ff1=ff1, ff2=ff2, lipid=lipid, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand, extraprep=extraprep)
 		cleanup()
 		Run.mutate_beg('{}Store/'.format(HOMEDIR), faa, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid, bellymask=bellymask)
@@ -2668,7 +2708,7 @@ if job == 0:
 	if baa == 'HCY' and faa == 'TST':
 		print "Works as it should"
 	# AMINOBUTYRIC ACID MUTATIONS
-	if baa == 'ABU' and faa in ('ALA', 'CYS', 'GLU', 'GLN', 'HCY', 'ILE', 'LEU', 'NVA', 'QUA', 'SER', 'ASP', 'ASN', 'DBN', 'NVD', 'PRA', 'DAB'):
+	if baa == 'ABU' and faa in ('ALA', 'CYS', 'GLU', 'GLN', 'HCY', 'ILE', 'LEU', 'NVA', 'QUA', 'SER', 'ASP', 'ASN', 'DBN', 'NVD', 'PRA', 'DAB', 'CLE'):
 		God.makeinput(pdbfile, outfile, baa, faa, resid, newbox=boxsize, ff1=ff1, ff2=ff2, lipid=lipid, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand, extraprep=extraprep)
 		cleanup()
 		Run.mutate_beg('{}Store/'.format(HOMEDIR), faa, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid, bellymask=bellymask)
@@ -2693,14 +2733,46 @@ if job == '1':
 	box = struct.other_dict['Cryst1'].box_side()
 	dist = float(struct.residue_dict[resid].atom_dict[sp[faa][1]].calc_distance(struct.residue_dict[resid2].atom_dict[sp[faa2][1]]))
 	import Mutation_Modules.All_staples as stapler
+        Term_faa = 'None'
+        try:
+                struct.residue_dict[resid].atom_dict['H3']
+                Term_faa = 'N'
+        except:
+                pass
+        try:
+                struct.residue_dict[resid].atom_dict['OXT']
+                Term_faa = 'C'
+        except:
+                pass
+        Term_faa2 = 'None'
+        try:
+                struct.residue_dict[resid2].atom_dict['H3']
+                Term_faa2 = 'N'
+        except:
+                pass
+        try:
+                struct.residue_dict[resid2].atom_dict['OXT']
+                Term_faa2 = 'C'
+        except:
+                pass
 	command = getattr(stapler, 'makevxi_' + faa)
 	command(struct, 'Staplebond.pdb', resid, 'NX1')	
 	struct = PDBHandler.readpdb('Staplebond.pdb')
 	command = getattr(stapler, 'makevxi_' + faa2)
 	command(struct, 'Staplebond.pdb', resid2, 'NX2')	
-	command = getattr(stapler, 'lib_make_' + faa)
+	if Term_faa == 'N':
+		command = getattr(stapler, 'lib_make_' + faa + '_N')
+	elif Term_faa == 'C':
+		command = getattr(stapler, 'lib_make_' + faa + '_C')
+	else:
+		command = getattr(stapler, 'lib_make_' + faa)
 	command('ff14SB+', outfile, 'NX1')
-	command = getattr(stapler, 'lib_make_' + faa2)
+	if Term_faa2 == 'N':
+		command = getattr(stapler, 'lib_make_' + faa2 + '_N')
+	elif Term_faa2 == 'C':
+		command = getattr(stapler, 'lib_make_' + faa2 + '_C')
+	else:
+		command = getattr(stapler, 'lib_make_' + faa2)
 	command('ff14SB+', outfile, 'NX2')
 	stapler.all_make()
 	command = getattr(stapler, 'stock_add_to_all_' + faa)
@@ -2708,9 +2780,19 @@ if job == '1':
 	command = getattr(stapler, 'stock_add_to_all_' + faa2)
 	command(dist)
 	Leapy.stapleprmtops_general(box, resid, resid2, sp[faa][1], sp[faa2][1], output=outfile)
-	command = getattr(stapler, 'parmed_command_' + faa)
+	if Term_faa == 'N':
+		command = getattr(stapler, 'parmed_command_' + faa + '_N')
+	elif Term_faa == 'C':
+		command = getattr(stapler, 'parmed_command_' + faa + '_C')
+	else:
+		command = getattr(stapler, 'parmed_command_' + faa)
 	command(resid)
-	command = getattr(stapler, 'parmed_command_' + faa2)
+	if Term_faa2 == 'N':
+		command = getattr(stapler, 'parmed_command_' + faa2 + '_N')
+	elif Term_faa2 == 'C':
+		command = getattr(stapler, 'parmed_command_' + faa2 + '_C')
+	else:
+		command = getattr(stapler, 'parmed_command_' + faa2)
 	command(resid2)
 	Run.make_store(box)
 	cleanup()
@@ -3942,11 +4024,11 @@ if job == '3':
 	bal='Null'
         if ff1 == 'Standard':
                 ff1 = 'Param_files/Essentials/cmd.ff14SB+'	
-	Leapy.createprmtops(newbox=boxsize, ff1=ff1, ff2=ff2, ion='Neutral', box=oldbox, solvbox=newbox, output=outfile, bal=bal, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand, extraprep=extraprep)
-	ap.parmed_command(lipid=lipid, bellymask=bellymask)
+	Leapy.createprmtops(ff1=ff1, ff2=ff2, ion='Neutral', box=oldbox, solvbox=newbox, output=outfile, bal=bal, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand, extraprep=extraprep)
+	ap.parmed_command(lipid=lipid)
 	Run.make_store(boxangle)
 	cleanup()
-	Run.add_gly('{}Store/'.format(HOMEDIR), baa, resid, terminus, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid, bellymask=bellymask)
+	Run.add_gly('{}Store/'.format(HOMEDIR), baa, resid, terminus, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
 
 if job == '4':
 	struct = PDBHandler.readpdb(pdbfile)
@@ -4083,3 +4165,34 @@ if job == '4':
 		God.makeinput('Curr_run.pdb', outfile, 'NER', 'NKI', resid, newbox=boxsize, ff1=ff1, ff2=ff2, lipid=lipid, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand, extraprep=extraprep)
 		cleanup()
 		Run.mutate_con('{}Store/'.format(HOMEDIR), 'NKI', wkdir, resid, lipid=lipid, bellymask=bellymask)
+
+if job == '5':
+	ori_struct = PDBHandler.readpdb(pdbfile)
+	succ = ori_struct.residue_dict[resid+1].get_resname()
+	MUT = 'Mutation_Modules.GLY_Y_' + succ
+	if wkdir == 'None':
+       		wkdir=datetime.datetime.now().strftime('{}Removing_residue_{}_%m-%d_%H:%M'.format(WORKDIR, resid))
+	struct = PDBHandler.cut_to_gly(ori_struct, resid)
+	ap = importlib.import_module(MUT)
+	ap.makevxi(struct, 'Mutabond.pdb', resid)
+	ap.all_make()
+	ap.lib_make('Param_files/Essentials/cmd.ff14SB+', outfile)
+	ap.stock_add_to_all()
+	import Leapy
+        try:
+                oldbox = struct.other_dict['Cryst1'].box_dimensions()
+                boxangle = struct.other_dict['Cryst1'].box_angle()
+                newbox = 'Null'
+        except:
+                oldbox = 'Null'
+                boxangle = 'Null'
+		newbox='8.0'
+	bal='Null'
+        if ff1 == 'Standard':
+                ff1 = 'Param_files/Essentials/cmd.ff14SB+'	
+	Leapy.createprmtops(ff1=ff1, ff2=ff2, ion='Neutral', box=oldbox, solvbox=newbox, output=outfile, bal=bal, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand, extraprep=extraprep)
+	ap.parmed_command(lipid=lipid)
+	Run.make_store(boxangle)
+	cleanup()
+	Run.glyremover('{}Store/'.format(HOMEDIR), baa, resid, wkdir=wkdir, solv=solv, strip=toobig, lipid=lipid)
+

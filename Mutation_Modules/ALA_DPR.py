@@ -71,7 +71,22 @@ def makevxi(struct, out, aa, vxi='VXI'):
                         pass
         pdb.write('END\n')
 
-def lib_make(ff, outputfile, vxi='VXI', aminit='na', amihyd='ha', difhyd='hd', hydhyd='hm'):
+def variablemake(sym='^'):
+	var1 = sym + '1'
+	var2 = sym + '2'
+	var3 = sym + '3'
+	var4 = sym + '4'
+	var5 = sym + '5'
+	var6 = sym + '6'
+	var7 = sym + '7'
+	var8 = sym + '8'
+	return var1, var2, var3, var4, var5, var6, var7, var8
+
+def lib_make(ff, outputfile, vxi='VXI', var=variablemake()):
+	aminit = var[0]
+	amihyd = var[1]
+	difhyd = var[2]
+	hydhyd = var[3]
         ctrl = open('lyp.in', 'w')
         ctrl.write("source %s\n"%ff)
 	ctrl.write("%s=loadpdb Param_files/LibPDB/ALA-DPR.pdb\n"%vxi)
@@ -149,7 +164,11 @@ def lac(x, y, i):
         num = y+((x-y)/10)*i
         return num
 
-def stock_add_to_all(aminit='na', amihyd='ha', hydhyd='hm', difhyd='hd'):
+def stock_add_to_all(var=variablemake()):
+	aminit = var[0]
+	amihyd = var[1]
+	difhyd = var[2]
+	hydhyd = var[3]
         Frcmod_creator.make_hyb()
         Frcmod_creator.TYPE_insert(aminit, 'N', 'sp3')
         Frcmod_creator.TYPE_insert(amihyd, 'H', 'sp3')

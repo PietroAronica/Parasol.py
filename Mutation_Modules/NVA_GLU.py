@@ -87,7 +87,31 @@ def makevxi(struct, out, aa, vxi='VXI'):
                         pass
         pdb.write('END\n')
 
-def lib_make(ff, outputfile, vxi='VXI', metcar='1c', methyd='1h', hydhyd1='xh', carcar='cc', caroxy='oc', hydhyd2='sh'):
+def variablemake(sym='^'):
+	var1 = sym + '1'
+	var2 = sym + '2'
+	var3 = sym + '3'
+	var4 = sym + '4'
+	var5 = sym + '5'
+	var6 = sym + '6'
+	var7 = sym + '7'
+	var8 = sym + '8'
+	var9 = sym + '9'
+	var10 = sym + '0'
+	var11 = sym + 'a'
+	var12 = sym + 'b'
+	var13 = sym + 'c'
+	var14 = sym + 'd'
+	var15 = sym + 'e'
+	return var1, var2, var3, var4, var5, var6, var7, var8, var9, var10, var11, var12, var13, var14, var15
+
+def lib_make(ff, outputfile, vxi='VXI', var=variablemake()):
+	metcar = var[0]
+	methyd = var[1]
+	hydhyd1 = var[2]
+	carcar = var[3]
+	caroxy = var[4]
+	hydhyd2 = var[5]
         ctrl = open('lyp.in', 'w')
         ctrl.write("source %s\n"%ff)
 	ctrl.write("%s=loadpdb Param_files/LibPDB/GLU-NVA.pdb\n"%vxi)
@@ -193,7 +217,13 @@ def lac(x, y, i):
         num = y+((x-y)/10)*i
         return num
 
-def stock_add_to_all(vxi='VXI', metcar='1c', methyd='1h', hydhyd1='xh', carcar='cc', caroxy='oc', hydhyd2='sh'):
+def stock_add_to_all(var=variablemake()):
+	metcar = var[0]
+	methyd = var[1]
+	hydhyd1 = var[2]
+	carcar = var[3]
+	caroxy = var[4]
+	hydhyd2 = var[5]
 	Frcmod_creator.make_hyb()
 	Frcmod_creator.TYPE_insert(metcar, 'C', 'sp3')
 	Frcmod_creator.TYPE_insert(methyd, 'H', 'sp3')

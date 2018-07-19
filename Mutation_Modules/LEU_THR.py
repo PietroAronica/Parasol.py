@@ -92,7 +92,35 @@ def makevxi(struct, out, aa, vxi='VXI'):
                         pass
         pdb.write('END\n')
 
-def lib_make(ff, outputfile, vxi='VXI', metcar1='1c', methyd1='1h', hydhyd1='xh', metcar2='2c', methyd2='2h', hydhyd2='yh', alcoxy='oh', alchyd='hh', hydhyd3='sh', thrhyd='hf'):
+def variablemake(sym='^'):
+	var1 = sym + '1'
+	var2 = sym + '2'
+	var3 = sym + '3'
+	var4 = sym + '4'
+	var5 = sym + '5'
+	var6 = sym + '6'
+	var7 = sym + '7'
+	var8 = sym + '8'
+	var9 = sym + '9'
+	var10 = sym + '0'
+	var11 = sym + 'a'
+	var12 = sym + 'b'
+	var13 = sym + 'c'
+	var14 = sym + 'd'
+	var15 = sym + 'e'
+	return var1, var2, var3, var4, var5, var6, var7, var8, var9, var10, var11, var12, var13, var14, var15
+
+def lib_make(ff, outputfile, vxi='VXI', var=variablemake()):
+	metcar1 = var[0]
+	methyd1 = var[1]
+	hydhyd1 = var[2]
+	metcar2 = var[3]
+	methyd2 = var[4]
+	hydhyd2 = var[5]
+	alcoxy = var[6]
+	alchyd = var[7]
+	hydhyd3 = var[8]
+	thrhyd = var[9]
         ctrl = open('lyp.in', 'w')
         ctrl.write("source %s\n"%ff)
 	ctrl.write("%s=loadpdb Param_files/LibPDB/LEU-THR.pdb\n"%vxi)
@@ -210,7 +238,17 @@ def lac(x, y, i):
         num = y+((x-y)/10)*i
         return num
 
-def stock_add_to_all(metcar1='1c', methyd1='1h', hydhyd1='xh', metcar2='2c', methyd2='2h', hydhyd2='yh', alcoxy='oh', alchyd='hh', hydhyd3='sh', thrhyd='hf'):
+def stock_add_to_all(var=variablemake()):
+	metcar1 = var[0]
+	methyd1 = var[1]
+	hydhyd1 = var[2]
+	metcar2 = var[3]
+	methyd2 = var[4]
+	hydhyd2 = var[5]
+	alcoxy = var[6]
+	alchyd = var[7]
+	hydhyd3 = var[8]
+	thrhyd = var[9]
         Frcmod_creator.make_hyb()
 	Frcmod_creator.TYPE_insert(metcar1, 'C', 'sp3')
 	Frcmod_creator.TYPE_insert(methyd1, 'H', 'sp3')

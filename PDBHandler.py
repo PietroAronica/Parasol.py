@@ -462,6 +462,56 @@ def sulpher(struct, pdb):
 	pdb.write('END\n')
 	pdb.close()
 
+def glyremover(struct, resnum):
+	for atom in struct.residue_dict[resnum].atom_list[:]:
+		if atom.get_name() in ['N1', 'H1', 'HA13', 'C1', 'O1', 'N2', 'H2']:
+			struct.residue_dict[resnum].atom_list.remove(atom)	
+        pdb = open('Mutated.pdb', 'w')
+        try:
+                pdb.write(struct.other_dict['Cryst1'].formatted())
+        except KeyError:
+                pass
+        for res in struct.residue_list:
+                for atom in res.atom_list:
+                        if atom.get_name() == 'PC':
+                                atom.set_name('Cl-')
+                                atom.set_resname('Cl-')
+                        if atom.get_name() == 'PN':
+                                atom.set_name('Na+')
+                                atom.set_resname('Na+')
+                        pdb.write(atom.formatted())
+                try:
+                        pdb.write(struct.other_dict[atom.get_number()].ter())
+                except:
+                        pass
+        for oth in struct.other_dict:
+                try:
+                        if oth.startswith('Conect'):
+                                pdb.write(struct.other_dict[oth].formatted())
+                except:
+                        pass
+        pdb.write('END\n')
+        pdb.close()
+	ctrl = open('chop.in', 'w')
+	ctrl.write("source {}Param_files/Essentials/cmd.ff14SB+\n".format(HOMEDIR))
+        ctrl.write("source leaprc.lipid14\n")
+	ctrl.write("Mut = loadpdb Mutated.pdb\n")
+	ctrl.write("savepdb Mut Mut_leap.pdb\n")
+	ctrl.write("quit\n")
+	ctrl.close()
+	Leapy.run('chop.in')
+	if struct.other_dict['Cryst1']:
+		f = open('Mut_leap.pdb', 'r+')
+		temp = f.read()
+		f.close()
+		f = open('Mut_leap.pdb', 'w+')
+		f.write(struct.other_dict['Cryst1'].formatted())
+		f.write(temp)
+		f.close()
+	s = readpdb('Mut_leap.pdb')
+	sulpher(s, 'Mut_leap.pdb')
+	os.remove('chop.in')
+
 def glyadder(struct, resid, resnum, end):
 	struct.residue_dict[resnum].atom_dict['N1'].set_resname('GLY')
 	if end == 'C':
@@ -727,6 +777,10 @@ def chop(struct, resid, resnum):
 	if resid == 'ILE':
 		for atom in struct.residue_dict[resnum].atom_list[:]:
 			if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'HB', 'CG2', 'HG21', 'HG22', 'HG23', 'CG1', 'HG12', 'HG13', 'CD1', 'HD11', 'HD12', 'HD13', 'HG13', 'C', 'O']:
+				struct.residue_dict[resnum].atom_list.remove(atom)	
+	if resid == 'KN3':
+		for atom in struct.residue_dict[resnum].atom_list[:]:
+			if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'HB2', 'HB3', 'CG', 'HG2', 'HG3', 'CD', 'HD2', 'HD3', 'CE', 'HE2', 'HE3', 'NZ', 'NH', 'NT', 'C', 'O']:
 				struct.residue_dict[resnum].atom_list.remove(atom)	
 	if resid == 'LEU':
 		for atom in struct.residue_dict[resnum].atom_list[:]:

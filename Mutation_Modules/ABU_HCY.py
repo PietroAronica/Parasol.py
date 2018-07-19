@@ -72,7 +72,22 @@ def makevxi(struct, out, aa, vxi='VXI'):
                         pass
         pdb.write('END\n')
 
-def lib_make(ff, outputfile, vxi='VXI', thisul='hs', thihyd='hh', hydhyd='hs', cyshyd='hf'):
+def variablemake(sym='^'):
+	var1 = sym + '1'
+	var2 = sym + '2'
+	var3 = sym + '3'
+	var4 = sym + '4'
+	var5 = sym + '5'
+	var6 = sym + '6'
+	var7 = sym + '7'
+	var8 = sym + '8'
+	return var1, var2, var3, var4, var5, var6, var7, var8
+
+def lib_make(ff, outputfile, vxi='VXI', var=variablemake()):
+	thisul = var[0]
+	thihyd = var[1]
+	hydhyd = var[2]
+	cyshyd = var[3]
         ctrl = open('lyp.in', 'w')
         ctrl.write("source %s\n"%ff)
 	ctrl.write("%s=loadpdb Param_files/LibPDB/ABU-HCY.pdb\n"%vxi)
@@ -158,7 +173,11 @@ def lac(x, y, i):
         num = y+((x-y)/10)*i
         return num
 
-def stock_add_to_all(thisul='hs', thihyd='hh', hydhyd='hs', cyshyd='hf'):
+def stock_add_to_all(var=variablemake()):
+	thisul = var[0]
+	thihyd = var[1]
+	hydhyd = var[2]
+	cyshyd = var[3]
 	Frcmod_creator.make_hyb()
 	Frcmod_creator.TYPE_insert(thisul, 'S', 'sp3')
 	Frcmod_creator.TYPE_insert(thihyd, 'H', 'sp3')

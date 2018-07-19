@@ -77,21 +77,19 @@ def makeinput(pdbfile, outfile, baa, faa, resid, resid2='No', atypes='Standard',
 		Curr_mut.makevxi(struct, 'Mutabond.pdb', resid2)
 # Create parameters and lib files
 	Curr_mut.all_make()
+	var=Curr_mut.variablemake(sym='^')
 	if Term == 'N':
 			Curr_mut.stock_add_to_all_N()
 	elif Term == 'C':
 			Curr_mut.stock_add_to_all_C()
 	else:	
-		if atypes == 'Standard':
-			Curr_mut.stock_add_to_all()
-		else:
-			Curr_mut.stock_add_to_all(**atypes)
+		Curr_mut.stock_add_to_all(var=var)
 	if Term == 'N':
 		Curr_mut.lib_make_N(ff1, outfile)
 	elif Term == 'C':
 		Curr_mut.lib_make_C(ff1, outfile)
 	else:	
-		Curr_mut.lib_make(ff1, outfile)
+		Curr_mut.lib_make(ff1, outfile, var=var)
 # Create prmtops
 	Leapy.createprmtops(ff1=ff1, ff2=ff2, ion=Ion, box=oldbox, solvbox=newbox, output=outfile, bal=bal, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand, extraprep=extraprep)
 	if Term == 'N':

@@ -96,7 +96,37 @@ def makevxi(struct, out, aa, vxi='VXI'):
                         pass
         pdb.write('END\n')
 
-def lib_make(ff, outputfile, vxi='VXI', hd1='hf', ne='nc', he2='h2', he3='h3', cz='cn', hz1='z1', hz2='z2', hz3='z3', nh1='n1', hh1='1h', nh2='n2', hh2='2h'):
+def variablemake(sym='^'):
+	var1 = sym + '1'
+	var2 = sym + '2'
+	var3 = sym + '3'
+	var4 = sym + '4'
+	var5 = sym + '5'
+	var6 = sym + '6'
+	var7 = sym + '7'
+	var8 = sym + '8'
+	var9 = sym + '9'
+	var10 = sym + '0'
+	var11 = sym + 'a'
+	var12 = sym + 'b'
+	var13 = sym + 'c'
+	var14 = sym + 'd'
+	var15 = sym + 'e'
+	return var1, var2, var3, var4, var5, var6, var7, var8, var9, var10, var11, var12, var13, var14, var15
+
+def lib_make(ff, outputfile, vxi='VXI', var=variablemake()):
+	hd1 = var[0]
+	ne = var[1]
+	he2 = var[2]
+	he3 = var[3]
+	cz = var[4]
+	hz1 = var[5]
+	hz2 = var[6]
+	hz3 = var[7]
+	nh1 = var[8]
+	hh1 = var[9]
+	nh2 = var[10]
+	hh2 = var[11]
         ctrl = open('lyp.in', 'w')
         ctrl.write("source %s\n"%ff)
 	ctrl.write("%s=loadpdb Param_files/LibPDB/ARG-LYS.pdb\n"%vxi)
@@ -234,7 +264,19 @@ def lac(x, y, i):
 	num = y+((x-y)/10)*i
 	return num
 
-def stock_add_to_all(hd1='hf', ne='nc', he2='h2', he3='h3', cz='cn', hz1='z1', hz2='z2', hz3='z3', nh1='n1', hh1='1h', nh2='n2', hh2='2h'):
+def stock_add_to_all(var=variablemake()):
+	hd1 = var[0]
+	ne = var[1]
+	he2 = var[2]
+	he3 = var[3]
+	cz = var[4]
+	hz1 = var[5]
+	hz2 = var[6]
+	hz3 = var[7]
+	nh1 = var[8]
+	hh1 = var[9]
+	nh2 = var[10]
+	hh2 = var[11]
 	Frcmod_creator.make_hyb()
 	Frcmod_creator.TYPE_insert(hd1, 'H', 'sp3')
 	Frcmod_creator.TYPE_insert(ne, 'N', 'sp2')

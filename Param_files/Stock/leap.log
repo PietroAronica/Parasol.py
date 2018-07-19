@@ -585,3 +585,661 @@ Atom velocity: 0.000000, 0.000000, 0.000000
   Bonded to .R<CYS 1>.A<SG 8> by a single bond.
 > quit
 	Quit
+log started: Thu Jul  5 18:03:33 2018
+
+Log file: ./leap.log
+> #
+> # ----- leaprc for loading the ff14SB force field
+> # ----- NOTE: this is designed for PDB format 3!
+> #    Uses frcmod.ff14SB for proteins; ff99bsc0 for DNA; ff99bsc0_chiOL3 for RNA
+> #
+> #	load atom type hybridizations
+> #
+> addAtomTypes {
+> 	{ "H"   "H" "sp3" }
+> 	{ "HO"  "H" "sp3" }
+> 	{ "HS"  "H" "sp3" }
+> 	{ "H1"  "H" "sp3" }
+> 	{ "H2"  "H" "sp3" }
+> 	{ "H3"  "H" "sp3" }
+> 	{ "H4"  "H" "sp3" }
+> 	{ "H5"  "H" "sp3" }
+> 	{ "HW"  "H" "sp3" }
+> 	{ "HC"  "H" "sp3" }
+> 	{ "HA"  "H" "sp3" }
+> 	{ "HP"  "H" "sp3" }
+> 	{ "HZ"  "H" "sp3" }
+> 	{ "OH"  "O" "sp3" }
+> 	{ "OS"  "O" "sp3" }
+> 	{ "O"   "O" "sp2" }
+> 	{ "O2"  "O" "sp2" }
+> 	{ "OP"  "O" "sp2" }
+> 	{ "OW"  "O" "sp3" }
+> 	{ "CT"  "C" "sp3" }
+> 	{ "CX"  "C" "sp3" }
+> 	{ "C8"  "C" "sp3" }
+> 	{ "2C"  "C" "sp3" }
+> 	{ "3C"  "C" "sp3" }
+> 	{ "CH"  "C" "sp3" }
+> 	{ "CS"  "C" "sp2" }
+> 	{ "C"   "C" "sp2" }
+> 	{ "CO"   "C" "sp2" }
+> 	{ "C*"  "C" "sp2" }
+> 	{ "CA"  "C" "sp2" }
+> 	{ "CB"  "C" "sp2" }
+> 	{ "CC"  "C" "sp2" }
+> 	{ "CN"  "C" "sp2" }
+> 	{ "CM"  "C" "sp2" }
+> 	{ "CK"  "C" "sp2" }
+> 	{ "CQ"  "C" "sp2" }
+> 	{ "CD"  "C" "sp2" }
+> 	{ "C5"  "C" "sp2" }
+> 	{ "C4"  "C" "sp2" }
+> 	{ "CP"  "C" "sp2" }
+> 	{ "CI"  "C" "sp3" }
+> 	{ "CJ"  "C" "sp2" }
+> 	{ "CW"  "C" "sp2" }
+> 	{ "CV"  "C" "sp2" }
+> 	{ "CR"  "C" "sp2" }
+> 	{ "CA"  "C" "sp2" }
+> 	{ "CY"  "C" "sp2" }
+> 	{ "C0"  "Ca" "sp3" }
+> 	{ "MG"  "Mg" "sp3" }
+> 	{ "N"   "N" "sp2" }
+> 	{ "NA"  "N" "sp2" }
+> 	{ "N2"  "N" "sp2" }
+> 	{ "N*"  "N" "sp2" }
+> 	{ "NP"  "N" "sp2" }
+> 	{ "NQ"  "N" "sp2" }
+> 	{ "NB"  "N" "sp2" }
+> 	{ "NC"  "N" "sp2" }
+> 	{ "NT"  "N" "sp3" }
+> 	{ "NY"  "N" "sp2" }
+> 	{ "N3"  "N" "sp3" }
+> 	{ "S"   "S" "sp3" }
+> 	{ "SH"  "S" "sp3" }
+> 	{ "P"   "P" "sp3" }
+> 	{ "LP"  ""  "sp3" }
+> 	{ "EP"  ""  "sp3" }
+> 	{ "F"   "F" "sp3" }
+> 	{ "Cl"  "Cl" "sp3" }
+> 	{ "Br"  "Br" "sp3" }
+> 	{ "I"   "I"  "sp3" }
+> 	{ "F-"   "F" "sp3" }
+> 	{ "Cl-"  "Cl" "sp3" }
+> 	{ "Br-"  "Br" "sp3" }
+> 	{ "I-"   "I"  "sp3" }
+> 	{ "Li+"  "Li"  "sp3" }
+> 	{ "Na+"  "Na"  "sp3" }
+> 	{ "K+"  "K"  "sp3" }
+> 	{ "Rb+"  "Rb"  "sp3" }
+> 	{ "Cs+"  "Cs"  "sp3" }
+> 	{ "Mg+"  "Mg"  "sp3" }
+> # glycam
+> 	{ "OG"  "O" "sp3" }
+> 	{ "OL"  "O" "sp3" }
+> 	{ "AC"  "C" "sp3" }
+> 	{ "EC"  "C" "sp3" }
+> }
+> #
+> #	Load the main parameter set.
+> #
+> parm10 = loadamberparams parm10.dat
+Loading parameters: /usr/local/amber14/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+(UNKNOWN ATOM TYPE: Zn)
+(UNKNOWN ATOM TYPE: EP)
+> frcmod14SB = loadamberparams frcmod.ff14SB
+Loading parameters: /usr/local/amber14/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+> Extra = loadamberparams ~/Files/Leap/Extra.frcmod
+Loading parameters: /home/pietroa/Files/Leap/Extra.frcmod
+Reading force field modification type file (frcmod)
+Reading title:
+#MODIFICATIONS TO THE FORCEFIELD
+> More = loadamberparams ~/Files/Leap/More.frcmod
+Loading parameters: /home/pietroa/Files/Leap/More.frcmod
+Reading force field modification type file (frcmod)
+Reading title:
+#Additional parameters
+(UNKNOWN ATOM TYPE: HH)
+(UNKNOWN ATOM TYPE: CF)
+(UNKNOWN ATOM TYPE: HF)
+(UNKNOWN ATOM TYPE: NI)
+(UNKNOWN ATOM TYPE: ND)
+(UNKNOWN ATOM TYPE: NE)
+(UNKNOWN ATOM TYPE: NX)
+(UNKNOWN ATOM TYPE: NW)
+(UNKNOWN ATOM TYPE: NZ)
+> #
+> #	Load main chain and terminating amino acid libraries, nucleic acids
+> #
+> loadOff amino12.lib
+Loading library: /usr/local/amber14/dat/leap/lib/amino12.lib
+Loading: ALA
+Loading: ARG
+Loading: ASH
+Loading: ASN
+Loading: ASP
+Loading: CYM
+Loading: CYS
+Loading: CYX
+Loading: GLH
+Loading: GLN
+Loading: GLU
+Loading: GLY
+Loading: HID
+Loading: HIE
+Loading: HIP
+Loading: HYP
+Loading: ILE
+Loading: LEU
+Loading: LYN
+Loading: LYS
+Loading: MET
+Loading: PHE
+Loading: PRO
+Loading: SER
+Loading: THR
+Loading: TRP
+Loading: TYR
+Loading: VAL
+> loadOff aminoct12.lib
+Loading library: /usr/local/amber14/dat/leap/lib/aminoct12.lib
+Loading: CALA
+Loading: CARG
+Loading: CASN
+Loading: CASP
+Loading: CCYS
+Loading: CCYX
+Loading: CGLN
+Loading: CGLU
+Loading: CGLY
+Loading: CHID
+Loading: CHIE
+Loading: CHIP
+Loading: CHYP
+Loading: CILE
+Loading: CLEU
+Loading: CLYS
+Loading: CMET
+Loading: CPHE
+Loading: CPRO
+Loading: CSER
+Loading: CTHR
+Loading: CTRP
+Loading: CTYR
+Loading: CVAL
+Loading: NHE
+Loading: NME
+> loadOff aminont12.lib
+Loading library: /usr/local/amber14/dat/leap/lib/aminont12.lib
+Loading: ACE
+Loading: NALA
+Loading: NARG
+Loading: NASN
+Loading: NASP
+Loading: NCYS
+Loading: NCYX
+Loading: NGLN
+Loading: NGLU
+Loading: NGLY
+Loading: NHID
+Loading: NHIE
+Loading: NHIP
+Loading: NILE
+Loading: NLEU
+Loading: NLYS
+Loading: NMET
+Loading: NPHE
+Loading: NPRO
+Loading: NSER
+Loading: NTHR
+Loading: NTRP
+Loading: NTYR
+Loading: NVAL
+> loadOff nucleic12.lib
+Loading library: /usr/local/amber14/dat/leap/lib/nucleic12.lib
+Loading: A
+Loading: A3
+Loading: A5
+Loading: AN
+Loading: C
+Loading: C3
+Loading: C5
+Loading: CN
+Loading: DA
+Loading: DA3
+Loading: DA5
+Loading: DAN
+Loading: DC
+Loading: DC3
+Loading: DC5
+Loading: DCN
+Loading: DG
+Loading: DG3
+Loading: DG5
+Loading: DGN
+Loading: DT
+Loading: DT3
+Loading: DT5
+Loading: DTN
+Loading: G
+Loading: G3
+Loading: G5
+Loading: GN
+Loading: OHE
+Loading: U
+Loading: U3
+Loading: U5
+Loading: UN
+> loadOff ~/Files/Leap/ExtraAA.lib
+Loading library: /home/pietroa/Files/Leap/ExtraAA.lib
+Loading: 1GP
+Loading: 2GP
+Loading: 3FF
+Loading: 3GP
+Loading: 3HP
+Loading: 4GP
+Loading: 4HP
+Loading: 5GP
+Loading: 6GP
+Loading: 7GP
+Loading: 8GP
+Loading: ABU
+Loading: AIB
+Loading: ANN
+Loading: BAA
+Loading: BZS
+Loading: BZY
+Loading: C6W
+Loading: CBA
+Loading: CBY
+Loading: DAB
+Loading: DBN
+Loading: DPR
+Loading: ECY
+Loading: ETY
+Loading: F6W
+Loading: HCY
+Loading: HR1
+Loading: HR2
+Loading: HR3
+Loading: HR4
+Loading: HR5
+Loading: IAB
+Loading: KN3
+Loading: MCY
+Loading: NER
+Loading: NKI
+Loading: NLE
+Loading: NMA
+Loading: NPK
+Loading: NVA
+Loading: NVD
+Loading: PRA
+Loading: QUA
+Loading: TBS
+Loading: TBY
+Loading: TZ1
+Loading: TZ2
+Loading: TZ3
+> loadOff ~/Files/Leap/D-AA.lib
+Loading library: /home/pietroa/Files/Leap/D-AA.lib
+Loading: DAA
+Loading: DCC
+Loading: DDD
+Loading: DEE
+Loading: DFF
+Loading: DHH
+Loading: DII
+Loading: DKK
+Loading: DLL
+Loading: DMM
+Loading: DNN
+Loading: DPP
+Loading: DQQ
+Loading: DRR
+Loading: DSS
+Loading: DTT
+Loading: DVV
+Loading: DWW
+Loading: DYY
+> loadOff ~/Files/Leap/ExtraTerminal.lib
+Loading library: /home/pietroa/Files/Leap/ExtraTerminal.lib
+Loading: CABU
+Loading: CANN
+Loading: CNLE
+Loading: CNVA
+Loading: NABU
+Loading: NNLE
+> loadOff ~/Files/Leap/N-Methylated_AA.lib
+Loading library: /home/pietroa/Files/Leap/N-Methylated_AA.lib
+Loading: MNA
+Loading: MNC
+Loading: MND
+Loading: MNE
+Loading: MNF
+Loading: MNG
+Loading: MNH
+Loading: MNI
+Loading: MNK
+Loading: MNL
+Loading: MNM
+Loading: MNN
+Loading: MNQ
+Loading: MNR
+Loading: MNS
+Loading: MNT
+Loading: MNV
+Loading: MNW
+Loading: MNY
+> loadOff ~/Files/Leap/Staple_monomers.lib
+Loading library: /home/pietroa/Files/Leap/Staple_monomers.lib
+Loading: AAX
+Loading: ABX
+Loading: ACX
+Loading: ADX
+Loading: ALX
+Loading: AMX
+Loading: C4X
+Loading: C7X
+Loading: CAX
+Loading: E4X
+Loading: E7X
+Loading: ECX
+Loading: FCX
+Loading: GMX
+Loading: HCX
+Loading: HSX
+Loading: I4X
+Loading: I7X
+Loading: LDX
+Loading: LEX
+Loading: MAX
+Loading: MCX
+Loading: MDX
+Loading: MLX
+Loading: MMX
+Loading: MXX
+Loading: NCX
+Loading: NMX
+Loading: OXX
+Loading: PXX
+Loading: T4X
+Loading: VDX
+Loading: VLX
+> loadOff ~/Files/Leap/Alpha-Methylated_Amino_Acids.lib
+Loading library: /home/pietroa/Files/Leap/Alpha-Methylated_Amino_Acids.lib
+Loading: AMC
+Loading: AMD
+Loading: AME
+Loading: AMF
+Loading: AMH
+Loading: AMI
+Loading: AMK
+Loading: AML
+Loading: AMM
+Loading: AMN
+Loading: AMP
+Loading: AMQ
+Loading: AMR
+Loading: AMS
+Loading: AMT
+Loading: AMV
+Loading: AMW
+Loading: AMY
+> loadOff ~/Files/Leap/Beta-Amino_Acids.lib
+Loading library: /home/pietroa/Files/Leap/Beta-Amino_Acids.lib
+Loading: B1F
+Loading: B1I
+Loading: B1L
+Loading: B1S
+Loading: B1Y
+Loading: B2I
+Loading: B2L
+Loading: B2S
+Loading: B2Y
+Loading: BLE
+Loading: BPH
+Loading: BPR
+> loadOff ~/Files/Leap/Peptide_Bound_Ligands.lib
+Loading library: /home/pietroa/Files/Leap/Peptide_Bound_Ligands.lib
+Loading: DTA
+Loading: FAM
+> #
+> #       Load water and ions
+> # 
+> loadOff atomic_ions.lib
+Loading library: /usr/local/amber14/dat/leap/lib/atomic_ions.lib
+Loading: AG
+Loading: AL
+Loading: Ag
+Loading: BA
+Loading: BR
+Loading: Be
+Loading: CA
+Loading: CD
+Loading: CE
+Loading: CL
+Loading: CO
+Loading: CR
+Loading: CS
+Loading: CU
+Loading: CU1
+Loading: Ce
+Loading: Cl-
+Loading: Cr
+Loading: Dy
+Loading: EU
+Loading: EU3
+Loading: Er
+Loading: F
+Loading: FE
+Loading: FE2
+Loading: GD3
+Loading: H3O+
+Loading: HE+
+Loading: HG
+Loading: HZ+
+Loading: Hf
+Loading: IN
+Loading: IOD
+Loading: K
+Loading: K+
+Loading: LA
+Loading: LI
+Loading: LU
+Loading: MG
+Loading: MN
+Loading: NA
+Loading: NH4
+Loading: NI
+Loading: Na+
+Loading: Nd
+Loading: PB
+Loading: PD
+Loading: PR
+Loading: PT
+Loading: Pu
+Loading: RB
+Loading: Ra
+Loading: SM
+Loading: SR
+Loading: Sm
+Loading: Sn
+Loading: TB
+Loading: TL
+Loading: Th
+Loading: Tl
+Loading: Tm
+Loading: U4+
+Loading: V2+
+Loading: Y
+Loading: YB2
+Loading: ZN
+Loading: Zr
+> loadOff solvents.lib
+Loading library: /usr/local/amber14/dat/leap/lib/solvents.lib
+Loading: CHCL3BOX
+Loading: DC4
+Loading: MEOHBOX
+Loading: NMABOX
+Loading: OPC
+Loading: OPCBOX
+Loading: PL3
+Loading: POL3BOX
+Loading: QSPCFWBOX
+Loading: SPC
+Loading: SPCBOX
+Loading: SPCFWBOX
+Loading: SPF
+Loading: SPG
+Loading: T4E
+Loading: TIP3PBOX
+Loading: TIP3PFBOX
+Loading: TIP4PBOX
+Loading: TIP4PEWBOX
+Loading: TIP5PBOX
+Loading: TP3
+Loading: TP4
+Loading: TP5
+Loading: TPF
+> HOH = TP3
+> WAT = TP3
+> 
+> #
+> #	Define the PDB name map for the amino acids and nucleic acids
+> #
+> addPdbResMap {
+>   { 0 "HYP" "NHYP" } { 1 "HYP" "CHYP" }
+>   { 0 "ABU" "NABU" } { 1 "ABU" "CABU" }
+>   { 0 "ALA" "NALA" } { 1 "ALA" "CALA" }
+>   { 0 "ANN" "NANN" } { 1 "ANN" "CANN" }
+>   { 0 "ARG" "NARG" } { 1 "ARG" "CARG" }
+>   { 0 "ASN" "NASN" } { 1 "ASN" "CASN" }
+>   { 0 "ASP" "NASP" } { 1 "ASP" "CASP" }
+>   { 0 "CYS" "NCYS" } { 1 "CYS" "CCYS" }
+>   { 0 "CYX" "NCYX" } { 1 "CYX" "CCYX" }
+>   { 0 "GLN" "NGLN" } { 1 "GLN" "CGLN" }
+>   { 0 "GLU" "NGLU" } { 1 "GLU" "CGLU" }
+>   { 0 "GLY" "NGLY" } { 1 "GLY" "CGLY" }
+>   { 0 "HID" "NHID" } { 1 "HID" "CHID" }
+>   { 0 "HIE" "NHIE" } { 1 "HIE" "CHIE" }
+>   { 0 "HIP" "NHIP" } { 1 "HIP" "CHIP" }
+>   { 0 "ILE" "NILE" } { 1 "ILE" "CILE" }
+>   { 0 "LEU" "NLEU" } { 1 "LEU" "CLEU" }
+>   { 0 "LYS" "NLYS" } { 1 "LYS" "CLYS" }
+>   { 0 "MET" "NMET" } { 1 "MET" "CMET" }
+>   { 0 "NLE" "NNLE" } { 1 "NLE" "CNLE" }
+>   { 0 "NVA" "NNVA" } { 1 "NVA" "CNVA" }
+>   { 0 "PHE" "NPHE" } { 1 "PHE" "CPHE" }
+>   { 0 "PRO" "NPRO" } { 1 "PRO" "CPRO" }
+>   { 0 "QUA" "NQUA" } { 1 "QUA" "CQUA" }
+>   { 0 "SER" "NSER" } { 1 "SER" "CSER" }
+>   { 0 "THR" "NTHR" } { 1 "THR" "CTHR" }
+>   { 0 "TRP" "NTRP" } { 1 "TRP" "CTRP" }
+>   { 0 "TYR" "NTYR" } { 1 "TYR" "CTYR" }
+>   { 0 "VAL" "NVAL" } { 1 "VAL" "CVAL" }
+>   { 0 "HIS" "NHIS" } { 1 "HIS" "CHIS" }
+>   { 0 "G" "G5"  } { 1 "G" "G3"  } 
+>   { 0 "A" "A5"  } { 1 "A" "A3"  } 
+>   { 0 "C" "C5"  } { 1 "C" "C3"  } 
+>   { 0 "U" "U5"  } { 1 "U" "U3"  } 
+>   { 0 "DG" "DG5"  } { 1 "DG" "DG3"  }  
+>   { 0 "DA" "DA5"  } { 1 "DA" "DA3"  }  
+>   { 0 "DC" "DC5"  } { 1 "DC" "DC3"  }  
+>   { 0 "DT" "DT5"  } { 1 "DT" "DT3"  }  
+> #  some old Amber residue names for RNA:
+>   { 0  "RA5" "A5" } { 1 "RA3" "A3"} {"RA" "A" }
+>   { 0  "RC5" "C5" } { 1 "RC3" "C3"} {"RC" "C" }
+>   { 0  "RG5" "G5" } { 1 "RG3" "G3"} {"RG" "G" }
+>   { 0  "RU5" "U5" } { 1 "RU3" "U3"} {"RU" "U" }
+> #  some really old Amber residue names, assuming DNA:
+>   { 0 "GUA" "DG5"  } { 1 "GUA" "DG3"  } { "GUA" "DG" }
+>   { 0 "ADE" "DA5"  } { 1 "ADE" "DA3"  } { "ADE" "DA" }
+>   { 0 "CYT" "DC5"  } { 1 "CYT" "DC3"  } { "CYT" "DC" }
+>   { 0 "THY" "DT5"  } { 1 "THY" "DT3"  } { "THY" "DT" }
+> #  uncomment out the following if you have this old style RNA files:
+> # { 0 "GUA" "G5"  } { 1 "GUA" "G3"  } { "GUA" "G" }
+> # { 0 "ADE" "A5"  } { 1 "ADE" "A3"  } { "ADE" "A" }
+> # { 0 "CYT" "C5"  } { 1 "CYT" "C3"  } { "CYT" "C" }
+> # { 0 "URA" "R5"  } { 1 "URA" "R3"  } { "URA" "R" }
+> 
+> }
+> 
+> #  try to be good about reading in really old atom names as well:
+> addPdbAtomMap {
+>   { "O5*" "O5'" }
+>   { "C5*" "C5'" }
+>   { "C4*" "C4'" }
+>   { "O4*" "O4'" }
+>   { "C3*" "C3'" }
+>   { "O3*" "O3'" }
+>   { "C2*" "C2'" }
+>   { "O2*" "O2'" }
+>   { "C1*" "C1'" }
+>   { "C5M" "C7"  }
+>   { "H1*" "H1'" }
+>   { "H2*1" "H2'" }
+>   { "H2*2" "H2''" }
+>   { "H2'1" "H2'" }
+>   { "H2'2" "H2''" }
+>   { "H3*" "H3'" }
+>   { "H4*" "H4'" }
+>   { "H5*1" "H5'" }
+>   { "H5*2" "H5''" }
+>   { "H5'1" "H5'" }
+>   { "H5'2" "H5''" }
+>   { "HO'2" "HO2'" }
+>   { "H5T"  "HO5'" }
+>   { "H3T"  "HO3'" }
+>   { "O1'" "O4'" }
+>   { "OA"  "OP1" }
+>   { "OB"  "OP2" }
+>   { "O1P" "OP1" }
+>   { "O2P" "OP2" }
+> }
+> 
+> #
+> # assume that most often proteins use HIE
+> #
+> NHIS = NHIE
+> HIS = HIE
+> CHIS = CHIE
+ 
+> desc CGLY.1.O
+ATOM
+             Normal      Perturbed
+Name:         O             O    
+Type:         O2            O2   
+Charge:       -0.7855        0.000
+Polarization: 0.0000        0.000
+Element: O             (not affected by pert)
+Atom flags: (decimal 131072 hex 0x20000)
+	posfxd n  posblt n  posdrwn n  selected n
+	pert n  notdisp n  touched n  posknwn Y
+	internal n  needsmin n  needsbuild n
+Atom position: 5.993369, 1.568360, -0.000008
+Atom velocity: 0.000000, 0.000000, 0.000000
+  Bonded to .R<CGLY 1>.A<C 6> by a single bond.
+> desc CGLY.1.OXT
+ATOM
+             Normal      Perturbed
+Name:         OXT           OXT  
+Type:         O2            O2   
+Charge:       -0.7855        0.000
+Polarization: 0.0000        0.000
+Element: O             (not affected by pert)
+Atom flags: (decimal 131072 hex 0x20000)
+	posfxd n  posblt n  posdrwn n  selected n
+	pert n  notdisp n  touched n  posknwn Y
+	internal n  needsmin n  needsbuild n
+Atom position: 6.214748, 3.674642, -0.000003
+Atom velocity: 0.000000, 0.000000, 0.000000
+  Bonded to .R<CGLY 1>.A<C 6> by a single bond.
+> quit
+	Quit

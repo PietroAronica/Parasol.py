@@ -37,7 +37,9 @@ def createprmtops(ff1='Param_files/Essentials/cmd.ff14SB+', ff2='No', pbradii='N
 		ctrl.write("addions Mutanda %s 0\n" %ion)
 	if box != 'Null':
 		ctrl.write("set Mutanda box {%s %s %s}\n" %(box[0], box[1], box[2]))
-	if solvbox != 'Null' and 0:
+	print solvbox
+	if solvbox != 'Null' and solvbox != 0:
+		print "solvating"
 		ctrl.write("solvateoct Mutanda TIP3PBOX %s\n" %solvbox)
 	if bal != 'Null':
 		ctrl.write("loadamberparams Param_files/Stock/Ion.frcmod\n")

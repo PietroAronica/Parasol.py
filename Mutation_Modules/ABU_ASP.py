@@ -86,7 +86,24 @@ def makevxi(struct, out, aa, vxi='VXI'):
                         pass
         pdb.write('END\n')
 
-def lib_make(ff, outputfile, vxi='VXI', metcar='1c', methyd='1h', hydhyd1='xh', carcar='cc', caroxy='oc', hydhyd2='sh'):
+def variablemake(sym='^'):
+	var1 = sym + '1'
+	var2 = sym + '2'
+	var3 = sym + '3'
+	var4 = sym + '4'
+	var5 = sym + '5'
+	var6 = sym + '6'
+	var7 = sym + '7'
+	var8 = sym + '8'
+	return var1, var2, var3, var4, var5, var6, var7, var8
+
+def lib_make(ff, outputfile, vxi='VXI', var=variablemake()):
+	metcar = var[0]
+	methyd = var[1]
+	hydhyd1 = var[2]
+	carcar = var[3]
+	caroxy = var[4]
+	hydhyd2 = var[5]
         ctrl = open('lyp.in', 'w')
         ctrl.write("source %s\n"%ff)
 	ctrl.write("%s=loadpdb Param_files/LibPDB/ASP-ABU.pdb\n"%vxi)
@@ -180,7 +197,13 @@ def lac(y, x, i):
 	num = x+((y-x)/10)*i
 	return num
 
-def stock_add_to_all(metcar='1c', methyd='1h', hydhyd1='xh', carcar='cc', caroxy='oc', hydhyd2='sh'):
+def stock_add_to_all(var=variablemake()):
+	metcar = var[0]
+	methyd = var[1]
+	hydhyd1 = var[2]
+	carcar = var[3]
+	caroxy = var[4]
+	hydhyd2 = var[5]
 	Frcmod_creator.make_hyb()
 	Frcmod_creator.TYPE_insert(carcar, 'C', 'sp2')
 	Frcmod_creator.TYPE_insert(caroxy, 'O', 'sp2')

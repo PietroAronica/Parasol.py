@@ -107,7 +107,22 @@ def makevxi(struct, out, aa, vxi='VXI'):
                         pass
         pdb.write('END\n')
 
-def lib_make(ff, outputfile, vxi='VXI', quacar='dc', quahyd='dh', carhyd='mh', nithyd='nh'):
+def variablemake(sym='^'):
+	var1 = sym + '1'
+	var2 = sym + '2'
+	var3 = sym + '3'
+	var4 = sym + '4'
+	var5 = sym + '5'
+	var6 = sym + '6'
+	var7 = sym + '7'
+	var8 = sym + '8'
+	return var1, var2, var3, var4, var5, var6, var7, var8
+
+def lib_make(ff, outputfile, vxi='VXI', var=variablemake()):
+	quacar = var[0]
+	quahyd = var[1]
+	carhyd = var[2]
+	nithyd = var[3]
         ctrl = open('lyp.in', 'w')
         ctrl.write("source %s\n"%ff)
 	ctrl.write("%s=loadpdb Param_files/LibPDB/ALA-QUA.pdb\n"%vxi)
@@ -174,7 +189,11 @@ def lib_make(ff, outputfile, vxi='VXI', quacar='dc', quahyd='dh', carhyd='mh', n
         ctrl.close()
 	Leapy.run('lyp.in', outputfile)
 
-def lib_make_C(ff, outputfile, vxi='VXI', quacar='dc', quahyd='dh', carhyd='mh', nithyd='nh'):
+def lib_make_C(ff, outputfile, vxi='VXI', var=variablemake()):
+	quacar = var[0]
+	quahyd = var[1]
+	carhyd = var[2]
+	nithyd = var[3]
         ctrl = open('lyp.in', 'w')
         ctrl.write("source %s\n"%ff)
 	ctrl.write("%s=loadpdb Param_files/LibPDB/CALA-CQUA.pdb\n"%vxi)
@@ -256,7 +275,11 @@ def lac(x, y, i):
         num = y+((x-y)/10)*i
         return num
 
-def stock_add_to_all(quacar='dc', quahyd='dh', carhyd='mh', nithyd='nh'):
+def stock_add_to_all(var=variablemake()):
+	quacar = var[0]
+	quahyd = var[1]
+	carhyd = var[2]
+	nithyd = var[3]
         Frcmod_creator.make_hyb()
         Frcmod_creator.TYPE_insert(nithyd, 'H', 'sp3')
         Frcmod_creator.TYPE_insert(quacar, 'C', 'sp3')
@@ -312,7 +335,11 @@ def stock_add_to_all(quacar='dc', quahyd='dh', carhyd='mh', nithyd='nh'):
                 Frcmod_creator.NONBON_insert('{}_{}.frcmod'.format(a, 100-a), carhyd, cal(p['HC'][2], p['0_H'][2], i), cal(p['HC'][3], p['0_H'][3], i))
                 Frcmod_creator.NONBON_insert('{}_{}.frcmod'.format(a, 100-a), nithyd, cal(p['H'][2], p['0_H'][2], i), cal(p['H'][3], p['0_H'][3], i))
 
-def stock_add_to_all_C(quacar='dc', quahyd='dh', carhyd='mh', nithyd='nh'):
+def stock_add_to_all_C(var=variablemake()):
+	quacar = var[0]
+	quahyd = var[1]
+	carhyd = var[2]
+	nithyd = var[3]
         Frcmod_creator.make_hyb()
         Frcmod_creator.TYPE_insert(nithyd, 'H', 'sp3')
         Frcmod_creator.TYPE_insert(quacar, 'C', 'sp3')
