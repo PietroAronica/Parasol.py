@@ -39,14 +39,14 @@ def parmed_command(vxi='VXI', lipid='No'):
                 change(parm, 'charge', ':{}@CD2'.format(vxi), bc['CD2']+((fc['CD2']-bc['CD2'])/10)*i).execute()
                 change(parm, 'charge', ':{}@NE1'.format(vxi), bc['NE1']-(bc['NE1']/10)*i).execute()
                 change(parm, 'charge', ':{}@HE1'.format(vxi), bc['HE1']-(bc['HE1']/10)*i).execute()
-                change(parm, 'charge', ':{}@CE'.format(vxi), bc['CE2']+((fc['CE']-bc['CE2'])/10)*i).execute()
+                change(parm, 'charge', ':{}@CE2'.format(vxi), bc['CE2']+((fc['CE2']-bc['CE2'])/10)*i).execute()
                 change(parm, 'charge', ':{}@HD2'.format(vxi), bc['CE3']+((fc['HD2']-bc['CE3'])/10)*i).execute()
-                change(parm, 'charge', ':{}@HE'.format(vxi), bc['CZ1']+((fc['HE']-bc['CZ1'])/10)*i).execute()
-                change(parm, 'charge', ':{}@CZ2'.format(vxi), bc['CZ2']-(bc['CZ2']/10)*i).execute()
+                change(parm, 'charge', ':{}@HE'.format(vxi), bc['CZ2']+((fc['HE']-bc['CZ2'])/10)*i).execute()
+                change(parm, 'charge', ':{}@CZ3'.format(vxi), bc['CZ3']-(bc['CZ3']/10)*i).execute()
+                change(parm, 'charge', ':{}@HZ3'.format(vxi), bc['HZ3']-(bc['HZ3']/10)*i).execute()
                 change(parm, 'charge', ':{}@HZ2'.format(vxi), bc['HZ2']-(bc['HZ2']/10)*i).execute()
-                change(parm, 'charge', ':{}@HZ1'.format(vxi), bc['HZ1']-(bc['HZ1']/10)*i).execute()
-                change(parm, 'charge', ':{}@CH'.format(vxi), bc['CH']-(bc['CH']/10)*i).execute()
-                change(parm, 'charge', ':{}@HH'.format(vxi), bc['HH']-(bc['HH']/10)*i).execute()
+                change(parm, 'charge', ':{}@CH2'.format(vxi), bc['CH2']-(bc['CH2']/10)*i).execute()
+                change(parm, 'charge', ':{}@HH2'.format(vxi), bc['HH2']-(bc['HH2']/10)*i).execute()
                 change(parm, 'charge', ':{}@C'.format(vxi), bc['C']+((fc['C']-bc['C'])/10)*i).execute()
                 change(parm, 'charge', ':{}@O'.format(vxi), bc['O']+((fc['O']-bc['O'])/10)*i).execute()
 		setOverwrite(parm).execute()
@@ -61,22 +61,10 @@ def makevxi(struct, out, aa, vxi='VXI'):
                 pass
         for res in struct.residue_list:
 		for atom in res.atom_list:
-			if atom.get_name() == 'CE2' and res.get_resname() == vxi:
-				pdb.write(atom.change_name('CE')) 
-			elif atom.get_name() == 'CE3' and res.get_resname() == vxi:
+			if atom.get_name() == 'CE3' and res.get_resname() == vxi:
 				pdb.write(atom.change_name('HD2')) 
 			elif atom.get_name() == 'CZ2' and res.get_resname() == vxi:
 				pdb.write(atom.change_name('HE')) 
-			elif atom.get_name() == 'HZ2' and res.get_resname() == vxi:
-				pdb.write(atom.change_name('HZ1')) 
-			elif atom.get_name() == 'CZ3' and res.get_resname() == vxi:
-				pdb.write(atom.change_name('CZ2')) 
-			elif atom.get_name() == 'HZ3' and res.get_resname() == vxi:
-				pdb.write(atom.change_name('HZ2')) 
-			elif atom.get_name() == 'CH2' and res.get_resname() == vxi:
-				pdb.write(atom.change_name('CH')) 
-			elif atom.get_name() == 'HH2' and res.get_resname() == vxi:
-				pdb.write(atom.change_name('HH')) 
 			else:
 				pdb.write(atom.formatted())
 	                try:
@@ -170,11 +158,11 @@ def lib_make(ff, outputfile, vxi='VXI', var=variablemake()):
 	ctrl.write('set %s.1.15 name "HD2"\n'%vxi)
 	ctrl.write('set %s.1.16 name "HE3"\n'%vxi)
 	ctrl.write('set %s.1.17 name "HE"\n'%vxi)
-	ctrl.write('set %s.1.18 name "HZ1"\n'%vxi)
-	ctrl.write('set %s.1.19 name "CZ2"\n'%vxi)
-	ctrl.write('set %s.1.20 name "HZ2"\n'%vxi)
-	ctrl.write('set %s.1.21 name "CH"\n'%vxi)
-	ctrl.write('set %s.1.22 name "HH"\n'%vxi)
+	ctrl.write('set %s.1.18 name "HZ2"\n'%vxi)
+	ctrl.write('set %s.1.19 name "CZ3"\n'%vxi)
+	ctrl.write('set %s.1.20 name "HZ3"\n'%vxi)
+	ctrl.write('set %s.1.21 name "CH2"\n'%vxi)
+	ctrl.write('set %s.1.22 name "HH2"\n'%vxi)
 	ctrl.write('set %s.1.23 name "C"\n'%vxi)
 	ctrl.write('set %s.1.24 name "O"\n'%vxi)
 	ctrl.write('set %s.1.1 type "N"\n'%vxi)

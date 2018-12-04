@@ -275,7 +275,6 @@ def stock_add_to_all(var=variablemake()):
 	Frcmod_creator.TYPE_insert(hd3, 'H', 'sp3')
         Frcmod_creator.TYPE_insert(metcar, 'C', 'sp3')
         Frcmod_creator.TYPE_insert(methyd, 'H', 'sp3')
-        Frcmod_creator.TYPE_insert(hydhyd, 'H', 'sp3')
 	p = {}
 	with open('Param_files/Stock/Stock.param', 'r') as b:
 		data = b.readlines()[1:]

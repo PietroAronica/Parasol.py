@@ -103,7 +103,7 @@ def variablemake(sym='^'):
 
 def lib_make(ff, outputfile, vxi='VXI', var=variablemake()):
 	cd = var[0]
-	cd = var[1]
+	ce = var[1]
 	he = var[2]
         ctrl = open('lyp.in', 'w')
         ctrl.write("source %s\n"%ff)
@@ -213,7 +213,7 @@ def lac(x, y, i):
 
 def stock_add_to_all(var=variablemake()):
 	cd = var[0]
-	cd = var[1]
+	ce = var[1]
 	he = var[2]
 	Frcmod_creator.make_hyb()
 	Frcmod_creator.TYPE_insert(cd, 'C', 'sp2')

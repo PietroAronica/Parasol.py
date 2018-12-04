@@ -42,12 +42,12 @@ def parmed_command(vxi='VXI', lipid='No'):
                 change(parm, 'charge', ':{}@CE2'.format(vxi), bc['CE']+((fc['CE2']-bc['CE'])/10)*i).execute()
                 change(parm, 'charge', ':{}@CE3'.format(vxi), bc['HD2']+((fc['CE3']-bc['HD2'])/10)*i).execute()
                 change(parm, 'charge', ':{}@HE3'.format(vxi), (fc['HE3']/10)*i).execute()
-                change(parm, 'charge', ':{}@CZ2'.format(vxi), bc['HE']+((fc['CZ1']-bc['HE'])/10)*i).execute()
-                change(parm, 'charge', ':{}@CZ3'.format(vxi), (fc['CZ2']/10)*i).execute()
-                change(parm, 'charge', ':{}@HZ3'.format(vxi), (fc['HZ2']/10)*i).execute()
-                change(parm, 'charge', ':{}@HZ2'.format(vxi), (fc['HZ1']/10)*i).execute()
-                change(parm, 'charge', ':{}@CH2'.format(vxi), (fc['CH']/10)*i).execute()
-                change(parm, 'charge', ':{}@HH2'.format(vxi), (fc['HH']/10)*i).execute()
+                change(parm, 'charge', ':{}@CZ2'.format(vxi), bc['HE']+((fc['CZ2']-bc['HE'])/10)*i).execute()
+                change(parm, 'charge', ':{}@CZ3'.format(vxi), (fc['CZ3']/10)*i).execute()
+                change(parm, 'charge', ':{}@HZ3'.format(vxi), (fc['HZ3']/10)*i).execute()
+                change(parm, 'charge', ':{}@HZ2'.format(vxi), (fc['HZ2']/10)*i).execute()
+                change(parm, 'charge', ':{}@CH2'.format(vxi), (fc['CH2']/10)*i).execute()
+                change(parm, 'charge', ':{}@HH2'.format(vxi), (fc['HH2']/10)*i).execute()
                 change(parm, 'charge', ':{}@C'.format(vxi), bc['C']+((fc['C']-bc['C'])/10)*i).execute()
                 change(parm, 'charge', ':{}@O'.format(vxi), bc['O']+((fc['O']-bc['O'])/10)*i).execute()
 		setOverwrite(parm).execute()
@@ -163,7 +163,7 @@ def variablemake(sym='^'):
 	var15 = sym + 'e'
 	return var1, var2, var3, var4, var5, var6, var7, var8, var9, var10, var11, var12, var13, var14, var15
 
-def lib_make(ff, outputfile, vxi='VXI', , var=variablemake()):
+def lib_make(ff, outputfile, vxi='VXI', var=variablemake()):
 	cg = var[0]
 	cd1 = var[1]
 	hd1 = var[2]

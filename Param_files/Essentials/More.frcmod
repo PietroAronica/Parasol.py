@@ -52,6 +52,11 @@ CT-CT-CH   63.630     109.620   SOURCE3            5    2.0747
 HH-CH-HH   39.24      109.04    SOURCE3           28    0.5962
 CH-CH-HH   44.82      115.14    SOURCE3          114    0.8364
 CH-CH-CH   70.16       87.61    SOURCE3           32    1.5407
+C -CT-CF   64.14      111.32    equivalent to c -c3-c2 in gaff
+N -CT-CF   66.73      111.38    equivalent to n -c3-c2 in gaff
+H1-CT-CF   47.03      110.46    equivalent to h1-c3-c2 in gaff
+N -CT-CA   66.29      112.43    equivalent to ca-c3-n  in gaff
+C -CT-CA   64.13      110.99    equivalent to c -c3-ca in gaff
 CT-CT-NI  106.50      113.72
 HP-CT-NI   82.80      104.90
 CT-NI-ND   68.40      115.81
@@ -93,7 +98,8 @@ ca-cc-ca   65.99      120.10    equivalent to ca-ca-cc in gaff
 X -Cl-EP   150.0      180.00    EP Chlorine Angle
 X -Br-EP   150.0      180.00    EP Bromine Angle
 X -I -EP   150.0      180.00    EP Iodine Angle
-I -CT-H1    50.0      106.50    Equivalant to Br-CT-H1 in FF14SB
+I -CT-H1    50.0      106.50    Equivalent to Br-CT-H1 in FF14SB
+CX-C -OS    80.0      115.00    Equivalent to CT-C -OS in FF14SB
 
 DIHEDRAL
 X -CF-CT-X    6    0.000         0.000           2.000      JCC,7,(1986),230

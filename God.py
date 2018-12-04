@@ -56,7 +56,7 @@ def makeinput(pdbfile, outfile, baa, faa, resid, resid2='No', atypes='Standard',
 		bal='Null'
 	if baa == 'ASP' and faa == 'GLU':
 		bal='Null'
-	if baa == 'GLU' and faa == 'ASP':
+	if baa == 'GLU' and (faa == 'ASP' or faa == 'HE1'):
 		bal='Null'
 # Determine if it is terminal
 	Term = 'None'

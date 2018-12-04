@@ -4,7 +4,7 @@
  "MND"
  "MNE"
  "MNF"
- "MNG"
+ "SAR"
  "MNH"
  "MNI"
  "MNK"
@@ -672,18 +672,18 @@
  0.0 0.0 0.0
  0.0 0.0 0.0
  0.0 0.0 0.0
-!entry.MNG.unit.atoms table  str name  str type  int typex  int resx  int flags  int seq  int elmnt  dbl chg
+!entry.SAR.unit.atoms table  str name  str type  int typex  int resx  int flags  int seq  int elmnt  dbl chg
  "N" "N" 0 1 131072 1 7 -0.361600
  "CH3" "CT" 0 1 131072 2 6 0.115600
  "HH31" "H1" 0 1 131072 3 1 0.016400
  "HH32" "H1" 0 1 131072 4 1 0.016400
  "HH33" "H1" 0 1 131072 5 1 0.016400
- "CA" "CT" 0 1 131072 6 6 0.408000
- "HA2" "H1" 0 1 131072 7 1 -0.076500
- "HA3" "H1" 0 1 131072 8 1 -0.076500
+ "CA" "CT" 0 1 131072 6 6 0.317800
+ "HA2" "H1" 0 1 131072 7 1 -0.031400
+ "HA3" "H1" 0 1 131072 8 1 -0.031400
  "C" "C" 0 1 131072 9 6 0.512900
  "O" "O" 0 1 131072 10 8 -0.571100
-!entry.MNG.unit.atomspertinfo table  str pname  str ptype  int ptypex  int pelmnt  dbl pchg
+!entry.SAR.unit.atomspertinfo table  str pname  str ptype  int ptypex  int pelmnt  dbl pchg
  "N" "N" 0 -1 0.0
  "CH3" "CT" 0 -1 0.0
  "HH31" "H1" 0 -1 0.0
@@ -694,18 +694,18 @@
  "HA3" "H1" 0 -1 0.0
  "C" "C" 0 -1 0.0
  "O" "O" 0 -1 0.0
-!entry.MNG.unit.boundbox array dbl
+!entry.SAR.unit.boundbox array dbl
  -1.000000
  0.0
  0.0
  0.0
  0.0
-!entry.MNG.unit.childsequence single int
+!entry.SAR.unit.childsequence single int
  2
-!entry.MNG.unit.connect array int
+!entry.SAR.unit.connect array int
  1
  9
-!entry.MNG.unit.connectivity table  int atom1x  int atom2x  int flags
+!entry.SAR.unit.connectivity table  int atom1x  int atom2x  int flags
  1 2 1
  1 6 1
  2 3 1
@@ -715,7 +715,7 @@
  6 8 1
  6 9 1
  9 10 1
-!entry.MNG.unit.hierarchy table  str abovetype  int abovex  str belowtype  int belowx
+!entry.SAR.unit.hierarchy table  str abovetype  int abovex  str belowtype  int belowx
  "U" 0 "R" 1
  "R" 1 "A" 1
  "R" 1 "A" 2
@@ -727,9 +727,9 @@
  "R" 1 "A" 8
  "R" 1 "A" 9
  "R" 1 "A" 10
-!entry.MNG.unit.name single str
- "MNG"
-!entry.MNG.unit.positions table  dbl x  dbl y  dbl z
+!entry.SAR.unit.name single str
+ "SAR"
+!entry.SAR.unit.positions table  dbl x  dbl y  dbl z
  3.569000 3.925000 0.212000
  2.357000 4.678000 0.603000
  1.796000 4.910000 -0.302000
@@ -740,19 +740,19 @@
  5.579000 3.951000 -0.426000
  4.904000 5.933000 -0.448000
  4.183000 6.221000 -1.402000
-!entry.MNG.unit.residueconnect table  int c1x  int c2x  int c3x  int c4x  int c5x  int c6x
+!entry.SAR.unit.residueconnect table  int c1x  int c2x  int c3x  int c4x  int c5x  int c6x
  1 9 0 0 0 0
-!entry.MNG.unit.residues table  str name  int seq  int childseq  int startatomx  str restype  int imagingx
- "MNG" 1 11 1 "?" 0
-!entry.MNG.unit.residuesPdbSequenceNumber array int
+!entry.SAR.unit.residues table  str name  int seq  int childseq  int startatomx  str restype  int imagingx
+ "SAR" 1 11 1 "?" 0
+!entry.SAR.unit.residuesPdbSequenceNumber array int
  1
-!entry.MNG.unit.solventcap array dbl
+!entry.SAR.unit.solventcap array dbl
  -1.000000
  0.0
  0.0
  0.0
  0.0
-!entry.MNG.unit.velocities table  dbl x  dbl y  dbl z
+!entry.SAR.unit.velocities table  dbl x  dbl y  dbl z
  0.0 0.0 0.0
  0.0 0.0 0.0
  0.0 0.0 0.0

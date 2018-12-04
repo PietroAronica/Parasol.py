@@ -111,7 +111,7 @@ def lib_make(ff, outputfile, vxi='VXI', var=variablemake()):
 	alcoxy = var[3]
 	alchyd = var[4]
 	hydhyd2 = var[5]
-	thrhyd2 = var[6]
+	thrhyd = var[6]
         ctrl = open('lyp.in', 'w')
         ctrl.write("source %s\n"%ff)
 	ctrl.write("%s=loadpdb Param_files/LibPDB/THR-GLU.pdb\n"%vxi)
@@ -216,7 +216,7 @@ def stock_add_to_all(var=variablemake()):
 	alcoxy = var[3]
 	alchyd = var[4]
 	hydhyd2 = var[5]
-	thrhyd2 = var[6]
+	thrhyd = var[6]
 	Frcmod_creator.make_hyb()
 	Frcmod_creator.TYPE_insert(alcoxy, 'O', 'sp3')
 	Frcmod_creator.TYPE_insert(alchyd, 'H', 'sp3')

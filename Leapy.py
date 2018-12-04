@@ -162,7 +162,7 @@ def stapleprmtops2(box, nki, nle, ff='ff14SB+', pbradii='Null', ion='Null', outp
 	ctrl.close()
 	run('lyp.in', output)
 
-def stapleprmtops_general(box, firstres, secondres, conatom1, conatom2, ff='ff14SB+', pbradii='Null', ion='Null', output='leap.log', bal='Null'):
+def stapleprmtops_general(box, firstres, secondres, conatom1, conatom2, ff='ff14SB+', pbradii='Null', ion='Null', output='leap.log', bal='Null', extralib='Null', extrafrcmod='Null', extracommand='Null', extraprep='Null'):
 	ctrl = open('lyp.in', 'w')
 	ctrl.write("source leaprc.%s\n"%ff)
 	ctrl.write("source Param_files/Stock/Hyb_std.dat\n")
@@ -176,6 +176,18 @@ def stapleprmtops_general(box, firstres, secondres, conatom1, conatom2, ff='ff14
 	ctrl.write("loadoff {}Param_files/Essentials/Staple_monomers.lib\n".format(HOMEDIR))
 	ctrl.write("Extra = loadamberparams {}Param_files/Essentials/Extra.frcmod\n".format(HOMEDIR))
 	ctrl.write("More = loadamberparams {}Param_files/Essentials/More.frcmod\n".format(HOMEDIR))
+	if extraprep != 'Null':
+		ctrl.write("loadamberprep %s\n" %extraprep)
+	if extralib != 'Null':
+		ctrl.write("loadoff %s\n" %extralib)
+	if extrafrcmod != 'Null':
+		ctrl.write("loadamberparams %s\n" %extrafrcmod)
+	if extracommand != 'Null':
+		exc = open(extracommand)
+		comm = exc.readlines()
+		for line in comm:
+			ctrl.write(line)
+		exc.close()
 	ctrl.write("loadamberparams 0_100.frcmod\n")
 	ctrl.write("Mutanda = loadpdb Staplebond.pdb\n")
 	if ion in ['Cl-', 'Na+']:
