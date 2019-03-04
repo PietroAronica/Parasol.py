@@ -313,6 +313,77 @@ def parmed_command_HCX(vx1):
 		setOverwrite(parm).execute()
 		parmout(parm, 'Solv_{}_{}.prmtop'.format(a, 100-a)).execute()
 
+def parmed_command_PCX_C(vx1):
+	bc = {}
+        with open('Param_files/AminoAcid/CPRO.param', 'r') as b:
+                data = b.readlines()[1:]
+        for line in data:
+		key, value = line.split()
+		bc[key] = float(value)
+        b.close()
+	fc = {}
+        with open('Param_files/AminoAcid/PRO.param', 'r') as b:
+                data = b.readlines()[1:]
+        for line in data:
+		key, value = line.split()
+		fc[key] = float(value)
+        b.close()
+	for i in range(11):
+		a = i*10
+		parm = AmberParm('Solv_{}_{}.prmtop'.format(a, 100-a))
+                change(parm, 'charge', ':{}@N'.format(vx1), bc['N']+((fc['N']-bc['N'])/10)*i).execute()
+                change(parm, 'charge', ':{}@CA'.format(vx1), bc['CA']+((fc['CA']-bc['CA'])/10)*i).execute()
+                change(parm, 'charge', ':{}@HA'.format(vx1), bc['HA']+((fc['HA']-bc['HA'])/10)*i).execute()
+                change(parm, 'charge', ':{}@CB'.format(vx1), bc['CB']+((fc['CB']-bc['CB'])/10)*i).execute()
+                change(parm, 'charge', ':{}@HB2'.format(vx1), bc['HB2']+((fc['HB2']-bc['HB2'])/10)*i).execute()
+                change(parm, 'charge', ':{}@HB3'.format(vx1), bc['HB3']+((fc['HB3']-bc['HB3'])/10)*i).execute()
+                change(parm, 'charge', ':{}@CG'.format(vx1), bc['CG']+((fc['CG']-bc['CG'])/10)*i).execute()
+                change(parm, 'charge', ':{}@HG2'.format(vx1), bc['HG2']+((fc['HG2']-bc['HG2'])/10)*i).execute()
+                change(parm, 'charge', ':{}@HG2'.format(vx1), bc['HG2']+((fc['HG2']-bc['HG2'])/10)*i).execute()
+                change(parm, 'charge', ':{}@CD'.format(vx1), bc['CD']+((fc['CD']-bc['CD'])/10)*i).execute()
+                change(parm, 'charge', ':{}@HD2'.format(vx1), bc['HD2']+((fc['HD2']-bc['HD2'])/10)*i).execute()
+                change(parm, 'charge', ':{}@HD3'.format(vx1), bc['HD3']+((fc['HD3']-bc['HD3'])/10)*i).execute()
+                change(parm, 'charge', ':{}@C'.format(vx1), bc['C']+((fc['C']-bc['C'])/10)*i).execute()
+                change(parm, 'charge', ':{}@O'.format(vx1), bc['O']+((fc['O']-bc['O'])/10)*i).execute()
+                change(parm, 'charge', ':{}@OXT'.format(vx1), (bc['OXT']-(bc['OXT']/10)*i)*(10-i)/10).execute()
+		setOverwrite(parm).execute()
+		parmout(parm, 'Solv_{}_{}.prmtop'.format(a, 100-a)).execute()
+
+def parmed_command_HCX(vx1):
+	bc = {}
+        with open('Param_files/AminoAcid/HCY.param', 'r') as b:
+                data = b.readlines()[1:]
+        for line in data:
+		key, value = line.split()
+		bc[key] = float(value)
+        b.close()
+	fc = {}
+        with open('Param_files/AminoAcid/HCX.param', 'r') as b:
+                data = b.readlines()[1:]
+        for line in data:
+		key, value = line.split()
+		fc[key] = float(value)
+        b.close()
+	for i in range(11):
+		a = i*10
+		parm = AmberParm('Solv_{}_{}.prmtop'.format(a, 100-a))
+                change(parm, 'charge', ':{}@N'.format(vx1), bc['N']+((fc['N']-bc['N'])/10)*i).execute()
+                change(parm, 'charge', ':{}@H'.format(vx1), bc['H']+((fc['H']-bc['H'])/10)*i).execute()
+                change(parm, 'charge', ':{}@CA'.format(vx1), bc['CA']+((fc['CA']-bc['CA'])/10)*i).execute()
+                change(parm, 'charge', ':{}@HA'.format(vx1), bc['HA']+((fc['HA']-bc['HA'])/10)*i).execute()
+                change(parm, 'charge', ':{}@CB'.format(vx1), bc['CB']+((fc['CB']-bc['CB'])/10)*i).execute()
+                change(parm, 'charge', ':{}@HB2'.format(vx1), bc['HB2']+((fc['HB2']-bc['HB2'])/10)*i).execute()
+                change(parm, 'charge', ':{}@HB3'.format(vx1), bc['HB3']+((fc['HB3']-bc['HB3'])/10)*i).execute()
+                change(parm, 'charge', ':{}@CG'.format(vx1), bc['CG']+((fc['CG']-bc['CG'])/10)*i).execute()
+                change(parm, 'charge', ':{}@HG2'.format(vx1), bc['HG2']+((fc['HG2']-bc['HG2'])/10)*i).execute()
+                change(parm, 'charge', ':{}@HG3'.format(vx1), bc['HG3']+((fc['HG3']-bc['HG3'])/10)*i).execute()
+                change(parm, 'charge', ':{}@SD'.format(vx1), bc['SD']+((fc['SD']-bc['SD'])/10)*i).execute()
+                change(parm, 'charge', ':{}@HD'.format(vx1), bc['HD']-(bc['HD']/10)*i).execute()
+                change(parm, 'charge', ':{}@C'.format(vx1), bc['C']+((fc['C']-bc['C'])/10)*i).execute()
+                change(parm, 'charge', ':{}@O'.format(vx1), bc['O']+((fc['O']-bc['O'])/10)*i).execute()
+		setOverwrite(parm).execute()
+		parmout(parm, 'Solv_{}_{}.prmtop'.format(a, 100-a)).execute()
+
 def parmed_command_MCX(vx1):
 	bc = {}
         with open('Param_files/AminoAcid/MCY.param', 'r') as b:
@@ -590,6 +661,28 @@ def parmed_command_VLX(vx1):
 		parmout(parm, 'Solv_{}_{}.prmtop'.format(a, 100-a)).execute()
 
 def makevxi_GCX(struct, out, resid, vx1):
+        struct.residue_dict[resid].set_resname(vx1)
+	pdb = open(out, 'w')
+        try:
+                pdb.write(struct.other_dict['Cryst1'].formatted())
+        except KeyError:
+                pass
+        for res in struct.residue_list:
+                for atom in res.atom_list:
+                       	pdb.write(atom.formatted())
+	                try:
+        	                pdb.write(struct.other_dict[atom.get_number()].ter())
+                	except:
+                        	pass
+        for oth in struct.other_dict:
+                try:
+                        if oth.startswith('Conect'):
+                                pdb.write(struct.other_dict[oth].formatted())
+                except:
+                        pass
+        pdb.write('END\n')
+
+def makevxi_PCX(struct, out, resid, vx1):
         struct.residue_dict[resid].set_resname(vx1)
 	pdb = open(out, 'w')
         try:
@@ -1284,6 +1377,81 @@ def lib_make_GCX_C(ff, outputfile, vxi, difcar='c^', gonoxy='ok', difoxy='om'):
 	ctrl.write('bond %s.1.3 %s.1.6\n'%(vxi, vxi))
 	ctrl.write('bond %s.1.6 %s.1.7\n'%(vxi, vxi))
 	ctrl.write('bond %s.1.6 %s.1.8\n'%(vxi, vxi))
+	ctrl.write('set %s.1 connect0 %s.1.N\n'%(vxi, vxi))
+	ctrl.write('set %s.1 connect1 %s.1.C\n'%(vxi, vxi))
+	ctrl.write('set %s name "%s"\n'%(vxi, vxi))
+	ctrl.write('set %s.1 name "%s"\n'%(vxi, vxi))
+	ctrl.write('set %s head %s.1.N\n'%(vxi, vxi))
+	ctrl.write('set %s tail %s.1.C\n'%(vxi, vxi))
+	ctrl.write('saveoff %s %s.lib\n'%(vxi, vxi))
+	ctrl.write("quit\n") 
+        ctrl.close()
+	Leapy.run('lyp.in', outputfile)
+
+def lib_make_PCX_C(ff, outputfile, vxi, difcar='c^', gonoxy='ok', difoxy='om'):
+        ctrl = open('lyp.in', 'w')
+        ctrl.write("source %s\n"%ff)
+	ctrl.write("%s=loadpdb Param_files/LibPDB/CPRO.pdb\n"%vxi)
+	ctrl.write('set %s.1.1 element "N"\n'%vxi)
+	ctrl.write('set %s.1.2 element "C"\n'%vxi)
+	ctrl.write('set %s.1.3 element "H"\n'%vxi)
+	ctrl.write('set %s.1.4 element "C"\n'%vxi)
+	ctrl.write('set %s.1.5 element "H"\n'%vxi)
+	ctrl.write('set %s.1.6 element "H"\n'%vxi)
+	ctrl.write('set %s.1.7 element "C"\n'%vxi)
+	ctrl.write('set %s.1.8 element "H"\n'%vxi)
+	ctrl.write('set %s.1.9 element "H"\n'%vxi)
+	ctrl.write('set %s.1.10 element "C"\n'%vxi)
+	ctrl.write('set %s.1.11 element "H"\n'%vxi)
+	ctrl.write('set %s.1.12 element "H"\n'%vxi)
+	ctrl.write('set %s.1.13 element "C"\n'%vxi)
+	ctrl.write('set %s.1.14 element "O"\n'%vxi)
+	ctrl.write('set %s.1.15 element "O"\n'%vxi)
+	ctrl.write('set %s.1.1 name "N"\n'%vxi)
+	ctrl.write('set %s.1.2 name "CA"\n'%vxi)
+	ctrl.write('set %s.1.3 name "HA"\n'%vxi)
+	ctrl.write('set %s.1.4 name "CB"\n'%vxi)
+	ctrl.write('set %s.1.5 name "HB2"\n'%vxi)
+	ctrl.write('set %s.1.6 name "HB3"\n'%vxi)
+	ctrl.write('set %s.1.7 name "CG"\n'%vxi)
+	ctrl.write('set %s.1.8 name "HG2"\n'%vxi)
+	ctrl.write('set %s.1.9 name "HG3"\n'%vxi)
+	ctrl.write('set %s.1.10 name "CD"\n'%vxi)
+	ctrl.write('set %s.1.11 name "HD2"\n'%vxi)
+	ctrl.write('set %s.1.12 name "HD3"\n'%vxi)
+	ctrl.write('set %s.1.13 name "C"\n'%vxi)
+	ctrl.write('set %s.1.14 name "O"\n'%vxi)
+	ctrl.write('set %s.1.15 name "OXT"\n'%vxi)
+	ctrl.write('set %s.1.1 type "N"\n'%vxi)
+	ctrl.write('set %s.1.2 type "CT"\n'%vxi)
+	ctrl.write('set %s.1.3 type "H1"\n'%vxi)
+	ctrl.write('set %s.1.4 type "CT"\n'%vxi)
+	ctrl.write('set %s.1.5 type "HC"\n'%vxi)
+	ctrl.write('set %s.1.6 type "HC"\n'%vxi)
+	ctrl.write('set %s.1.7 type "CT"\n'%vxi)
+	ctrl.write('set %s.1.8 type "HC"\n'%vxi)
+	ctrl.write('set %s.1.9 type "HC"\n'%vxi)
+	ctrl.write('set %s.1.10 type "CT"\n'%vxi)
+	ctrl.write('set %s.1.11 type "H1"\n'%vxi)
+	ctrl.write('set %s.1.12 type "H1"\n'%vxi)
+	ctrl.write('set %s.1.13 type "%s"\n'%(vxi, difcar))
+	ctrl.write('set %s.1.14 type "%s"\n'%(vxi, difoxy))
+	ctrl.write('set %s.1.15 type "%s"\n'%(vxi, gonoxy))
+	ctrl.write('bond %s.1.1 %s.1.2\n'%(vxi, vxi))
+	ctrl.write('bond %s.1.1 %s.1.10\n'%(vxi, vxi))
+	ctrl.write('bond %s.1.2 %s.1.3\n'%(vxi, vxi))
+	ctrl.write('bond %s.1.2 %s.1.4\n'%(vxi, vxi))
+	ctrl.write('bond %s.1.2 %s.1.13\n'%(vxi, vxi))
+	ctrl.write('bond %s.1.4 %s.1.5\n'%(vxi, vxi))
+	ctrl.write('bond %s.1.4 %s.1.6\n'%(vxi, vxi))
+	ctrl.write('bond %s.1.4 %s.1.7\n'%(vxi, vxi))
+	ctrl.write('bond %s.1.7 %s.1.8\n'%(vxi, vxi))
+	ctrl.write('bond %s.1.7 %s.1.9\n'%(vxi, vxi))
+	ctrl.write('bond %s.1.7 %s.1.10\n'%(vxi, vxi))
+	ctrl.write('bond %s.1.10 %s.1.11\n'%(vxi, vxi))
+	ctrl.write('bond %s.1.10 %s.1.12\n'%(vxi, vxi))
+	ctrl.write('bond %s.1.13 %s.1.14\n'%(vxi, vxi))
+	ctrl.write('bond %s.1.13 %s.1.15\n'%(vxi, vxi))
 	ctrl.write('set %s.1 connect0 %s.1.N\n'%(vxi, vxi))
 	ctrl.write('set %s.1 connect1 %s.1.C\n'%(vxi, vxi))
 	ctrl.write('set %s name "%s"\n'%(vxi, vxi))
@@ -2297,6 +2465,72 @@ def stock_add_to_all_VLX(dist, newcar='dc', gonhyd='dh'):
                 Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format('HC', newcar, 'CT', 'CT'), cal(p['C_C_C_H'][0], p['C_C_C_H'][0], i), cal(p['C_C_C_H'][1], p['C_C_C_H'][1], i), cal(p['C_C_C_H'][2], p['C_C_C_H'][2], i), cal(p['C_C_C_H'][3], p['C_C_C_H'][3], i))
                 Frcmod_creator.NONBON_insert('{}_{}.frcmod'.format(a, 100-a), newcar, cal(p['CT'][2], p['CT'][2], i), cal(p['CT'][3], p['CT'][3], i))
                 Frcmod_creator.NONBON_insert('{}_{}.frcmod'.format(a, 100-a), gonhyd, cal(p['HC'][2], p['0_H'][2], i), cal(p['HC'][3], p['0_H'][3], i))
+
+def stock_add_to_all_PCX(dist, difcar='c^', gonoxy='ok', difoxy='om'):
+        p = {}
+        with open('Param_files/Stock/Stock.param', 'r') as b:
+                data = b.readlines()[1:]
+        for line in data:
+                p[line.split()[0]] = []
+                for point in line.split()[1:]:
+                        p[line.split()[0]].append(float(point))
+        b.close()
+        for i in range(11):
+                a = i*10
+                Frcmod_creator.MASS_insert('{}_{}.frcmod'.format(a, 100-a), difcar, cal(p['C'][0], p['C'][0], i), cal(p['C'][1], p['C'][1], i))
+                Frcmod_creator.MASS_insert('{}_{}.frcmod'.format(a, 100-a), difoxy, cal(p['O2'][0], p['O2'][0], i), cal(p['O2'][1], p['O2'][1], i))
+                Frcmod_creator.MASS_insert('{}_{}.frcmod'.format(a, 100-a), gonoxy, cal(p['O2'][0], p['0_O'][0], i), cal(p['O2'][1], p['0_O'][1], i))
+                Frcmod_creator.BOND_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}'.format(difcar, difoxy), cal(p['C_O2'][0], p['C_O'][0], i), cal(p['C_O2'][1], p['C_O'][1], i))
+                Frcmod_creator.BOND_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}'.format(difcar, gonoxy), cal(p['C_O2'][0], p['C_O'][0], i), cal(p['C_O2'][1], p['C_O'][1], i))
+                Frcmod_creator.BOND_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}'.format(difcar, 'CT'), cal(p['CT_C'][0], p['CT_C'][0], i), cal(p['CT_C'][1], p['CT_C'][1], i))
+                Frcmod_creator.BOND_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}'.format(difcar, 'n^'), cal(p['0_0'][0], p['C_N'][0], i), cal(dist, p['C_N'][1], i))
+                Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format('CT', difcar, difoxy), cal(p['C_C_O2'][0], p['C_C_O'][0], i), cal(p['C_C_O2'][1], p['C_C_O'][1], i))
+                Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format('CT', difcar, gonoxy), cal(p['C_C_O2'][0], p['C_C_O'][0], i), cal(p['C_C_O2'][1], p['C_C_O'][1], i))
+                Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format(gonoxy, difcar, difoxy), cal(p['O2_C_O2'][0], p['Close'][0], i), cal(p['O2_C_O2'][1], p['Close'][1], i))
+                Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format('n^', difcar, difoxy), cal(p['X_CM_CM_0'][0], p['O_C_N'][0], i), cal(p['X_CM_CM_0'][1], p['O_C_N'][1], i))
+                Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format('n^', difcar, gonoxy), cal(p['X_CM_CM_0'][0], p['O_C_N'][0], i), cal(p['X_CM_CM_0'][1], p['O_C_N'][1], i))
+                Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format('hk', 'n^', difcar), cal(p['X_CM_CM_0'][0], p['F_CA_CA_HA'][0], i), cal(p['X_CM_CM_0'][1], p['F_CA_CA_HA'][1], i))
+                Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format('hm', 'n^', difcar), cal(p['X_CM_CM_0'][0], p['F_CA_CA_HA'][0], i), cal(p['X_CM_CM_0'][1], p['F_CA_CA_HA'][1], i))
+                Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format('CT', 'n^', difcar), cal(p['X_CM_CM_0'][0], p['C_N_CT'][0], i), cal(p['X_CM_CM_0'][1], p['C_N_CT'][1], i))
+                Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format('CT', difcar, 'n^'), cal(p['X_CM_CM_0'][0], p['C_C_N'][0], i), cal(p['X_CM_CM_0'][1], p['C_C_N'][1], i))
+                Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format('H1', 'CT', difcar), cal(p['C_C_H'][0], p['C_C_H'][0], i), cal(p['C_C_H'][1], p['C_C_H'][1], i))
+                Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format('N ', 'CT', difcar), cal(p['N_CT_C'][0], p['N_CT_C'][0], i), cal(p['N_CT_C'][1], p['N_CT_C'][1], i))
+                Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format('CT', 'CT', difcar), cal(p['CT_CT_C'][0], p['CT_CT_C'][0], i), cal(p['CT_CT_C'][1], p['CT_CT_C'][1], i))
+                Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format('N ', 'CT', difcar, difoxy), cal(p['Ring_Dihe_2'][0], p['Ring_Dihe_2'][0], i), cal(p['Ring_Dihe_2'][1], p['Ring_Dihe_2'][1], i), cal(p['Ring_Dihe_2'][2], p['Ring_Dihe_2'][2], i), cal(p['Ring_Dihe_2'][3], p['Ring_Dihe_2'][3], i))
+                Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format('H1', 'CT', difcar, difoxy), cal(p['Ring_Dihe_2'][0], p['Ring_Dihe_2'][0], i), cal(p['Ring_Dihe_2'][1], p['Ring_Dihe_2'][1], i), cal(p['Ring_Dihe_2'][2], p['Ring_Dihe_2'][2], i), cal(p['Ring_Dihe_2'][3], p['Ring_Dihe_2'][3], i))
+                Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format('CT', 'CT', difcar, difoxy), cal(p['Ring_Dihe_2'][0], p['Ring_Dihe_2'][0], i), cal(p['Ring_Dihe_2'][1], p['Ring_Dihe_2'][1], i), cal(p['Ring_Dihe_2'][2], p['Ring_Dihe_2'][2], i), cal(p['Ring_Dihe_2'][3], p['Ring_Dihe_2'][3], i))
+                Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format('CT', 'CT', difcar, gonoxy), cal(p['Ring_Dihe_2'][0], p['Ring_Dihe_2'][0], i), cal(p['Ring_Dihe_2'][1], p['Ring_Dihe_2'][1], i), cal(p['Ring_Dihe_2'][2], p['Ring_Dihe_2'][2], i), cal(p['Ring_Dihe_2'][3], p['Ring_Dihe_2'][3], i))
+                Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format('N ', 'CT', difcar, gonoxy), cal(p['Ring_Dihe_2'][0], p['Ring_Dihe_2'][0], i), cal(p['Ring_Dihe_2'][1], p['Ring_Dihe_2'][1], i), cal(p['Ring_Dihe_2'][2], p['Ring_Dihe_2'][2], i), cal(p['Ring_Dihe_2'][3], p['Ring_Dihe_2'][3], i))
+                Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format('H1', 'CT', difcar, gonoxy), cal(p['Ring_Dihe_2'][0], p['Ring_Dihe_2'][0], i), cal(p['Ring_Dihe_2'][1], p['Ring_Dihe_2'][1], i), cal(p['Ring_Dihe_2'][2], p['Ring_Dihe_2'][2], i), cal(p['Ring_Dihe_2'][3], p['Ring_Dihe_2'][3], i))
+                Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format('hk', 'n^', difcar, difoxy), cal(p['0_Dihe'][0], p['0_Dihe'][0], i), cal(p['0_Dihe'][1], p['0_Dihe'][1], i), cal(p['0_Dihe'][2], p['0_Dihe'][2], i), cal(p['0_Dihe'][3], p['0_Dihe'][3], i))
+                Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format('hk', 'n^', difcar, gonoxy), cal(p['0_Dihe'][0], p['0_Dihe'][0], i), cal(p['0_Dihe'][1], p['0_Dihe'][1], i), cal(p['0_Dihe'][2], p['0_Dihe'][2], i), cal(p['0_Dihe'][3], p['0_Dihe'][3], i))
+                Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format('hm', 'n^', difcar, gonoxy), cal(p['0_Dihe'][0], p['0_Dihe'][0], i), cal(p['0_Dihe'][1], p['0_Dihe'][1], i), cal(p['0_Dihe'][2], p['0_Dihe'][2], i), cal(p['0_Dihe'][3], p['0_Dihe'][3], i))
+                Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format('CT', 'CT', difcar, 'n^'), cal(p['0_3'][0], p['C_C_N_C_1'][0], i), cal(p['0_3'][1], p['C_C_N_C_1'][1], i), cal(p['0_3'][2], p['C_C_N_C_1'][2], i), cal(p['0_3'][3], p['C_C_N_C_1'][3], i))
+                Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format('CT', 'CT', difcar, 'n^'), cal(p['0_8'][0], p['C_C_N_C_2'][0], i), cal(p['0_8'][1], p['C_C_N_C_2'][1], i), cal(p['0_8'][2], p['C_C_N_C_2'][2], i), cal(p['0_8'][3], p['C_C_N_C_2'][3], i))
+                Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format('CT', 'CT', difcar, 'n^'), cal(p['0_2'][0], p['C_C_N_C_3'][0], i), cal(p['0_2'][1], p['C_C_N_C_3'][1], i), cal(p['0_2'][2], p['C_C_N_C_3'][2], i), cal(p['0_2'][3], p['C_C_N_C_3'][3], i))
+                Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format('CT', 'CT', difcar, 'n^'), cal(p['0_7'][0], p['C_C_N_C_4'][0], i), cal(p['0_7'][1], p['C_C_N_C_4'][1], i), cal(p['0_7'][2], p['C_C_N_C_4'][2], i), cal(p['0_7'][3], p['C_C_N_C_4'][3], i))
+                Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format('N ', 'CT', difcar, 'n^'), cal(p['0_12'][0], p['N_CX_C_N_1'][0], i), cal(p['0_12'][1], p['N_CX_C_N_1'][1], i), cal(p['0_12'][2], p['N_CX_C_N_1'][2], i), cal(p['0_12'][3], p['N_CX_C_N_1'][3], i))
+                Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format('N ', 'CT', difcar, 'n^'), cal(p['0_11'][0], p['N_CX_C_N_2'][0], i), cal(p['0_11'][1], p['N_CX_C_N_2'][1], i), cal(p['0_11'][2], p['N_CX_C_N_2'][2], i), cal(p['0_11'][3], p['N_CX_C_N_2'][3], i))
+                Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format('N ', 'CT', difcar, 'n^'), cal(p['0_14'][0], p['N_CX_C_N_3'][0], i), cal(p['0_14'][1], p['N_CX_C_N_3'][1], i), cal(p['0_14'][2], p['N_CX_C_N_3'][2], i), cal(p['0_14'][3], p['N_CX_C_N_3'][3], i))
+                Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format('N ', 'CT', difcar, 'n^'), cal(p['0_7'][0], p['N_CX_C_N_4'][0], i), cal(p['0_7'][1], p['N_CX_C_N_4'][1], i), cal(p['0_7'][2], p['N_CX_C_N_4'][2], i), cal(p['0_7'][3], p['N_CX_C_N_4'][3], i))
+                Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format('CT', difcar, 'n^', 'CT'), cal(p['0_18'][0], p['X_C_N_X_1000'][0], i), cal(p['0_18'][1], p['X_C_N_X_1000'][1], i), cal(p['0_18'][2], p['X_C_N_X_1000'][2], i), cal(p['0_18'][3], p['X_C_N_X_1000'][3], i))
+                Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format('CT', difcar, 'n^', 'hm'), cal(p['0_17'][0], p['X_C_N_X_0'][0], i), cal(p['0_17'][1], p['X_C_N_X_0'][1], i), cal(p['0_17'][2], p['X_C_N_X_0'][2], i), cal(p['0_17'][3], p['X_C_N_X_0'][3], i))
+                Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format('CT', difcar, 'n^', 'hk'), cal(p['0_Dihe'][0], p['0_Dihe'][0], i), cal(p['0_Dihe'][1], p['0_Dihe'][1], i), cal(p['0_Dihe'][2], p['0_Dihe'][2], i), cal(p['0_Dihe'][3], p['0_Dihe'][3], i))
+                Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format(difoxy, difcar, 'n^', 'CT'), cal(p['0_17'][0], p['X_C_N_X_0'][0], i), cal(p['0_17'][1], p['X_C_N_X_0'][1], i), cal(p['0_17'][2], p['X_C_N_X_0'][2], i), cal(p['0_17'][3], p['X_C_N_X_0'][3], i))
+                Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format(difoxy, difcar, 'n^', 'hm'), cal(p['0_18'][0], p['X_C_N_X_1000'][0], i), cal(p['0_18'][1], p['X_C_N_X_1000'][1], i), cal(p['0_18'][2], p['X_C_N_X_1000'][2], i), cal(p['0_18'][3], p['X_C_N_X_1000'][3], i))
+                Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format(difoxy, difcar, 'n^', 'hk'), cal(p['0_Dihe'][0], p['0_Dihe'][0], i), cal(p['0_Dihe'][1], p['0_Dihe'][1], i), cal(p['0_Dihe'][2], p['0_Dihe'][2], i), cal(p['0_Dihe'][3], p['0_Dihe'][3], i))
+                Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format(gonoxy, difcar, 'n^', 'CT'), cal(p['0_Dihe'][0], p['0_Dihe'][0], i), cal(p['0_Dihe'][1], p['0_Dihe'][1], i), cal(p['0_Dihe'][2], p['0_Dihe'][2], i), cal(p['0_Dihe'][3], p['0_Dihe'][3], i))
+                Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format(gonoxy, difcar, 'n^', 'hm'), cal(p['0_Dihe'][0], p['0_Dihe'][0], i), cal(p['0_Dihe'][1], p['0_Dihe'][1], i), cal(p['0_Dihe'][2], p['0_Dihe'][2], i), cal(p['0_Dihe'][3], p['0_Dihe'][3], i))
+                Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format(gonoxy, difcar, 'n^', 'hk'), cal(p['0_Dihe'][0], p['0_Dihe'][0], i), cal(p['0_Dihe'][1], p['0_Dihe'][1], i), cal(p['0_Dihe'][2], p['0_Dihe'][2], i), cal(p['0_Dihe'][3], p['0_Dihe'][3], i))
+                Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format('H1', 'CT', 'n^', difcar), cal(p['Ring_Dihe_2'][0], p['Ring_Dihe_2'][0], i), cal(p['Ring_Dihe_2'][1], p['Ring_Dihe_2'][1], i), cal(p['Ring_Dihe_2'][2], p['Ring_Dihe_2'][2], i), cal(p['Ring_Dihe_2'][3], p['Ring_Dihe_2'][3], i))
+                Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format('H1', 'CT', difcar, 'n^'), cal(p['Ring_Dihe_2'][0], p['Ring_Dihe_2'][0], i), cal(p['Ring_Dihe_2'][1], p['Ring_Dihe_2'][1], i), cal(p['Ring_Dihe_2'][2], p['Ring_Dihe_2'][2], i), cal(p['Ring_Dihe_2'][3], p['Ring_Dihe_2'][3], i))
+                Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format('C ', 'CT', 'n^', difcar), cal(p['0_3'][0], p['C_N_CX_C_1'][0], i), cal(p['0_3'][1], p['C_N_CX_C_1'][1], i), cal(p['0_3'][2], p['C_N_CX_C_1'][2], i), cal(p['0_3'][3], p['C_N_CX_C_1'][3], i))
+                Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format('C ', 'CT', 'n^', difcar), cal(p['0_8'][0], p['C_N_CX_C_2'][0], i), cal(p['0_8'][1], p['C_N_CX_C_2'][1], i), cal(p['0_8'][2], p['C_N_CX_C_2'][2], i), cal(p['0_8'][3], p['C_N_CX_C_2'][3], i))
+                Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format('C ', 'CT', 'n^', difcar), cal(p['0_2'][0], p['C_N_CX_C_3'][0], i), cal(p['0_2'][1], p['C_N_CX_C_3'][1], i), cal(p['0_2'][2], p['C_N_CX_C_3'][2], i), cal(p['0_2'][3], p['C_N_CX_C_3'][3], i))
+                Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format('C ', 'CT', 'n^', difcar), cal(p['0_7'][0], p['C_N_CX_C_4'][0], i), cal(p['0_7'][1], p['C_N_CX_C_4'][1], i), cal(p['0_7'][2], p['C_N_CX_C_4'][2], i), cal(p['0_7'][3], p['C_N_CX_C_4'][3], i))
+                Frcmod_creator.NONBON_insert('{}_{}.frcmod'.format(a, 100-a), difcar, cal(p['C'][2], p['C'][2], i), cal(p['C'][3], p['C'][3], i))
+                Frcmod_creator.NONBON_insert('{}_{}.frcmod'.format(a, 100-a), difoxy, cal(p['O2'][2], p['O2'][2], i), cal(p['O2'][3], p['O2'][3], i))
+                Frcmod_creator.NONBON_insert('{}_{}.frcmod'.format(a, 100-a), gonoxy, cal(p['O2'][2], p['0_O'][2], i), cal(p['O2'][3], p['0_O'][3], i))
 
 def stock_add_to_all_FCX(dist, difcar='c^', gonoxy='ok', difoxy='om'):
         p = {}

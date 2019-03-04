@@ -32,6 +32,8 @@
  "T4X"
  "VDX"
  "VLX"
+ "NLYX"
+ "LYX"
 !entry.AAX.unit.atoms table  str name  str type  int typex  int resx  int flags  int seq  int elmnt  dbl chg
  "N" "N" 0 1 131072 1 7 -0.415700
  "H" "H" 0 1 131072 2 1 0.271900
@@ -4677,6 +4679,320 @@
  0.0
  0.0
 !entry.VLX.unit.velocities table  dbl x  dbl y  dbl z
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+!entry.NLYX.unit.atoms table  str name  str type  int typex  int resx  int flags  int seq  int elmnt  dbl chg
+ "N" "N3" 0 1 131072 1 7 0.096600
+ "H1" "H" 0 1 131072 2 1 0.208000
+ "H2" "H" 0 1 131072 3 1 0.208000
+ "H3" "H" 0 1 131072 4 1 0.208000
+ "CA" "CT" 0 1 131072 5 6 -0.329100
+ "HA" "HP" 0 1 131072 6 1 0.078200
+ "CB" "CT" 0 1 131072 7 6 0.201800
+ "HB2" "HC" 0 1 131072 8 1 -0.000200
+ "HB3" "HC" 0 1 131072 9 1 -0.000200
+ "CG" "CT" 0 1 131072 10 6 -0.042900
+ "HG2" "HC" 0 1 131072 11 1 0.032100
+ "HG3" "HC" 0 1 131072 12 1 0.032100
+ "CD" "CT" 0 1 131072 13 6 -0.004500
+ "HD2" "HC" 0 1 131072 14 1 0.007200
+ "HD3" "HC" 0 1 131072 15 1 0.007200
+ "CE" "CT" 0 1 131072 16 6 0.130600
+ "HE2" "H1" 0 1 131072 17 1 0.009500
+ "HE3" "H1" 0 1 131072 18 1 0.009500
+ "NZ" "N" 0 1 131072 19 7 -0.315000
+ "HZ" "H" 0 1 131072 20 1 0.206700
+ "C" "C" 0 1 131072 21 6 0.812800
+ "O" "O" 0 1 131072 22 8 -0.556400
+!entry.NLYX.unit.atomspertinfo table  str pname  str ptype  int ptypex  int pelmnt  dbl pchg
+ "N" "N3" 0 -1 0.0
+ "H1" "H" 0 -1 0.0
+ "H2" "H" 0 -1 0.0
+ "H3" "H" 0 -1 0.0
+ "CA" "CT" 0 -1 0.0
+ "HA" "HP" 0 -1 0.0
+ "CB" "CT" 0 -1 0.0
+ "HB2" "HC" 0 -1 0.0
+ "HB3" "HC" 0 -1 0.0
+ "CG" "CT" 0 -1 0.0
+ "HG2" "HC" 0 -1 0.0
+ "HG3" "HC" 0 -1 0.0
+ "CD" "CT" 0 -1 0.0
+ "HD2" "HC" 0 -1 0.0
+ "HD3" "HC" 0 -1 0.0
+ "CE" "CT" 0 -1 0.0
+ "HE2" "H1" 0 -1 0.0
+ "HE3" "H1" 0 -1 0.0
+ "NZ" "N" 0 -1 0.0
+ "HZ" "H" 0 -1 0.0
+ "C" "C" 0 -1 0.0
+ "O" "O" 0 -1 0.0
+!entry.NLYX.unit.boundbox array dbl
+ -1.000000
+ 0.0
+ 0.0
+ 0.0
+ 0.0
+!entry.NLYX.unit.childsequence single int
+ 2
+!entry.NLYX.unit.connect array int
+ 0
+ 21
+!entry.NLYX.unit.connectivity table  int atom1x  int atom2x  int flags
+ 1 2 1
+ 1 3 1
+ 1 4 1
+ 1 5 1
+ 5 6 1
+ 5 7 1
+ 5 21 1
+ 7 8 1
+ 7 9 1
+ 7 10 1
+ 10 11 1
+ 10 12 1
+ 10 13 1
+ 13 14 1
+ 13 15 1
+ 13 16 1
+ 16 17 1
+ 16 18 1
+ 16 19 1
+ 19 20 1
+ 21 22 1
+!entry.NLYX.unit.hierarchy table  str abovetype  int abovex  str belowtype  int belowx
+ "U" 0 "R" 1
+ "R" 1 "A" 1
+ "R" 1 "A" 2
+ "R" 1 "A" 3
+ "R" 1 "A" 4
+ "R" 1 "A" 5
+ "R" 1 "A" 6
+ "R" 1 "A" 7
+ "R" 1 "A" 8
+ "R" 1 "A" 9
+ "R" 1 "A" 10
+ "R" 1 "A" 11
+ "R" 1 "A" 12
+ "R" 1 "A" 13
+ "R" 1 "A" 14
+ "R" 1 "A" 15
+ "R" 1 "A" 16
+ "R" 1 "A" 17
+ "R" 1 "A" 18
+ "R" 1 "A" 19
+ "R" 1 "A" 20
+ "R" 1 "A" 21
+ "R" 1 "A" 22
+!entry.NLYX.unit.name single str
+ "NLYX"
+!entry.NLYX.unit.positions table  dbl x  dbl y  dbl z
+ -2.080000 -3.560000 0.050000
+ -2.070000 -4.490000 -0.360000
+ -3.010000 -3.180000 -0.070000
+ -1.880000 -3.680000 1.040000
+ -1.000000 -2.670000 -0.510000
+ -0.950000 -2.860000 -1.580000
+ -1.380000 -1.210000 -0.220000
+ -2.370000 -1.040000 -0.620000
+ -1.420000 -1.070000 0.850000
+ -0.420000 -0.180000 -0.840000
+ 0.570000 -0.310000 -0.420000
+ -0.350000 -0.350000 -1.910000
+ -0.890000 1.250000 -0.560000
+ -1.870000 1.410000 -0.990000
+ -0.980000 1.390000 0.510000
+ 0.090000 2.290000 -1.100000
+ 1.090000 2.060000 -0.760000
+ 0.090000 2.280000 -2.180000
+ -0.250000 3.630000 -0.670000
+ -0.550000 4.290000 -1.340000
+ 0.260000 -3.140000 0.220000
+ 0.110000 -3.650000 1.310000
+!entry.NLYX.unit.residueconnect table  int c1x  int c2x  int c3x  int c4x  int c5x  int c6x
+ 0 21 19 0 0 0
+!entry.NLYX.unit.residues table  str name  int seq  int childseq  int startatomx  str restype  int imagingx
+ "NLYX" 1 23 1 "?" 0
+!entry.NLYX.unit.residuesPdbSequenceNumber array int
+ 1
+!entry.NLYX.unit.solventcap array dbl
+ -1.000000
+ 0.0
+ 0.0
+ 0.0
+ 0.0
+!entry.NLYX.unit.velocities table  dbl x  dbl y  dbl z
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+!entry.LYX.unit.atoms table  str name  str type  int typex  int resx  int flags  int seq  int elmnt  dbl chg
+ "N" "N" 0 1 131072 1 7 -0.415700
+ "H" "H" 0 1 131072 2 1 0.271900
+ "CA" "CT" 0 1 131072 3 6 -0.082400
+ "HA" "H1" 0 1 131072 4 1 0.068600
+ "CB" "CT" 0 1 131072 5 6 0.310200
+ "HB2" "HC" 0 1 131072 6 1 -0.058800
+ "HB3" "HC" 0 1 131072 7 1 -0.058800
+ "CG" "CT" 0 1 131072 8 6 -0.054700
+ "HG2" "HC" 0 1 131072 9 1 -0.016900
+ "HG3" "HC" 0 1 131072 10 1 -0.016900
+ "CD" "CT" 0 1 131072 11 6 0.089500
+ "HD2" "HC" 0 1 131072 12 1 -0.029500
+ "HD3" "HC" 0 1 131072 13 1 -0.029500
+ "CE" "CT" 0 1 131072 14 6 0.279500
+ "HE2" "H1" 0 1 131072 15 1 -0.027100
+ "HE3" "H1" 0 1 131072 16 1 -0.027100
+ "NZ" "N" 0 1 131072 17 7 -0.449900
+ "HZ" "H" 0 1 131072 18 1 0.218200
+ "C" "C" 0 1 131072 19 6 0.597300
+ "O" "O" 0 1 131072 20 8 -0.567900
+!entry.LYX.unit.atomspertinfo table  str pname  str ptype  int ptypex  int pelmnt  dbl pchg
+ "N" "N" 0 -1 0.0
+ "H" "H" 0 -1 0.0
+ "CA" "CT" 0 -1 0.0
+ "HA" "H1" 0 -1 0.0
+ "CB" "CT" 0 -1 0.0
+ "HB2" "HC" 0 -1 0.0
+ "HB3" "HC" 0 -1 0.0
+ "CG" "CT" 0 -1 0.0
+ "HG2" "HC" 0 -1 0.0
+ "HG3" "HC" 0 -1 0.0
+ "CD" "CT" 0 -1 0.0
+ "HD2" "HC" 0 -1 0.0
+ "HD3" "HC" 0 -1 0.0
+ "CE" "CT" 0 -1 0.0
+ "HE2" "H1" 0 -1 0.0
+ "HE3" "H1" 0 -1 0.0
+ "NZ" "N" 0 -1 0.0
+ "HZ" "H" 0 -1 0.0
+ "C" "C" 0 -1 0.0
+ "O" "O" 0 -1 0.0
+!entry.LYX.unit.boundbox array dbl
+ -1.000000
+ 0.0
+ 0.0
+ 0.0
+ 0.0
+!entry.LYX.unit.childsequence single int
+ 2
+!entry.LYX.unit.connect array int
+ 1
+ 19
+!entry.LYX.unit.connectivity table  int atom1x  int atom2x  int flags
+ 1 2 1
+ 1 3 1
+ 3 4 1
+ 3 5 1
+ 3 19 1
+ 5 6 1
+ 5 7 1
+ 5 8 1
+ 8 9 1
+ 8 10 1
+ 8 11 1
+ 11 12 1
+ 11 13 1
+ 11 14 1
+ 14 15 1
+ 14 16 1
+ 14 17 1
+ 17 18 1
+ 19 20 1
+!entry.LYX.unit.hierarchy table  str abovetype  int abovex  str belowtype  int belowx
+ "U" 0 "R" 1
+ "R" 1 "A" 1
+ "R" 1 "A" 2
+ "R" 1 "A" 3
+ "R" 1 "A" 4
+ "R" 1 "A" 5
+ "R" 1 "A" 6
+ "R" 1 "A" 7
+ "R" 1 "A" 8
+ "R" 1 "A" 9
+ "R" 1 "A" 10
+ "R" 1 "A" 11
+ "R" 1 "A" 12
+ "R" 1 "A" 13
+ "R" 1 "A" 14
+ "R" 1 "A" 15
+ "R" 1 "A" 16
+ "R" 1 "A" 17
+ "R" 1 "A" 18
+ "R" 1 "A" 19
+ "R" 1 "A" 20
+!entry.LYX.unit.name single str
+ "LYX"
+!entry.LYX.unit.positions table  dbl x  dbl y  dbl z
+ -0.620000 -3.190000 0.470000
+ -0.240000 -3.540000 1.320000
+ 0.080000 -2.080000 -0.140000
+ -0.030000 -2.170000 -1.210000
+ -0.510000 -0.730000 0.320000
+ -1.580000 -0.790000 0.150000
+ -0.350000 -0.630000 1.380000
+ 0.050000 0.490000 -0.420000
+ 1.110000 0.590000 -0.240000
+ -0.080000 0.350000 -1.490000
+ -0.650000 1.780000 0.010000
+ -1.720000 1.700000 -0.160000
+ -0.510000 1.950000 1.070000
+ -0.120000 3.000000 -0.740000
+ 0.940000 3.120000 -0.570000
+ -0.270000 2.880000 -1.810000
+ -0.760000 4.240000 -0.350000
+ -1.610000 4.500000 -0.800000
+ 1.550000 -2.220000 0.260000
+ 1.850000 -2.580000 1.370000
+!entry.LYX.unit.residueconnect table  int c1x  int c2x  int c3x  int c4x  int c5x  int c6x
+ 19 19 1 0 0 0
+!entry.LYX.unit.residues table  str name  int seq  int childseq  int startatomx  str restype  int imagingx
+ "LYX" 1 21 1 "?" 0
+!entry.LYX.unit.residuesPdbSequenceNumber array int
+ 1
+!entry.LYX.unit.solventcap array dbl
+ -1.000000
+ 0.0
+ 0.0
+ 0.0
+ 0.0
+!entry.LYX.unit.velocities table  dbl x  dbl y  dbl z
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
  0.0 0.0 0.0
  0.0 0.0 0.0
  0.0 0.0 0.0

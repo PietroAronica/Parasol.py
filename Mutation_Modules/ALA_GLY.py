@@ -28,8 +28,8 @@ def parmed_command(vxi='VXI', lipid='No'):
                 change(parm, 'charge', ':{}@N'.format(vxi), bc['N']+((fc['N']-bc['N'])/10)*i).execute()
                 change(parm, 'charge', ':{}@H'.format(vxi), bc['H']+((fc['H']-bc['H'])/10)*i).execute()
                 change(parm, 'charge', ':{}@CA'.format(vxi), bc['CA']+((fc['CA']-bc['CA'])/10)*i).execute()
-                change(parm, 'charge', ':{}@HA2'.format(vxi), (fc['HA2']/10)*i).execute()
-                change(parm, 'charge', ':{}@HA3'.format(vxi), bc['HA']+((fc['HA3']-bc['HA'])/10)*i).execute()
+                change(parm, 'charge', ':{}@HA2'.format(vxi), bc['HA']+((fc['HA2']-bc['HA'])/10)*i).execute()
+                change(parm, 'charge', ':{}@HA3'.format(vxi), (fc['HA3']/10)*i).execute()
                 change(parm, 'charge', ':{}@CB'.format(vxi), bc['CB']-(bc['CB']/10)*i).execute()
                 change(parm, 'charge', ':{}@HB1'.format(vxi), bc['HB1']-(bc['HB1']/10)*i).execute()
                 change(parm, 'charge', ':{}@HB2'.format(vxi), bc['HB2']-(bc['HB2']/10)*i).execute()
@@ -49,11 +49,9 @@ def makevxi(struct, out, aa, vxi='VXI'):
                 pass
         for res in struct.residue_list:
                 for atom in res.atom_list:
-			if atom.get_name() == 'CA' and res.get_resname() == vxi:
-                        	pdb.write(atom.formatted())
-                        	pdb.write(atom.superimposed1('HA2', CB))
-			elif atom.get_name() == 'HA' and res.get_resname() == vxi:
-                        	pdb.write(atom.change_name('HA3'))
+			if atom.get_name() == 'HA' and res.get_resname() == vxi:
+                        	pdb.write(atom.change_name('HA2'))
+                        	pdb.write(atom.superimposed1('HA3', CB))
 			else:
                         	pdb.write(atom.formatted())
 	                try:
@@ -111,8 +109,8 @@ def lib_make(ff, outputfile, vxi='VXI', var=variablemake()):
 	ctrl.write('set %s.1.1 type "N"\n'%vxi)
 	ctrl.write('set %s.1.2 type "H"\n'%vxi)
 	ctrl.write('set %s.1.3 type "CT"\n'%vxi)
-	ctrl.write('set %s.1.4 type "%s"\n'%(vxi, hydhyd))
-	ctrl.write('set %s.1.5 type "H1"\n'%vxi)
+	ctrl.write('set %s.1.4 type "H1"\n'%vxi)
+	ctrl.write('set %s.1.5 type "%s"\n'%(vxi, hydhyd))
 	ctrl.write('set %s.1.6 type "%s"\n'%(vxi, metcar))
 	ctrl.write('set %s.1.7 type "%s"\n'%(vxi, methyd))
 	ctrl.write('set %s.1.8 type "%s"\n'%(vxi, methyd))

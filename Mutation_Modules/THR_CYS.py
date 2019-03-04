@@ -102,7 +102,7 @@ def lib_make(ff, outputfile, vxi='VXI', var=variablemake()):
 	thihyd = var[4]
         ctrl = open('lyp.in', 'w')
         ctrl.write("source %s\n"%ff)
-	ctrl.write("%s=loadpdb Param_files/LibPDB/SER-THR.pdb\n"%vxi)
+	ctrl.write("%s=loadpdb Param_files/LibPDB/CYS-THR.pdb\n"%vxi)
 	ctrl.write('set %s.1.1 element "N"\n'%vxi)
 	ctrl.write('set %s.1.2 element "H"\n'%vxi)
 	ctrl.write('set %s.1.3 element "C"\n'%vxi)

@@ -252,6 +252,7 @@ def lib_make_C(ff, outputfile, vxi='VXI', var=variablemake()):
 	ctrl.write('bond %s.1.9 %s.1.10\n'%(vxi, vxi))
 	ctrl.write('bond %s.1.9 %s.1.11\n'%(vxi, vxi))
 	ctrl.write('bond %s.1.12 %s.1.13\n'%(vxi, vxi))
+	ctrl.write('bond %s.1.12 %s.1.14\n'%(vxi, vxi))
 	ctrl.write('set %s.1 connect0 %s.1.N\n'%(vxi, vxi))
 	ctrl.write('set %s.1 connect1 %s.1.C\n'%(vxi, vxi))
 	ctrl.write('set %s name "%s"\n'%(vxi, vxi))

@@ -52,7 +52,7 @@ def parmed_command(vxi='VXI', lipid='No'):
 def makevxi(struct, out, aa, vxi='VXI'):
         struct.residue_dict[aa].set_resname(vxi)
         CA = struct.residue_dict[aa].atom_dict['CA']
-        C = struct.residue_dict[aa].atom_dict['C']
+        N = struct.residue_dict[aa].atom_dict['C']
 	pdb = open(out, 'w')
         try:
                 pdb.write(struct.other_dict['Cryst1'].formatted())
@@ -62,9 +62,9 @@ def makevxi(struct, out, aa, vxi='VXI'):
 		for atom in res.atom_list:
 			if atom.get_name() == 'H' and res.get_resname() == vxi:
 				pdb.write(atom.formatted())
-				pdb.write(atom.halfway_between('CA1', CA, C)) 
-				pdb.write(atom.superimposed1('HA12', C)) 
-				pdb.write(atom.superimposed2('HA13', C)) 
+				pdb.write(atom.halfway_between('CA1', CA, N)) 
+				pdb.write(atom.superimposed1('HA12', N)) 
+				pdb.write(atom.superimposed2('HA13', N)) 
 			elif atom.get_name() == 'CA' and res.get_resname() == vxi:
 				pdb.write(atom.change_name('CA2')) 
 			elif atom.get_name() == 'HA' and res.get_resname() == vxi:
