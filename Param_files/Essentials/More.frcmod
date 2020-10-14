@@ -1,17 +1,25 @@
 #Additional parameters
 MASS
-CH 12.01         0.360               Sp3 carbons in square systems
-HH 1.008         0.135               H bonded to aliphatic carbon without electrwd. group
-CF 12.01         0.360               Sp2 C
-HF 1.008         0.135               H bonded to aliphatic carbon without electrwd. group
-NI 14.01         0.530
-ND 14.01         0.530
-NE 14.01         0.530
-NX 14.01         0.530
-NW 14.01         0.530
-NZ 14.01         0.530
+CH  12.01         0.360               Sp3 carbons in square systems
+HH  1.008         0.135               H bonded to aliphatic carbon without electrwd. group
+CF  12.01         0.360               Sp2 C
+HF  1.008         0.135               H bonded to aliphatic carbon without electrwd. group
+NI  14.01         0.530
+ND  14.01         0.530
+NE  14.01         0.530
+NX  14.01         0.530               equivalent to na in gaff
+NW  14.01         0.530               equivalent to nc in gaff
+NZ  14.01         0.530               equivalent to nd in gaff
 Cl- 35.45         3.235
 Na+ 22.99         0.250
+Se  78.96         0.000               Selenium
+se  78.96         0.000               Selenium
+S6  32.06         2.900               S with four connected atoms (equivalent to s6 in gaff)
+EP  0.000         0.000               extra point
+O3  16.00         0.434               like O2
+NG  14.01         0.530               like NB but methylated
+PO  30.97         1.538               equivalent to p3 in gaff
+Hp  1.008         0.138               equivalent to hp in gaff
 
 BOND
 CF-HF  344.3    1.0870       SOURCE3     789    0.0046
@@ -20,86 +28,230 @@ CH-CH  286.8    1.5540       SOURCE1     742    0.0041
 CF-CF  589.7    1.3240       SOURCE1     974    0.0096
 CF-CT  328.3    1.5080       SOURCE1    2536    0.0021
 CH-CT  308.5    1.5290       SOURCE1     376    0.0000
-CT-NI  293.5    1.4910
-NI-ND  751.6    1.2300
-ND-NE 1321.4    1.1350
-CT-NX  334.7    1.4560       equivalent to c3-na in gaff
-NX-NW  535.7    1.3500       equivalent to na-nc in gaff
-NX-CC  438.8    1.3710       equivalent to na-cc in gaff
-NW-NZ  602.9    1.3150       equivalent to nc-nd in gaff
-NZ-CB  431.6    1.3760       equivalent to nd-cd in gaff
-CB-CC  504.0    1.3710       equivalent to cd-cc in gaff
-CB-H4  350.1    1.0830       equivalent to cd-h4 in gaff
-CC-H4  350.1    1.0830       equivalent to cc-h4 in gaff
-CB-CT  337.3    1.4990       equivalent to cd-c3 in gaff
-S -CC  279.3    1.7370       equivalent to ss-cc in gaff 
-CC-C   377.4    1.4620       equivalent to cc-c  in gaff
+CT-NI  293.5    1.4910       SOURCE 10.1007/s00894-009-0488-z
+C8-NI  293.5    1.4910       SOURCE 10.1007/s00894-009-0488-z
+NI-ND  751.6    1.2300       SOURCE 10.1007/s00894-009-0488-z
+ND-NE 1321.4    1.1350       SOURCE 10.1007/s00894-009-0488-z
+CT-NX  327.7    1.4629       equivalent to c3-na in gaff
+NX-NW  525.4    1.3558       equivalent to na-nc in gaff
+NX-CC  425.8    1.3802       equivalent to na-cc in gaff
+NW-NZ  637.5    1.2988       equivalent to nc-nd in gaff
+NZ-CB  441.1    1.3694       equivalent to nd-cd in gaff
+CB-CC  500.9    1.3729       equivalent to cd-cc in gaff
+CB-H4  352.0    1.0817       equivalent to cd-h4 in gaff
+CC-H4  352.0    1.0817       equivalent to cc-h4 in gaff
+CB-CT  334.8    1.5015       equivalent to cd-c3 in gaff
+S -CC  265.8    1.7562       equivalent to ss-cc in gaff 
+CC-C   371.0    1.4676       equivalent to cc-c  in gaff
+CC-NW  441.1    1.3694       equivalent to cc-nc in gaff
+NZ-NX  528.4    1.3541       equivalent to na-nd in gaff
+NX-CB  425.8    1.3802       equivalent to cd-na in gaff
 EP-Cl  600.0    1.9500       Sigma hole and Chlorine
 EP-Br  600.0    2.2200       Sigma hole and Bromine
 EP-I   600.0    2.3500       Sigma hole and Iodine
+CT-Se  227.0    1.9500        PNAS June 6, 2000 97 (12) 6356-6361
+c3-se  227.0    1.9500        PNAS June 6, 2000 97 (12) 6356-6361
+Se-HS  274.0    1.3360        PNAS June 6, 2000 97 (12) 6356-6361
+CV-H5  367.0    1.0800       equivalent to CR-H5
+CW-H5  367.0    1.0800       equivalent to CR-H5
+CT-S6  233.5    1.8075      SOURCE1_SOURCE5     644	 0.0143 (equivalent to c3-s6 in gaff)
+O -S6  512.7    1.4533      SOURCE1_SOURCE5    2456	 0.0105 (equivalent to o -s6 in gaff)
+NB-NB  510.4    1.3646       equivalent to nc-nc in gaff 
+NA-NB  525.4    1.3558       equivalent to na-nc in gaff 
+OS-CA  376.6    1.3696       equivalent to ca-os in gaff
+N2-C   486.3    1.3400       equivalent to c2-n3 in gaff
+C -CF  449.9    1.4060       equivalent to c -c2 in gaff
+N -N   448.6    1.4043       equivalent to n -n  in gaff
+CC-CD  500.9    1.3729       equivalent to cc-cd in gaff
+CD-C   371.0    1.4676       equivalent to c -cd in gaff
+N -NA  444.6    1.4071       equivalent to n -na in gaff
+N -CA  384.2    1.4121       equivalent to ca-n  in gaff
+O3-P   525.0    1.4800       by analogy to O2
+CT-NG  327.7    1.4629       equivalent to c3-na in gaff
+CP-NG  529.0    1.3040       equivalent to CP-NB
+CB-NG  414.0    1.3910       equivalent to CB-NB
+Se-CY  316.2    1.8210       fc equivalent to ss-c1 in gaff, distance from 10.1021/ct800178x
+se-c1  316.2    1.8210       fc equivalent to ss-c1 in gaff, distance from 10.1021/ct800178x
+OS-CY  447.5    1.3181       equivalent to c1-os in gaff
+S -CY  316.2    1.6898       equivalent to c1-ss in gaff
+PO-Hp  300.2    1.4120       equivalent to hp-p3 in gaff
+PO-CY  275.1    1.7900       equivalent to c1-p3 in gaff
+CT-PO  232.5    1.8582       equivalent to cy-p3 in gaff
+sy-f   266.2    1.6120       same as f -s6 in gaff
 
 ANGLE
-CF-CF-HF   50.30      119.70    SOURCE3            1
-HF-CF-HF   50.30      119.70    SOURCE3            1
-CF-CF-CT   64.330     123.420   SOURCE3           41    2.6057
-CT-CF-HF   45.150     120.000   SOURCE3            1
-CF-CT-CT   63.530     111.440   SOURCE4         2891    1.7167
-CF-CT-HC   47.030     110.490   SOURCE3          159    0.7479
-CH-CT-HC   46.510     110.170   SOURCE3           16    0.5693
-CT-CH-CH   60.760     118.700   SOURCE4          293    1.8510
-CT-CH-HH   46.210     111.550   SOURCE3            5    0.6276
-CT-CT-CH   63.630     109.620   SOURCE3            5    2.0747
-HH-CH-HH   39.24      109.04    SOURCE3           28    0.5962
-CH-CH-HH   44.82      115.14    SOURCE3          114    0.8364
-CH-CH-CH   70.16       87.61    SOURCE3           32    1.5407
-C -CT-CF   64.14      111.32    equivalent to c -c3-c2 in gaff
-N -CT-CF   66.73      111.38    equivalent to n -c3-c2 in gaff
-H1-CT-CF   47.03      110.46    equivalent to h1-c3-c2 in gaff
-N -CT-CA   66.29      112.43    equivalent to ca-c3-n  in gaff
-C -CT-CA   64.13      110.99    equivalent to c -c3-ca in gaff
-CT-CT-NI  106.50      113.72
-HP-CT-NI   82.80      104.90
-CT-NI-ND   68.40      115.81
-NI-ND-NE   42.60      173.40    
-CA-CT-F    66.14      111.76
-HC-CT-N2   50.00      109.50
-H1-CT-CA   50.00      109.50
-S -CT-CA   61.90      110.66    equivalent to ss-c3-ca in gaff
-S -CT-S    62.40      110.57    equivalent to ss-c3-ss in gaff
-CT-CT-NX   65.73      112.81    equivalent to c3-c3-na in gaff
-CT-NX-NW   65.74      120.46    equivalent to c3-na-nc in gaff
-CT-NX-CC   62.56      125.09    equivalent to c3-na-cc in gaff
-H1-CT-NX   49.90      109.45    equivalent to h1-c3-na in gaff
-NX-NW-NZ   75.97      105.47    equivalent to na-nc-nd in gaff
-NX-CC-CB   72.91      109.42    equivalent to na-cc-cd in gaff
-NX-CC-H4   50.22      119.66    equivalent to na-cc-h4 in gaff
-NW-NX-CC   70.18      113.02    equivalent to nc-na-cc in gaff
-NW-NZ-CB   72.54      107.94    equivalent to nc-nd-cd in gaff
-NZ-CB-CC   72.01      111.75    equivalent to nd-cd-cc in gaff
-NZ-CB-H4   50.00      120.03	equivalent to h4-cd-nd in gaff
-CC-CB-H4   47.19      129.11	equivalent to cc-cd-h4 in gaff
-CB-CC-H4   47.19      129.11    equivalent to cd-cc-h4 in gaff
-CC-CB-CT   64.81      119.41    equivalent to cc-cd-c3 in gaff
-NZ-CB-CT   65.90      120.94    equivalent to nd-cd-c3 in gaff
-CB-CT-CT   63.58      111.89    equivalent to cd-c3-c3 in gaff
-CB-CT-HC   47.20      110.86    equivalent to cd-c3-hc in gaff
-CT-S -CC   61.74      100.75    equivalent to c3-ss-cc in gaff
-S -CC-C    62.30      120.51    equivalent to ca-cc-ss in gaff
-S -CC-CB   65.44      111.55    equivalent to cd-cc-ss in gaff
-CC-C -O    68.91      125.71    equivalent to cc-c -o  in gaff
-CC-C -N    70.19      111.8     equivalent to cc-c -n  in gaff
-CB-CC-C    65.25      121.42    equivalent to cd-cc-c  in gaff
-CC-CB-C    65.25      121.42    equivalent to cc-cd-c  in gaff
-C -N -C    65.33      127.1     equivalent to c -n -c  in gaff
-N -C -CB   70.19      111.86    equivalent to cd-c -n  in gaff
-C -CT-OH   68.65      108.70    equivalent to c -c3-oh in gaff
-CA-CT-OS   68.19      108.89    equivalent to ca-c3-os in gaff
-ca-cc-ca   65.99      120.10    equivalent to ca-ca-cc in gaff
-X -Cl-EP   150.0      180.00    EP Chlorine Angle
-X -Br-EP   150.0      180.00    EP Bromine Angle
-X -I -EP   150.0      180.00    EP Iodine Angle
+CT-CF-CT    62.9      115.65    equivalent to c3-c2-c3 in gaff
+CF-CT-CA    63.6      112.49    equivalent to c2-c3-ca in gaff
+CF-CF-HF    50.30     119.70    SOURCE3            1
+HF-CF-HF    50.30     119.70    SOURCE3            1
+CF-CF-CT    64.330    123.420   SOURCE3           41    2.6057
+CT-CF-HF    45.150    120.000   SOURCE3            1
+CF-CT-CT    63.530    111.440   SOURCE4         2891    1.7167
+CF-CT-HC    47.030    110.490   SOURCE3          159    0.7479
+CH-CT-HC    46.510    110.170   SOURCE3           16    0.5693
+CT-CH-CH    60.760    118.700   SOURCE4          293    1.8510
+CT-CH-HH    46.210    111.550   SOURCE3            5    0.6276
+CT-CT-CH    63.630    109.620   SOURCE3            5    2.0747
+HH-CH-HH    39.24     109.04    SOURCE3           28    0.5962
+CH-CH-HH    44.82     115.14    SOURCE3          114    0.8364
+CH-CH-CH    70.16      87.61    SOURCE3           32    1.5407
+C -CT-CF    64.14     111.32    equivalent to c -c3-c2 in gaff
+N -CT-CF    66.73     111.38    equivalent to n -c3-c2 in gaff
+H1-CT-CF    47.03     110.46    equivalent to h1-c3-c2 in gaff
+N -CT-CA    66.29     112.43    equivalent to ca-c3-n  in gaff
+C -CT-CA    64.13     110.99    equivalent to c -c3-ca in gaff
+CT-CT-NI   106.50     113.72    SOURCE 10.1007/s00894-009-0488-z
+C8-C8-NI   106.50     113.72    SOURCE 10.1007/s00894-009-0488-z
+HP-CT-NI    82.80     104.90    SOURCE 10.1007/s00894-009-0488-z
+HP-C8-NI    82.80     104.90    SOURCE 10.1007/s00894-009-0488-z
+H1-C8-NI    82.80     104.90    SOURCE 10.1007/s00894-009-0488-z
+H1-CT-NI    82.80     104.90    SOURCE 10.1007/s00894-009-0488-z
+CT-NI-ND    68.40     115.81    SOURCE 10.1007/s00894-009-0488-z
+C8-NI-ND    68.40     115.81    SOURCE 10.1007/s00894-009-0488-z
+NI-ND-NE    42.60     173.40    SOURCE 10.1007/s00894-009-0488-z
+CA-CT-F     66.14     111.76
+HC-CT-N2    50.00     109.50
+H1-CT-CA    50.00     109.50
+S -CT-CA    61.3      111.02    equivalent to ss-c3-ca in gaff
+S -CT-S     61.5      111.44    equivalent to ss-c3-ss in gaff
+CT-CT-NX    65.5      112.88    equivalent to c3-c3-na in gaff
+CT-NX-NW    65.5      120.18    equivalent to c3-na-nc in gaff
+CT-NX-CC    61.9      126.46    equivalent to c3-na-cc in gaff
+H1-CT-NX    49.8      108.78    equivalent to h1-c3-na in gaff
+H1-CT-NG    49.8      108.78    equivalent to h1-c3-na in gaff
+CT-CC-NW    66.0      120.95    equivalent to c3-cc-nc in gaff
+CT-CC-CB    64.7      119.45    equivalent to c3-cc-cd in gaff
+CC-NW-NZ    72.9      108.62    equivalent to cc-nc-nd in gaff
+CC-CB-NX    73.4      106.99    equivalent to cc-cd-na in gaff
+NW-CC-CB    72.2      111.65    equivalent to cd-cc-nc in gaff
+NW-NZ-NX    76.0      106.24    equivalent to na-nd-nc in gaff
+NZ-NX-CB    70.0      112.36    equivalent to cd-na-nd in gaff
+NX-CB-H4    49.8      120.53    equivalent to h4-cd-na in gaff
+NX-NW-NZ    76.0      106.24    equivalent to na-nc-nd in gaff
+NX-CC-CB    73.4      106.99    equivalent to na-cc-cd in gaff
+NX-CC-H4    49.8      120.53    equivalent to na-cc-h4 in gaff
+NW-NX-CC    70.0      112.36    equivalent to nc-na-cc in gaff
+NW-NZ-CB    72.9      108.62    equivalent to nc-nd-cd in gaff
+NZ-CB-CC    72.2      111.65    equivalent to nd-cd-cc in gaff
+NZ-CB-H4    50.0      121.14    equivalent to h4-cd-nd in gaff
+CC-CB-H4    47.3      128.48    equivalent to cc-cd-h4 in gaff
+CB-CC-H4    47.3      128.48    equivalent to cd-cc-h4 in gaff
+CC-CB-CT    64.7      119.45    equivalent to cc-cd-c3 in gaff
+NZ-CB-CT    66.0      120.95    equivalent to nd-cd-c3 in gaff
+CT-NX-NZ    65.5      120.18    equivalent to c3-na-nd in gaff
+CT-NX-CB    61.9      126.46    equivalent to c3-na-cd in gaff
+CB-CT-CT    63.5      111.93    equivalent to cd-c3-c3 in gaff
+CB-CT-HC    47.2      110.49    equivalent to cd-c3-hc in gaff
+CT-S -CC    61.1      100.64    equivalent to c3-ss-cc in gaff
+S -CC-C     61.5      120.80    equivalent to ca-cc-ss in gaff
+S -CC-CB    64.8      111.55    equivalent to cd-cc-ss in gaff
+CC-C -O     69.1      123.93    equivalent to cc-c -o  in gaff
+CC-C -N     69.1      112.70    equivalent to cc-c -n  in gaff
+CB-CC-C     65.1      121.35    equivalent to cd-cc-c  in gaff
+CC-CB-C     65.1      121.35    equivalent to cc-cd-c  in gaff
+C -N -C     63.7      127.08    equivalent to c -n -c  in gaff
+N -C -CB    69.1      112.70    equivalent to cd-c -n  in gaff
+C -CT-OH    68.3      108.79    equivalent to c -c3-oh in gaff
+CA-CT-OS    68.3      108.95    equivalent to ca-c3-os in gaff
+ca-cc-ca    65.0      120.79    equivalent to ca-ca-cc in gaff
+X -Cl-EP    150.0     180.00    EP Chlorine Angle
+X -Br-EP    150.0     180.00    EP Bromine Angle
+X -I -EP    150.0     180.00    EP Iodine Angle
+CT-Cl-EP    150.0     180.00    EP Chlorine Angle
 I -CT-H1    50.0      106.50    Equivalent to Br-CT-H1 in FF14SB
 CX-C -OS    80.0      115.00    Equivalent to CT-C -OS in FF14SB
+N -CT-F     69.4      110.40    Equivalent to f -c3-n2 in gaff
+F -CT-C     66.3      110.00    Equivalent to c -c3-f  in gaff
+CT-Se-CT    62.00     98.90     PNAS June 6, 2000 97 (12) 6356-6361
+CT-Se-HS    43.0       96.00    PNAS June 6, 2000 97 (12) 6356-6361
+H1-CT-Se    50.0      110.50    PNAS June 6, 2000 97 (12) 6356-6361
+h1-c3-se    50.0      110.50    PNAS June 6, 2000 97 (12) 6356-6361
+CT-CT-Se    50.0      108.2     PNAS June 6, 2000 97 (12) 6356-6361
+c3-c3-se    50.0      108.2     PNAS June 6, 2000 97 (12) 6356-6361
+NB-CC-CV    70.0      120.00    equivalent to CW-CC-NB
+NB-CR-NB    70.0      120.00    equivalent to NA-CR-NB
+CT-CT-S6    62.1      110.22    SOURCE4_SOURCE5          420    1.6420 (equivalent to c3-c3-s6)
+H1-CT-S6    43.2      107.15    SOURCE3_SOURCE5         1022    0.8992 (equivalent to h1-c3-s6)
+CT-S6-CT    59.9      103.83    SOURCE3_SOURCE5           74    2.0698 (equivalent to c3-s6-c3)
+CT-S6-O     65.4      108.61    SOURCE3_SOURCE5         1062    1.0758 (equivalent to c3-s6-o )
+O -S6-O     73.6      120.05    SOURCE4_SOURCE5          971    1.8153 (equivalent to o -s6-o )
+NB-NA-H     49.8      119.55    equivalent to hn-na-nc in gaff
+NB-NA-CC    70.0      112.36    equivalent to cc-na-nc in gaff
+NB-NA-NB    71.1      116.30    equivalent to nc-na-nc in gaff
+NA-NB-CC    73.4      102.97    equivalent to cc-nc-na in gaff
+NB-NB-CC    72.9      108.62    equivalent to cc-nc-nd in gaff
+NB-CC-NB    69.8      125.70    equivalent to nc-cc-nc in gaff
+NA-NB-NB    76.0      106.24    equivalent to na-nc-nd in gaff
+OS-CA-CA    69.6      119.20    equivalent to ca-ca-os in gaff
+C -OS-CA    63.4      121.15    equivalent to c -os-ca in gaff
+CA-C -O2    68.7      122.60    equivalent to ca-c -o  in gaff
+CX-C8-HP    50.0      109.50    equivalent to CX-C8-HC
+CX-C8-H1    50.0      109.50    equivalent to C8-C8-H1
+CX-C8-N3    80.0      111.20    equivalent to C8-C8-N3
+CX-C8-N2    80.0      111.20    equivalent to C8-C8-N3
+CA-N2-CA    50.0      123.20    equivalent to CA-N2-CT
+CA-CA-N2    70.0      120.10    equivalent to CM-CA-N2
+C8-N2-C     66.3      120.97    equivalent to c -n2-c2 in gaff
+N2-C -O     72.9      122.50    equivalent to n2-c -o2 in gaff
+N2-C -CF    70.1      124.55    equivalent to c2-c2-n3 in gaff
+H -N2-C     49.1      119.38    equivalent to c2-n3-hn in gaff
+C -CF-HF    49.4      122.67    equivalent to c2-c2-h4 in gaff
+C -CF-CF    67.7      120.70    equivalent to c -c2-c2 in gaff
+O -C -CF    72.7      119.12    equivalent to c2-c -o  in gaff
+N2-C -CT    66.2      114.53    equivalent to c3-c -n2 in gaff
+S -CT-F     61.6      111.75    equivalent to f -c3-ss in gaff
+N -N -C     67.0      118.42    equivalent to c -n -n  in gaff
+N -N -H     49.6      113.20    equivalent to hn-n -n  in gaff
+CT-CC-CD    64.7      119.45    equivalent to c3-cc-cd in gaff
+C -CC-CD    65.1      121.35    equivalent to c -cc-cd in gaff
+C -CD-CC    65.1      121.35    equivalent to c -cd-cc in gaff
+CT-CD-CC    64.7      119.45    equivalent to c3-cd-cc in gaff
+CC-NA-CC    68.5      109.90    equivalent to cc-na-cc in gaff
+CC-NA-N     69.4      110.05    equivalent to cc-na-n  in gaff
+CD-CC-NA    73.4      106.99    equivalent to cd-cc-na in gaff
+CD-C -O     69.1      123.93    equivalent to cd-c -o  in gaff
+CD-C -N     69.1      112.70    equivalent to cd-c -n  in gaff
+C -CD-CT    63.3      117.76    equivalent to c -cd-c3 in gaff
+C -N -NA    69.0      111.50    equivalent to c -n -na in gaff
+CT-CA-NC    67.3      116.68    equivalent to c3-ca-nb in gaff
+CA-NC-CA    68.3      117.22    equivalent to ca-nb-ca in gaff
+NC-CA-CA    68.8      122.94    equivalent to ca-ca-nb in gaff
+NC-CA-HA    51.0      118.36    equivalent to h4-ca-nc in gaff
+C -N -CA    63.8      123.71    equivalent to c -n -ca in gaff
+C -N -CA    63.8      123.71    equivalent to c -n -ca in gaff
+N -CA-CA    67.9      120.19    equivalent to ca-ca-n  in gaff
+H -N -CA    47.6      116.00    equivalent to ca-n -hn in gaff
+O3-P -O3   140.0      119.90    by analogy to O2 (bryce)
+OS-P -O3   100.0      108.23    by analogy to O2 (bryce)
+CB-NG-CP    70.0      103.80    equivalent to CB-NB-CP
+CT-NG-CP    61.9      126.46    equivalnet to c3-na-cc in gaff
+CT-NG-CB    61.9      126.46    equivalnet to c3-na-cc in gaff
+H5-CP-NG    50.0      123.05    equivalent to H5-CP-NB
+N*-CP-NG    70.0      113.90    equivalent to N*-CP-NB
+CB-CB-NG    70.0      110.40    equivalent to CB-CB-NB
+C -CB-NG    70.0      130.00    equivalent to C -CB-NB
+Se-CY-NY    55.6      177.47    equivalent to n1-c1-ss in gaff
+se-c1-n1    55.6      177.47    equivalent to n1-c1-ss in gaff
+S -CY-NY    55.6      177.47    equivalent to n1-c1-ss in gaff
+CT-Se-CY    61.8      96.06     fc equivalent to c1-ss-c3 in gaff, distance from 10.1021/ct800178x
+c3-se-c1    61.8      96.06     fc equivalent to c1-ss-c3 in gaff, distance from 10.1021/ct800178x
+CT-S -CY    61.8      101.86    equivalent to c1-ss-c3 in gaff
+S -CT-C     61.9      108.84    equivalent to c -c3-ss in gaff
+S -CT-CC    61.4      111.16    equivalent to cc-c3-ss in gaff
+H1-CT-CC    47.4      109.64    equivalent to cc-c3-h1 in gaff
+OS-CY-NY    64.7      178.59    equivalent to n1-c1-os in gaff
+CT-OS-CY    64.8      113.39    equivalent to c1-os-cs in gaff
+CT-PO-CY    37.3       99.35    equivalent to c3-p3-c3 in gaff
+PO-CY-NY    67.7      171.20    equivalent to n1-c1-p3 in gaff
+HC-CT-PO    52.4      109.89    equivalent to hc-c3-p3 in gaff
+CT-PO-Hp    27.3       97.48    equivalent to c3-p3-hp in gaff
+CY-PO-Hp    28.1       97.67    equivalent to c1-p3-hp in gaff
+CT-PO-CT    37.3       99.35    equivalent to c3-p3-c3 in gaff
+CT-CT-PO    75.9      113.36    equivalent to c3-c3-p3 in gaff
+C -CT-Cl    57.5      110.41    equivalent to c -c3-cl in gaff
+ca-sy-f     65.8      108.35    same as ca-sy-o in gaff
+2C-2C-2C    40.0      109.50    same as CT-CT-CT
+CT-N2-CT    64.2      110.70    equivalent to c3-n2-c3 in gaff
 
 DIHEDRAL
 X -CF-CT-X    6    0.000         0.000           2.000      JCC,7,(1986),230
@@ -109,23 +261,61 @@ HC-CT-CH-CH   1    0.156         0.000           3.000      same as X -c3-c3-X
 CT-CT-CH-HH   1    0.160         0.000           3.000      same as HH-c3-c3-c3
 CT-CT-CH-CH   1    0.156         0.000           3.000      same as X -c3-c3-X
 X -CH-CH-X    9    1.400         0.000           3.000      same as X-c3-c3-X
-CT-CT-NI-ND   1    0.761         0.000          -3.000
-CT-CT-NI-ND   1    0.269         0.000           1.000
-HP-CT-NI-ND   1    0.761         0.000          -3.000
-HP-CT-NI-ND   1    0.269         0.000           1.000
-CT-NI-ND-NE   1    1.167         0.000           1.000
+CT-CT-NI-ND   1    0.761         0.000          -3.000      SOURCE 10.1007/s00894-009-0488-z
+CT-CT-NI-ND   1    0.269         0.000           1.000      SOURCE 10.1007/s00894-009-0488-z
+HP-CT-NI-ND   1    0.761         0.000          -3.000      SOURCE 10.1007/s00894-009-0488-z
+HP-CT-NI-ND   1    0.269         0.000           1.000      SOURCE 10.1007/s00894-009-0488-z
+CT-NI-ND-NE   1    1.167         0.000           1.000      SOURCE 10.1007/s00894-009-0488-z
+C8-C8-NI-ND   1    0.761         0.000          -3.000      SOURCE 10.1007/s00894-009-0488-z
+C8-C8-NI-ND   1    0.269         0.000           1.000      SOURCE 10.1007/s00894-009-0488-z
+HP-C8-NI-ND   1    0.761         0.000          -3.000      SOURCE 10.1007/s00894-009-0488-z
+HP-C8-NI-ND   1    0.269         0.000           1.000      SOURCE 10.1007/s00894-009-0488-z
+H1-C8-NI-ND   1    0.761         0.000          -3.000      SOURCE 10.1007/s00894-009-0488-z
+H1-C8-NI-ND   1    0.269         0.000           1.000      SOURCE 10.1007/s00894-009-0488-z
+H1-CT-NI-ND   1    0.761         0.000          -3.000      SOURCE 10.1007/s00894-009-0488-z
+H1-CT-NI-ND   1    0.269         0.000           1.000      SOURCE 10.1007/s00894-009-0488-z
+C8-NI-ND-NE   1    1.167         0.000           1.000      SOURCE 10.1007/s00894-009-0488-z
 X -CT-NX-X    6    0.000         0.000           2.000      same as X-c3-na-X
-X -NX-NW-X    2    9.600       180.000           2.000
-X -NX-CC-X    4    6.800       180.000           2.000
-X -CB-CC-X    4   16.000       180.000           2.000
-X -NW-NZ-X    1    4.000       180.000           2.000
-X -NZ-CB-X    2    9.500       180.000           2.000
-X -CT-CB-X    6    0.000         0.000           3.000
-X -CC-C -X    4   11.500       180.000           2.000      equivalent to X -c -cc-X in gaff
-X -S -CC-X    2    6.200       180.000           2.000      equivalent to X -c -ss-X in gaff
+X -NX-NW-X    2    9.600       180.000           2.000      equivalent to X -na-nc-X  in gaff
+X -NX-CC-X    4    6.800       180.000           2.000      equivalent to X -cc-na-X  in gaff
+X -CB-CC-X    4   16.000       180.000           2.000      equivalent to X -cc-cd-X  in gaff
+X -NW-NZ-X    1    4.000       180.000           2.000      equivalent to X -nc-nd-X  in gaff
+X -NZ-CB-X    2    9.500       180.000           2.000      equivalent to X -cd-nc-X  in gaff
+X -CT-CB-X    6    0.000         0.000           3.000      equivalent to X -c3-cd-X  in gaff
+X -CC-NW-X    2    9.500       180.000           2.000      equivalent to X -cc-nc-X  in gaff
+X -CB-NX-X    4    6.800       180.000           2.000      equivalent to X -cd-na-X  in gaff
+X -NX-NZ-X    2    9.600       180.000           2.000      equivalent to X -na-nd-X  in gaff
+X -CC-C -X    4   11.500       180.000           2.000      equivalent to X -c -cc-X  in gaff
+X -S -CC-X    2    6.200       180.000           2.000      equivalent to X -c -ss-X  in gaff
 X -X -Cl-EP   1    0.000       000.000           1.000      Chlorine EP dihedral
 X -X -Br-EP   1    0.000       000.000           1.000      Bromine EP dihedral
 X -X -I -EP   1    0.000       000.000           1.000      Iodine EP dihedral
+X -CT-Se-X    3    1.000         0.000           3.000     PNAS June 6, 2000 97 (12) 6356-6361
+X -c3-se-X    3    1.000         0.000           3.000     PNAS June 6, 2000 97 (12) 6356-6361
+X -CT-S6-X    9    1.300         0.000           3.000      equivalent to X -c3-s6-X in gaff
+X -NB-NB-X    1    4.000       180.000           2.000      equivalent to X -nc-nc-X in gaff
+X -NA-NB-X    2    9.600       180.000           2.000      equivalent to X -na-nc-X in gaff
+X -CA-OS-X    2    1.800       180.000           2.000      equivalent to X -ca-os-X in gaff
+X -C -CA-X    4    4.000       180.000           2.000      equivalent to X -c -ca-X in gaff
+X -C -N2-X    4    1.200       180.000           2.000      equivalent to X -c2-n3-X in gaff
+X -C -CF-X    4    8.700       180.000           2.000      equivalent to X -c -c2-X in gaff
+X -N -N -X    4    4.600         0.000           2.000      equivalent to X -n -n -X in gaff
+X -CC-CD-X    4   16.000       180.000           2.000      equivalent to X -cc-cd-X in gaff
+X -C -CD-X    4   11.500       180.000           2.000      equivalent to X -c -cd-X in gaff
+X -N -NA-X    4    2.800         0.000           2.000      equivalent to X -n -na-X in gaff
+X -N -CA-X    4    1.800       180.000           2.000      equivalent to X -ca-n -X in gaff
+X -CB-NG-X    2    5.10        180.0             2.000      equivalent to X -CB-NB-X
+X -CP-NG-X    2   20.00        180.0             2.000      equivalent to X -CP-NB-X
+X -CT-NG-X    6    0.000         0.000           2.000      equivalent to X -c3-na-X in gaff
+X -S -CY-X    1    0.000       180.000           2.000      equivalent to X -c1-ss-X in gaff
+X -Se-CY-X    1    0.000       180.000           2.000      equivalent to X -c1-ss-X in gaff
+X -se-c1-X    1    0.000       180.000           2.000      equivalent to X -c1-ss-X in gaff
+X -OS-CY-X    1    0.000       180.000           2.000      equivalent to X -c1-os-X in gaff
+X -PO-CY-X    2    0.000       180.000           2.000      equivalent to X -c1-p3-X in gaff
+X -CT-PO-X    6    0.800         0.000           3.000      equivalent to X -c3-p3-X in gaff
+X -ca-cd-X    4   14.500       180.000           2.000      same as X -ca-ca-X in gaff
+X -c3-cx-X    3    0.000       180.000           2.000      same as X -c1-cx-X in gaff
+
 
 IMPROPER
 CF-CT-CF-HF         1.1          180.          2.           Junmei et al.1999
@@ -141,5 +331,13 @@ NE          1.8240  0.1700
 NX          1.8240  0.1700
 NW          1.8240  0.1700
 NZ          1.8240  0.1700
+NG          1.8240  0.1700
 Cl-         2.47    0.1 
 Na+         1.8680  0.00277
+Se          2.1200  0.2910             J. Phys. Chem. A, 2016, 120 (25), pp 4389–4400 DOI: 10.1021/acs.jpca.6b02250
+se          2.1200  0.2910             J. Phys. Chem. A, 2016, 120 (25), pp 4389–4400 DOI: 10.1021/acs.jpca.6b02250
+S6          2.0000  0.2500             W. Cornell CH3SH and CH3SCH3 FEP's (equivalent to s6 in gaff)
+EP          0.0000  0.0000
+O3          1.6612  0.2100             OPLS - by analogy to O
+PO          2.1000  0.2000
+Hp          0.6000  0.0157 

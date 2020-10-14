@@ -14,7 +14,7 @@ Lipid 128 heating 303K
   ntpr=100,
   ntwr=10000,
   ntwx=100,
-  dt=0.002,
+  dt=0.001,
   nmropt=1,
   ntb=2,
   ntp=2,

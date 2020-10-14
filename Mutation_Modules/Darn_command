@@ -1,0 +1,1 @@
+for i in *.py; do  sed -i "s/changeLJPair\(.*\)@\(.*\)\s:{}@\(.*\) 0 0.*/changeLJPair\1@\2'.format(vxi), ':{}@\3'.format(vxi), '0', '0').execute()/g" $i; done

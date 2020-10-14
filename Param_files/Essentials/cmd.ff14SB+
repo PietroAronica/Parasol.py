@@ -108,11 +108,16 @@ loadOff aminont12.lib
 loadOff nucleic12.lib
 loadOff /home/pietroa/Python/Param_files/Essentials/ExtraAA.lib
 loadOff /home/pietroa/Python/Param_files/Essentials/ExtraTerminal.lib
+loadOff /home/pietroa/Python/Param_files/Essentials/Linkers.lib
+loadOff /home/pietroa/Python/Param_files/Essentials/ExtraCaps.lib
+loadOff /home/pietroa/Python/Param_files/Essentials/ExtraConnectedAA.lib
 loadOff /home/pietroa/Python/Param_files/Essentials/D-AA.lib
 loadOff /home/pietroa/Python/Param_files/Essentials/N-Methylated_AA.lib
 loadOff /home/pietroa/Python/Param_files/Essentials/Staple_monomers.lib
 loadOff /home/pietroa/Python/Param_files/Essentials/Alpha-Methylated_Amino_Acids.lib
 loadOff /home/pietroa/Python/Param_files/Essentials/Beta-Amino_Acids.lib
+loadOff /home/pietroa/Python/Param_files/Essentials/Nucleic_Acids.lib
+loadOff /home/pietroa/Python/Param_files/Essentials/Homo-Amino_Acids.lib
 #
 #       Load water and ions
 # 
@@ -126,7 +131,7 @@ WAT = TP3
 #
 addPdbResMap {
   { 0 "HYP" "NHYP" } { 1 "HYP" "CHYP" }
- # { 0 "ALA" "NALA" } { 1 "ALA" "CALA" }
+#  { 0 "ALA" "NALA" } { 1 "ALA" "CALA" }
   { 0 "ARG" "NARG" } { 1 "ARG" "CARG" }
   { 0 "ASN" "NASN" } { 1 "ASN" "CASN" }
 #  { 0 "ASP" "NASP" } { 1 "ASP" "CASP" }
@@ -134,7 +139,7 @@ addPdbResMap {
   { 0 "CYX" "NCYX" } { 1 "CYX" "CCYX" }
   { 0 "GLN" "NGLN" } { 1 "GLN" "CGLN" }
   { 0 "GLU" "NGLU" } { 1 "GLU" "CGLU" }
-#  { 0 "GLY" "NGLY" } { 1 "GLY" "CGLY" }
+  { 0 "GLY" "NGLY" } { 1 "GLY" "CGLY" }
   { 0 "HID" "NHID" } { 1 "HID" "CHID" }
   { 0 "HIE" "NHIE" } { 1 "HIE" "CHIE" }
   { 0 "HIP" "NHIP" } { 1 "HIP" "CHIP" }
@@ -143,7 +148,7 @@ addPdbResMap {
   { 0 "LYS" "NLYS" } { 1 "LYS" "CLYS" }
   { 0 "LYX" "NLYX" } { 1 "LYS" "CLYX" }
   { 0 "MET" "NMET" } { 1 "MET" "CMET" }
-#  { 0 "PHE" "NPHE" } { 1 "PHE" "CPHE" }
+  { 0 "PHE" "NPHE" } { 1 "PHE" "CPHE" }
   { 0 "PRO" "NPRO" } { 1 "PRO" "CPRO" }
   { 0 "SER" "NSER" } { 1 "SER" "CSER" }
   { 0 "THR" "NTHR" } { 1 "THR" "CTHR" }

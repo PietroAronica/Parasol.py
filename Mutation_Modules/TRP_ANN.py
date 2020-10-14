@@ -24,8 +24,8 @@ def parmed_command(vxi='VXI', lipid='No'):
 	for i in range(11):
 		a = i*10
 		parm = AmberParm('Solv_{}_{}.prmtop'.format(a, 100-a))
-                changeLJPair(parm, ':{}@HH :{}@HZ1 0 0'.format(vxi, vxi)).execute()
-                changeLJPair(parm, ':{}@HE3 :{}@HZ2 0 0'.format(vxi, vxi)).execute()
+                changeLJPair(parm, ':{}@HH'.format(vxi), ':{}@HZ1'.format(vxi), '0', '0').execute()
+                changeLJPair(parm, ':{}@HE3'.format(vxi), ':{}@HZ2'.format(vxi), '0', '0').execute()
                 change(parm, 'charge', ':{}@N'.format(vxi), bc['N']+((fc['N']-bc['N'])/10)*i).execute()
                 change(parm, 'charge', ':{}@H'.format(vxi), bc['H']+((fc['H']-bc['H'])/10)*i).execute()
                 change(parm, 'charge', ':{}@CA'.format(vxi), bc['CA']+((fc['CA']-bc['CA'])/10)*i).execute()
@@ -39,7 +39,7 @@ def parmed_command(vxi='VXI', lipid='No'):
                 change(parm, 'charge', ':{}@CD2'.format(vxi), bc['CD2']+((fc['CD2']-bc['CD2'])/10)*i).execute()
                 change(parm, 'charge', ':{}@NE1'.format(vxi), bc['NE1']-(bc['NE1']/10)*i).execute()
                 change(parm, 'charge', ':{}@HE1'.format(vxi), bc['HE1']-(bc['HE1']/10)*i).execute()
-                change(parm, 'charge', ':{}@CE2'.format(vxi), bc['CE2']+((fc['CE2']-bc['CE2'])/10)*i).execute()
+                change(parm, 'charge', ':{}@CE'.format(vxi), bc['CE2']+((fc['CE']-bc['CE2'])/10)*i).execute()
                 change(parm, 'charge', ':{}@HD2'.format(vxi), bc['CE3']+((fc['HD2']-bc['CE3'])/10)*i).execute()
                 change(parm, 'charge', ':{}@HE'.format(vxi), bc['CZ2']+((fc['HE']-bc['CZ2'])/10)*i).execute()
                 change(parm, 'charge', ':{}@CZ3'.format(vxi), bc['CZ3']-(bc['CZ3']/10)*i).execute()
@@ -63,6 +63,8 @@ def makevxi(struct, out, aa, vxi='VXI'):
 		for atom in res.atom_list:
 			if atom.get_name() == 'CE3' and res.get_resname() == vxi:
 				pdb.write(atom.change_name('HD2')) 
+			elif atom.get_name() == 'CE2' and res.get_resname() == vxi:
+				pdb.write(atom.change_name('CE')) 
 			elif atom.get_name() == 'CZ2' and res.get_resname() == vxi:
 				pdb.write(atom.change_name('HE')) 
 			else:

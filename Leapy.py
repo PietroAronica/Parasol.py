@@ -1,4 +1,4 @@
-#! /usr/bin/python2.7
+#!/home/pietroa/.conda/envs/base/bin/python
 
 import os, sys
 from optparse import OptionParser
@@ -10,7 +10,7 @@ def run(cmd, output='leap.log'):
 	cmdline = "tleap -f %s >> %s"%(cmd, output)
 	os.system(cmdline)
 
-def createprmtops(ff1='Param_files/Essentials/cmd.ff14SB+', ff2='No', pbradii='Null', dat='Hyb.dat', lib='VXI.lib', ion='Null', box='Null', solvbox='8.0', output='leap.log', bal='Null', extralib='Null', extrafrcmod='Null', extracommand='Null', extraprep='Null'):
+def createprmtops(ff1='Param_files/Essentials/cmd.ff14SB+', ff2='No', pbradii='Null', dat='Hyb.dat', lib='VXI.lib', ion='Null', box='Null', solvbox='8.0', output='leap.log', bal='Null', extralib='Null', extrafrcmod='Null', extracommand='Null', extraprep='Null', extracommand1='Null'):
 	ctrl = open('lyp.in', 'w')
 	ctrl.write("source %s\n"%ff1)
 	if ff2 != 'No':
@@ -25,6 +25,12 @@ def createprmtops(ff1='Param_files/Essentials/cmd.ff14SB+', ff2='No', pbradii='N
 	ctrl.write("loadoff {}Param_files/Essentials/Staple_monomers.lib\n".format(HOMEDIR))
 	ctrl.write("Extra = loadamberparams {}Param_files/Essentials/Extra.frcmod\n".format(HOMEDIR))
 	ctrl.write("More = loadamberparams {}Param_files/Essentials/More.frcmod\n".format(HOMEDIR))
+	if extracommand1 != 'Null':
+		exc = open(extracommand1)
+		comm = exc.readlines()
+		for line in comm:
+			ctrl.write(line)
+		exc.close()
 	if extraprep != 'Null':
 		ctrl.write("loadamberprep %s\n" %extraprep)
 	if extralib != 'Null':

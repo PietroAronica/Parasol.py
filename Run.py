@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/home/pietroa/.conda/envs/base/bin/python
 
 import os, sys
 import shutil
@@ -45,7 +45,7 @@ def mutate_beg(store, faa, resnum, dct=WORKDIR, wkdir='None', solv = 'No', fin=N
 	elif solv == 'Yes':
 		Input = simpath + 'Method_proceed ' + HOMEDIR
 	if lipid == 'Yes':
-		Input = simpath + 'Method_lipid_proceed ' + HOMEDIR
+		Input = simpath + 'Method_lipid ' + HOMEDIR
 	if bellymask == 'Yes':
 		resnumword = str(resnum)
 		Input = simpath + 'Method_bellymask ' + HOMEDIR + ' ' + resnumword
@@ -58,6 +58,9 @@ def mutate_beg(store, faa, resnum, dct=WORKDIR, wkdir='None', solv = 'No', fin=N
 	pt.write_traj('Run_1.pdb', traj, overwrite=True)
 	s = PDBHandler.readpdb('Run_1.pdb')
 	PDBHandler.chop(s, faa, resnum)
+	if lipid == 'Yes':
+		os.system('awk \'{if ($1!="TER") {a=$3;print $0} else if (a!~"H2S"&&a!~"O22")print "TER"}\' Mut_leap.pdb > test.pdb')
+		os.system('mv test.pdb Mut_leap.pdb')
 	shutil.copyfile('Mut_leap.pdb', '{}Curr_run.pdb'.format(HOMEDIR))
 	return nwdir
 
@@ -71,7 +74,7 @@ def add_gly(store, baa, resnum, terminus, dct=WORKDIR, wkdir='None', solv = 'No'
 	nwdir = os.getcwd()
 	shutil.move(store, os.getcwd())
 #	if solv == 'No':
-	Input = simpath + 'Method ' + HOMEDIR
+	Input = simpath + 'Method_glyadder ' + HOMEDIR
 #	elif solv == 'Yes':
 #		Input = simpath + 'Method_proceed ' + HOMEDIR
 #	if lipid == 'Yes':
@@ -135,6 +138,9 @@ def mutate_con(store, faa, wkdir, resnum, strip = 'No', lipid = 'No', bellymask 
 	pt.write_traj('Run_1.pdb', traj, overwrite=True)
 	s = PDBHandler.readpdb('Run_1.pdb')
 	PDBHandler.chop(s, faa, resnum)
+	if lipid == 'Yes':
+		os.system('awk \'{if ($1!="TER") {a=$3;print $0} else if (a!~"H2S"&&a!~"O22")print "TER"}\' Mut_leap.pdb > test.pdb')
+		os.system('mv test.pdb Mut_leap.pdb')
 	shutil.copyfile('Mut_leap.pdb', '{}Curr_run.pdb'.format(HOMEDIR))
 
 def staple(store, resid, faa, resid2, faa2, dct=WORKDIR, wkdir='None'):
@@ -156,3 +162,4 @@ def staple(store, resid, faa, resid2, faa2, dct=WORKDIR, wkdir='None'):
 	s = PDBHandler.readpdb('Run_1.pdb')
 	PDBHandler.chop(s, faa, resid)
 	PDBHandler.chop(s, faa2, resid2)
+	shutil.copyfile('Mut_leap.pdb', '{}Curr_run.pdb'.format(HOMEDIR))

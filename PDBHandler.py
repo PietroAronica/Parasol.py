@@ -1,4 +1,5 @@
-import numpy
+import numpy as np
+from scipy.special import comb
 import Leapy
 import os, sys
 import math
@@ -284,8 +285,8 @@ class Cryst1_record(object):
 		self.xbox = xbox
 		self.ybox = ybox
 		self.zbox = zbox
-		self.boxdim = numpy.array((xbox, ybox, zbox), "f")
-		self.boxangles = numpy.array((xangle, yangle, zangle), "f")
+		self.boxdim = np.array((xbox, ybox, zbox), "f")
+		self.boxangles = np.array((xangle, yangle, zangle), "f")
 		self.xangle = xangle
 		self.yangle = yangle
 		self.zangle = zangle
@@ -343,7 +344,7 @@ def readpdb(file):
 			x = float(line[30:38])
 			y = float(line[38:46])
 			z = float(line[46:54])
-			coord = numpy.array((x, y, z), "f")
+			coord = np.array((x, y, z), "f")
 			try:
 				occupancy = float(line[54:60])
 			except:
@@ -427,7 +428,9 @@ def sulpher(struct, pdb):
 	for res in struct.residue_list:
 		nome = res.get_resname()
 		if re.match(regex, nome):
-			sulfurs.append(res.atom_dict[sp[nome][1]])
+			for i in enumerate(sp[nome]):
+			    if i[0] >= 1:
+				sulfurs.append(res.atom_dict[sp[nome][i[0]]])
 	for sul1 in sulfurs[:]:
 		s1 = {}
 		try:
@@ -729,9 +732,13 @@ def chop(struct, resid, resnum):
 		for atom in struct.residue_dict[resnum].atom_list[:]:
 			if atom.get_name() not in ['N', 'H', 'CA', 'CB2', 'HB21', 'HB22', 'HB23', 'CB1', 'HB11', 'HB12', 'HB13', 'C', 'O']:
 				struct.residue_dict[resnum].atom_list.remove(atom)	
+	if resid == 'AnE':
+		for atom in struct.residue_dict[resnum].atom_list[:]:
+			if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'HB2', 'HB3', 'CG', 'CD1', 'HD1', 'CD2', 'HD2', 'CE', 'CZ', 'OH1', 'OH2', 'C', 'O']:
+				struct.residue_dict[resnum].atom_list.remove(atom)	
 	if resid == 'ANN':
 		for atom in struct.residue_dict[resnum].atom_list[:]:
-			if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'HB2', 'HB3', 'CG', 'CD1', 'HD1', 'CD2', 'HD2', 'CE', 'HE',  'C', 'O']:
+			if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'HB2', 'HB3', 'CG', 'CD1', 'HD1', 'CD2', 'HD2', 'CE', 'HE', 'C', 'O']:
 				struct.residue_dict[resnum].atom_list.remove(atom)	
 	if resid == 'ARG':
 		for atom in struct.residue_dict[resnum].atom_list[:]:
@@ -885,6 +892,14 @@ def chop(struct, resid, resnum):
 		for atom in struct.residue_dict[resnum].atom_list[:]:
 			if atom.get_name() not in ['N', 'H', 'CA1', 'HA12', 'HA13', 'CA2', 'HA2', 'CB', 'HB2', 'HB3', 'CG', 'HG2', 'HG3', 'SD', 'CE', 'HE1', 'HE2', 'HE3', 'C', 'O']:
 				struct.residue_dict[resnum].atom_list.remove(atom)	
+	if resid == 'B1Q':
+		for atom in struct.residue_dict[resnum].atom_list[:]:
+			if atom.get_name() not in ['N', 'H', 'CA1', 'HA1', 'CB', 'HB2', 'HB3', 'CG', 'HG2', 'HG3', 'CD', 'OE1', 'NE2', 'HE21', 'HE22', 'CA2', 'HA22', 'HA23', 'C', 'O']:
+				struct.residue_dict[resnum].atom_list.remove(atom)	
+	if resid == 'B2Q':
+		for atom in struct.residue_dict[resnum].atom_list[:]:
+			if atom.get_name() not in ['N', 'H', 'CA1', 'HA12', 'HA13', 'CA2', 'HA2', 'CB', 'HB2', 'HB3', 'CG', 'HG2', 'HG3', 'CD', 'OE1', 'NE2', 'HE21', 'HE22', 'C', 'O']:
+				struct.residue_dict[resnum].atom_list.remove(atom)	
 	if resid == 'B1T':
 		for atom in struct.residue_dict[resnum].atom_list[:]:
 			if atom.get_name() not in ['N', 'H', 'CA1', 'HA1', 'CB', 'HB', 'CG2', 'HG21', 'HG22', 'HG23', 'OG1', 'HG1', 'CA2', 'HA22', 'HA23', 'C', 'O']:
@@ -908,6 +923,10 @@ def chop(struct, resid, resnum):
 	if resid == 'B2S':
 		for atom in struct.residue_dict[resnum].atom_list[:]:
 			if atom.get_name() not in ['N', 'H', 'CA1', 'HA12', 'HA13', 'CA2', 'HA2', 'CB', 'HB2', 'HB3', 'OG', 'HG', 'C', 'O']:
+				struct.residue_dict[resnum].atom_list.remove(atom)	
+	if resid == 'BzE':
+		for atom in struct.residue_dict[resnum].atom_list[:]:
+			if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'HB2', 'HB3', 'CG', 'CD1', 'HD1', 'CD2', 'HD2', 'CE1', 'HE1', 'CE2', 'HE2', 'CZ', 'CH', 'OT1', 'OT2', 'C', 'O']:
 				struct.residue_dict[resnum].atom_list.remove(atom)	
 	if resid == 'C6W':
 		for atom in struct.residue_dict[resnum].atom_list[:]:
@@ -937,15 +956,19 @@ def chop(struct, resid, resnum):
 					struct.residue_dict[resnum].atom_list.remove(atom)	
 		elif Term == 'C':
 			for atom in struct.residue_dict[resnum].atom_list[:]:
-				if atom.get_name() not in ['N', 'H' 'CA', 'HA', 'CB', 'HB2', 'HB3', 'SG', 'C', 'O', 'OXT']:
+				if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'HB2', 'HB3', 'SG', 'C', 'O', 'OXT']:
 					struct.residue_dict[resnum].atom_list.remove(atom)	
 		elif Term == 'None':
 			for atom in struct.residue_dict[resnum].atom_list[:]:
-				if atom.get_name() not in ['N', 'H' 'CA', 'HA', 'CB', 'HB2', 'HB3', 'SG', 'C', 'O']:
+				if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'HB2', 'HB3', 'SG', 'C', 'O']:
 					struct.residue_dict[resnum].atom_list.remove(atom)	
 	if resid == 'DAB':
 		for atom in struct.residue_dict[resnum].atom_list[:]:
 			if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'HB2', 'HB3', 'CG', 'HG2', 'HG3', 'ND', 'HD1', 'HD2', 'C', 'O']:
+				struct.residue_dict[resnum].atom_list.remove(atom)	
+	if resid in ('DAX'):
+		for atom in struct.residue_dict[resnum].atom_list[:]:
+			if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'HB2', 'HB3', 'CG', 'OD1', 'OD2', 'C', 'O']:
 				struct.residue_dict[resnum].atom_list.remove(atom)	
 	if resid == 'DBN':
 		for atom in struct.residue_dict[resnum].atom_list[:]:
@@ -975,17 +998,29 @@ def chop(struct, resid, resnum):
 		for atom in struct.residue_dict[resnum].atom_list[:]:
 			if atom.get_name() not in ['N', 'H', 'CA', 'HA2', 'HA3', 'C', 'O']:
 				struct.residue_dict[resnum].atom_list.remove(atom)	
-	if resid == 'HCY':
+	if resid == 'HC1':
 		for atom in struct.residue_dict[resnum].atom_list[:]:
 			if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'HB2', 'HB3', 'CG', 'HG2', 'HG3', 'SD', 'HD', 'C', 'O']:
+				struct.residue_dict[resnum].atom_list.remove(atom)	
+	if resid == 'HS1':
+		for atom in struct.residue_dict[resnum].atom_list[:]:
+			if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'HB2', 'HB3', 'CG', 'HG2', 'HG3', 'OD', 'HD', 'C', 'O']:
 				struct.residue_dict[resnum].atom_list.remove(atom)	
 	if resid == 'HCX':
 		for atom in struct.residue_dict[resnum].atom_list[:]:
 			if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'HB2', 'HB3', 'CG', 'HG2', 'HG3', 'SD', 'C', 'O']:
 				struct.residue_dict[resnum].atom_list.remove(atom)	
+	if resid == 'HIP':
+		for atom in struct.residue_dict[resnum].atom_list[:]:
+			if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'HB2', 'HB3', 'CG', 'ND1', 'HD1', 'CD2', 'HD2', 'CE1', 'HE1', 'NE2', 'HE2', 'C', 'O']:
+				struct.residue_dict[resnum].atom_list.remove(atom)	
 	if resid == 'HIS':
 		for atom in struct.residue_dict[resnum].atom_list[:]:
 			if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'HB2', 'HB3', 'CG', 'ND1', 'CD2', 'HD2', 'CE1', 'HE1', 'NE2', 'HE2', 'C', 'O']:
+				struct.residue_dict[resnum].atom_list.remove(atom)	
+	if resid == 'HH1':
+		for atom in struct.residue_dict[resnum].atom_list[:]:
+			if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'HB2', 'HB3', 'CG', 'HG2', 'HG3', 'CD', 'NE1', 'CE2', 'HE2', 'CZ1', 'HZ1', 'NZ2', 'HZ2', 'C', 'O']:
 				struct.residue_dict[resnum].atom_list.remove(atom)	
 	if resid == 'HE1':
 		for atom in struct.residue_dict[resnum].atom_list[:]:
@@ -1019,10 +1054,10 @@ def chop(struct, resid, resnum):
 		for atom in struct.residue_dict[resnum].atom_list[:]:
 			if atom.get_name() not in ['N', 'H', 'CA', 'CB2', 'HB21', 'HB22', 'HB23', 'CB1', 'HB12', 'HB13', 'CG', 'HG2', 'HG3', 'CD', 'HD2', 'HD3', 'CE', 'HE', 'C', 'O']:
 				struct.residue_dict[resnum].atom_list.remove(atom)	
-		struct.residue_dict[resnum + 4].set_resname(resid)
-		for atom in struct.residue_dict[resnum + 4].atom_list[:]:
-			if atom.get_name() not in ['N', 'H', 'CA', 'CB2', 'HB21', 'HB22', 'HB23', 'CB1', 'HB12', 'HB13', 'CG', 'HG2', 'HG3', 'CD', 'HD2', 'HD3', 'CE', 'HE', 'C', 'O']:
-				struct.residue_dict[resnum + 4].atom_list.remove(atom)	
+#		struct.residue_dict[resnum + 4].set_resname(resid)
+#		for atom in struct.residue_dict[resnum + 4].atom_list[:]:
+#			if atom.get_name() not in ['N', 'H', 'CA', 'CB2', 'HB21', 'HB22', 'HB23', 'CB1', 'HB12', 'HB13', 'CG', 'HG2', 'HG3', 'CD', 'HD2', 'HD3', 'CE', 'HE', 'C', 'O']:
+#				struct.residue_dict[resnum + 4].atom_list.remove(atom)	
 	if resid == 'I7X':
 		for atom in struct.residue_dict[resnum].atom_list[:]:
 			if atom.get_name() not in ['N', 'H', 'CA', 'CB2', 'HB21', 'HB22', 'HB23', 'CB1', 'HB12', 'HB13', 'CG', 'HG2', 'HG3', 'CD', 'HD2', 'HD3', 'CE', 'HE2', 'HE3', 'CZ', 'HZ2', 'HZ3', 'CH', 'HH2', 'HH3', 'CT', 'HT', 'C', 'O']:
@@ -1127,6 +1162,10 @@ def chop(struct, resid, resnum):
 		for atom in struct.residue_dict[resnum].atom_list[:]:
 			if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'HB2', 'HB3', 'CG', 'HG2', 'HG3', 'SD', 'CE', 'HE1', 'HE2', 'HE3', 'C', 'O']:
 				struct.residue_dict[resnum].atom_list.remove(atom)	
+	if resid == 'NAL':
+		for atom in struct.residue_dict[resnum].atom_list[:]:
+			if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'HB2', 'HB3', 'CG', 'CD1', 'HD1', 'CE1', 'HE1', 'CZ1', 'CH1', 'HH1', 'CT', 'HT', 'CH2', 'CZ2', 'HZ2', 'CE2', 'CD2', 'HD2', 'C', 'O']:
+				struct.residue_dict[resnum].atom_list.remove(atom)	
 	if resid == 'NER':
 		for atom in struct.residue_dict[resnum].atom_list[:]:
 			if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'HB2', 'HB3', 'CG', 'HG2', 'HG3', 'CD', 'HD2', 'HD3', 'CE', 'HE2', 'HE3', 'CZ', 'HZ2', 'HZ3', 'CH', 'HH1', 'HH2', 'HH3', 'C', 'O']:
@@ -1203,6 +1242,62 @@ def chop(struct, resid, resnum):
 		for atom in struct.residue_dict[resnum].atom_list[:]:
 			if atom.get_name() not in ['N', 'H', 'CA', 'HA', 'CB', 'HB', 'CG1', 'HG11', 'HG12', 'HG13', 'CG2', 'HG21', 'HG22', 'HG23', 'C', 'O']:
 				struct.residue_dict[resnum].atom_list.remove(atom)	
+	if resid == 'X1X':
+		for atom in struct.residue_dict[resnum].atom_list[:]:
+			if atom.get_name() not in ['C1', 'H12', 'H13']:
+				struct.residue_dict[resnum].atom_list.remove(atom)	
+	if resid == 'X2X':
+		for atom in struct.residue_dict[resnum].atom_list[:]:
+			if atom.get_name() not in ['C1', 'H12', 'H13', 'C2', 'H22', 'H23']:
+				struct.residue_dict[resnum].atom_list.remove(atom)	
+	if resid == 'X3X':
+		for atom in struct.residue_dict[resnum].atom_list[:]:
+			if atom.get_name() not in ['C1', 'H12', 'H13', 'C2', 'H22', 'H23', 'C3', 'H32', 'H33']:
+				struct.residue_dict[resnum].atom_list.remove(atom)	
+	if resid == 'X4X':
+		for atom in struct.residue_dict[resnum].atom_list[:]:
+			if atom.get_name() not in ['C1', 'H12', 'H13', 'C2', 'H22', 'H23', 'C3', 'H32', 'H33', 'C4', 'H42', 'H43']:
+				struct.residue_dict[resnum].atom_list.remove(atom)	
+	if resid == 'X5X':
+		for atom in struct.residue_dict[resnum].atom_list[:]:
+			if atom.get_name() not in ['C1', 'H12', 'H13', 'C2', 'H22', 'H23', 'C3', 'H32', 'H33', 'C4', 'H42', 'H43', 'C5', 'H52', 'H53']:
+				struct.residue_dict[resnum].atom_list.remove(atom)	
+	if resid == 'X6X':
+		for atom in struct.residue_dict[resnum].atom_list[:]:
+			if atom.get_name() not in ['C1', 'H12', 'H13', 'C2', 'H22', 'H23', 'C3', 'H32', 'H33', 'C4', 'H42', 'H43', 'C5', 'H52', 'H53', 'C6', 'H62', 'H63']:
+				struct.residue_dict[resnum].atom_list.remove(atom)	
+	if resid == 'X7X':
+		for atom in struct.residue_dict[resnum].atom_list[:]:
+			if atom.get_name() not in ['C1', 'H12', 'H13', 'C2', 'H22', 'H23', 'C3', 'H32', 'H33', 'C4', 'H42', 'H43', 'C5', 'H52', 'H53', 'C6', 'H62', 'H63', 'C7', 'H72', 'H73']:
+				struct.residue_dict[resnum].atom_list.remove(atom)	
+	if resid == 'X8X':
+		for atom in struct.residue_dict[resnum].atom_list[:]:
+			if atom.get_name() not in ['C1', 'H12', 'H13', 'C2', 'H22', 'H23', 'C3', 'H32', 'H33', 'C4', 'H42', 'H43', 'C5', 'H52', 'H53', 'C6', 'H62', 'H63', 'C7', 'H72', 'H73', 'C8', 'H82', 'H83']:
+				struct.residue_dict[resnum].atom_list.remove(atom)	
+	if resid == 'X9X':
+		for atom in struct.residue_dict[resnum].atom_list[:]:
+			if atom.get_name() not in ['C1', 'H12', 'H13', 'C2', 'H22', 'H23', 'C3', 'H32', 'H33', 'C4', 'H42', 'H43', 'C5', 'H52', 'H53', 'C6', 'H62', 'H63', 'C7', 'H72', 'H73', 'C8', 'H82', 'H83', 'C9', 'H92', 'H93']:
+				struct.residue_dict[resnum].atom_list.remove(atom)	
+	if resid == 'X0X':
+		for atom in struct.residue_dict[resnum].atom_list[:]:
+			if atom.get_name() not in ['C1', 'H12', 'H13', 'C2', 'H22', 'H23', 'C3', 'H32', 'H33', 'C4', 'H42', 'H43', 'C5', 'H52', 'H53', 'C6', 'H62', 'H63', 'C7', 'H72', 'H73', 'C8', 'H82', 'H83', 'C9', 'H92', 'H93', 'C10', 'H102', 'H103']:
+				struct.residue_dict[resnum].atom_list.remove(atom)	
+	if resid == 'XeX':
+		for atom in struct.residue_dict[resnum].atom_list[:]:
+			if atom.get_name() not in ['C1', 'H12', 'H13', 'C2', 'H22', 'H23', 'C3', 'H32', 'H33', 'C4', 'H42', 'H43', 'C5', 'H52', 'H53', 'C6', 'H62', 'H63', 'C7', 'H72', 'H73', 'C8', 'H82', 'H83', 'C9', 'H92', 'H93', 'C10', 'H102', 'H103', 'C11', 'H112', 'H113']:
+				struct.residue_dict[resnum].atom_list.remove(atom)	
+	if resid == 'XPX':
+		for atom in struct.residue_dict[resnum].atom_list[:]:
+			if atom.get_name() not in ['CA1', 'HA12', 'HA13', 'CA2', 'HA22', 'HA23', 'C1', 'C21', 'H21', 'C31', 'H31', 'C4', 'C32', 'H32', 'C22', 'H22']:
+				struct.residue_dict[resnum].atom_list.remove(atom)	
+	if resid == 'XXX':
+		for atom in struct.residue_dict[resnum].atom_list[:]:
+			if atom.get_name() not in ['CA1', 'HA12', 'HA13', 'CB1', 'HB12', 'HB13', 'CA2', 'HA22', 'HA23', 'CB2', 'HB22', 'HB23', 'C1', 'C21', 'H21', 'C31', 'H31', 'C4', 'C32', 'H32', 'C22', 'H22']:
+				struct.residue_dict[resnum].atom_list.remove(atom)	
+	if resid == 'XxX':
+		for atom in struct.residue_dict[resnum].atom_list[:]:
+			if atom.get_name() not in ['CA1', 'HA12', 'HA13', 'CC1', 'HC12', 'HC13', 'CC2', 'HC22', 'HC23', 'CB1', 'HB12', 'HB13', 'CA2', 'HA22', 'HA23', 'CB2', 'HB22', 'HB23', 'C1', 'C21', 'H21', 'C31', 'H31', 'C4', 'C32', 'H32', 'C22', 'H22']:
+				struct.residue_dict[resnum].atom_list.remove(atom)	
 	pdb = open('Mutated.pdb', 'w')
 	try:
 		pdb.write(struct.other_dict['Cryst1'].formatted())
@@ -1251,3 +1346,11 @@ def chop(struct, resid, resnum):
 	s = readpdb('Mut_leap.pdb')
 	sulpher(s, 'Mut_leap.pdb')
 	os.remove('chop.in')
+
+def smoothstep(x, x_min=0, x_max=1, N=1):
+    x = np.clip((x - x_min) / (x_max - x_min), 0, 1)
+    result = 0
+    for n in range(0, N + 1):
+         result += comb(N + n, n) * comb(2 * N + 1, N - n) * (-x) ** n
+    result *= x ** (N + 1)
+    return float('%5.3f'%result)

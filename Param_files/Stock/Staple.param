@@ -1,8 +1,9 @@
-#Properties of staple monomers (staple monomer, original residue, connecting atom)
+#Properties of staple monomers (staple monomer, original residue, connecting atom1, connecting atom2)
 ABX	ABU	CG
 ADX	ABU	CG
 AMX	ASN	ND2
 ALX	ALA	CB
+DAX	ASP	OD1
 CYX	CYS	SG
 ECX	ECY	CE
 MCX	MCY	CD
@@ -13,6 +14,19 @@ GNX	GLY	N
 PCX	PRO	C 
 I4X	NLE	CE
 I7X	NKI	CT
-HCX	HCY	SD
+HCX	HC1	SD
 HSX	TZ2	CZ2
 VLX	NVA	CD
+X2X	Null	C1	C2 
+X3X	Null	C1	C3 
+X4X	Null	C1	C4 
+X5X	Null	C1	C5 
+X6X	Null	C1	C6 
+X7X	Null	C1	C7 
+X8X	Null	C1	C8 
+X9X	Null	C1	C9 
+X0X	Null	C1	C10
+XeX	Null	C1	C11
+XPX	Null	CA1	CA2 
+XXX	Null	CA1	CA2 
+XxX	Null	CA1	CA2 

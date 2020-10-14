@@ -24,8 +24,8 @@ def parmed_command(vxi='VXI', lipid='No'):
 	for i in range(11):
 		a = i*10
 		parm = AmberParm('Solv_{}_{}.prmtop'.format(a, 100-a))
-		changeLJPair(parm, ':{}@H :{}@HB1 0 0'.format(vxi, vxi)).execute()
-		changeLJPair(parm, ':{}@HB2 :{}@HG11 0 0'.format(vxi, vxi)).execute()
+		changeLJPair(parm, ':{}@H'.format(vxi), ':{}@HB1'.format(vxi), '0', '0').execute()
+		changeLJPair(parm, ':{}@HB2'.format(vxi), ':{}@HG11'.format(vxi), '0', '0').execute()
                 change(parm, 'charge', ':{}@N'.format(vxi), bc['N']+((fc['N']-bc['N'])/10)*i).execute()
                 change(parm, 'charge', ':{}@H'.format(vxi), bc['H']-(bc['H']/10)*i).execute()
                 change(parm, 'charge', ':{}@CA'.format(vxi), bc['CA']+((fc['CA']-bc['CA'])/10)*i).execute()

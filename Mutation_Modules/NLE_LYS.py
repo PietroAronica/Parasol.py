@@ -24,7 +24,7 @@ def parmed_command(vxi='VXI', lipid='No'):
 	for i in range(11):
 		a = i*10
 		parm = AmberParm('Solv_{}_{}.prmtop'.format(a, 100-a))
-		changeLJPair(parm, ':{}@HE1 :{}@HZ1 0 0'.format(vxi, vxi)).execute()
+		changeLJPair(parm, ':{}@HE1'.format(vxi), ':{}@HZ1'.format(vxi), '0', '0').execute()
                 change(parm, 'charge', ':{}@N'.format(vxi), bc['N']+((fc['N']-bc['N'])/10)*i).execute()
                 change(parm, 'charge', ':{}@H'.format(vxi), bc['H']+((fc['H']-bc['H'])/10)*i).execute()
                 change(parm, 'charge', ':{}@CA'.format(vxi), bc['CA']+((fc['CA']-bc['CA'])/10)*i).execute()
@@ -42,10 +42,10 @@ def parmed_command(vxi='VXI', lipid='No'):
                 change(parm, 'charge', ':{}@HE1'.format(vxi), bc['HE1']-(bc['HE1']/10)*i).execute()
                 change(parm, 'charge', ':{}@HE2'.format(vxi), bc['HE2']+((fc['HE2']-bc['HE2'])/10)*i).execute()
                 change(parm, 'charge', ':{}@HE3'.format(vxi), bc['HE3']+((fc['HE3']-bc['HE3'])/10)*i).execute()
-                change(parm, 'charge', ':{}@NZ'.format(vxi), (fc['NZ']/10)*i).execute()
-                change(parm, 'charge', ':{}@HZ1'.format(vxi), (fc['HZ1']/10)*i).execute()
-                change(parm, 'charge', ':{}@HZ2'.format(vxi), (fc['HZ2']/10)*i).execute()
-                change(parm, 'charge', ':{}@HZ3'.format(vxi), (fc['HZ3']/10)*i).execute()
+                change(parm, 'charge', ':{}@NZ'.format(vxi), fc['NZ']/10*i*i/10).execute()
+                change(parm, 'charge', ':{}@HZ1'.format(vxi), fc['HZ1']/10*i*i/10).execute()
+                change(parm, 'charge', ':{}@HZ2'.format(vxi), fc['HZ2']/10*i*i/10).execute()
+                change(parm, 'charge', ':{}@HZ3'.format(vxi), fc['HZ3']/10*i*i/10).execute()
                 change(parm, 'charge', ':{}@C'.format(vxi), bc['C']+((fc['C']-bc['C'])/10)*i).execute()
                 change(parm, 'charge', ':{}@O'.format(vxi), bc['O']+((fc['O']-bc['O'])/10)*i).execute()
 		setOverwrite(parm).execute()

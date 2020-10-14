@@ -3,8 +3,18 @@
 import Frcmod_creator
 import PDBHandler
 import Leapy
+import numpy as np
+from scipy.special import comb
 from parmed.tools.actions import *
 from parmed.amber.readparm import *
+
+def smoothstep(x, x_min=0, x_max=1, N=1):
+    x = np.clip((x - x_min) / (x_max - x_min), 0, 1)
+    result = 0
+    for n in range(0, N + 1):
+         result += comb(N + n, n) * comb(2 * N + 1, N - n) * (-x) ** n
+    result *= x ** (N + 1)
+    return float('%5.3f'%result)
 
 def parmed_command(vxi='VXI', lipid='No'):
 	bc = {}
@@ -24,38 +34,38 @@ def parmed_command(vxi='VXI', lipid='No'):
 	for i in range(11):
 		a = i*10
 		parm = AmberParm('Solv_{}_{}.prmtop'.format(a, 100-a))
-		changeLJPair(parm, ':{}@HZ1 :{}@HH11 0 0'.format(vxi, vxi)).execute()
-		changeLJPair(parm, ':{}@HZ1 :{}@HH21 0 0'.format(vxi, vxi)).execute()
-		changeLJPair(parm, ':{}@HZ2 :{}@HH11 0 0'.format(vxi, vxi)).execute()
-		changeLJPair(parm, ':{}@HZ2 :{}@HH21 0 0'.format(vxi, vxi)).execute()
-                change(parm, 'charge', ':{}@N'.format(vxi), bc['N']+((fc['N']-bc['N'])/10)*i).execute()
-                change(parm, 'charge', ':{}@H'.format(vxi), bc['H']+((fc['H']-bc['H'])/10)*i).execute()
-                change(parm, 'charge', ':{}@CA'.format(vxi), bc['CA']+((fc['CA']-bc['CA'])/10)*i).execute()
-                change(parm, 'charge', ':{}@HA'.format(vxi), bc['HA']+((fc['HA']-bc['HA'])/10)*i).execute()
-                change(parm, 'charge', ':{}@CB'.format(vxi), bc['CB']+((fc['CB']-bc['CB'])/10)*i).execute()
-                change(parm, 'charge', ':{}@HB2'.format(vxi), bc['HB2']+((fc['HB2']-bc['HB2'])/10)*i).execute()
-                change(parm, 'charge', ':{}@HB3'.format(vxi), bc['HB3']+((fc['HB3']-bc['HB3'])/10)*i).execute()
-                change(parm, 'charge', ':{}@CG'.format(vxi), bc['CG']+((fc['CG']-bc['CG'])/10)*i).execute()
-                change(parm, 'charge', ':{}@HG2'.format(vxi), bc['HG2']+((fc['HG2']-bc['HG2'])/10)*i).execute()
-                change(parm, 'charge', ':{}@HG3'.format(vxi), bc['HG3']+((fc['HG3']-bc['HG3'])/10)*i).execute()
-                change(parm, 'charge', ':{}@CD'.format(vxi), bc['CD']+((fc['CD']-bc['CD'])/10)*i).execute()
-                change(parm, 'charge', ':{}@HD2'.format(vxi), bc['HD2']+((fc['HD2']-bc['HD2'])/10)*i).execute()
-                change(parm, 'charge', ':{}@HD3'.format(vxi), bc['HD3']+((fc['HD3']-bc['HD3'])/10)*i).execute()
-                change(parm, 'charge', ':{}@CE'.format(vxi), bc['NE']+((fc['CE']-bc['NE'])/10)*i).execute()
-                change(parm, 'charge', ':{}@HE2'.format(vxi), bc['HE']+((fc['HE2']-bc['HE'])/10)*i).execute()
-                change(parm, 'charge', ':{}@HE3'.format(vxi), (fc['HE3']/10)*i).execute()
-                change(parm, 'charge', ':{}@NZ'.format(vxi), bc['CZ']+((fc['NZ']-bc['CZ'])/10)*i).execute()
-                change(parm, 'charge', ':{}@HZ1'.format(vxi), (fc['HZ1']/10)*i).execute()
-                change(parm, 'charge', ':{}@HZ2'.format(vxi), (fc['HZ2']/10)*i).execute()
-                change(parm, 'charge', ':{}@HZ3'.format(vxi), (fc['HZ3']/10)*i).execute()
-                change(parm, 'charge', ':{}@NH1'.format(vxi), bc['NH1']-(bc['NH1']/10)*i).execute()
-                change(parm, 'charge', ':{}@HH11'.format(vxi), bc['HH11']-(bc['HH11']/10)*i).execute()
-                change(parm, 'charge', ':{}@HH12'.format(vxi), bc['HH12']-(bc['HH12']/10)*i).execute()
-                change(parm, 'charge', ':{}@NH2'.format(vxi), bc['NH2']-(bc['NH2']/10)*i).execute()
-                change(parm, 'charge', ':{}@HH21'.format(vxi), bc['HH21']-(bc['HH21']/10)*i).execute()
-                change(parm, 'charge', ':{}@HH22'.format(vxi), bc['HH22']-(bc['HH22']/10)*i).execute()
-                change(parm, 'charge', ':{}@C'.format(vxi), bc['C']+((fc['C']-bc['C'])/10)*i).execute()
-                change(parm, 'charge', ':{}@O'.format(vxi), bc['O']+((fc['O']-bc['O'])/10)*i).execute()
+		changeLJPair(parm, ':{}@HZ1'.format(vxi), ':{}@HH11'.format(vxi), '0', '0').execute()
+		changeLJPair(parm, ':{}@HZ1'.format(vxi), ':{}@HH21'.format(vxi), '0', '0').execute()
+		changeLJPair(parm, ':{}@HZ2'.format(vxi), ':{}@HH11'.format(vxi), '0', '0').execute()
+		changeLJPair(parm, ':{}@HZ2'.format(vxi), ':{}@HH21'.format(vxi), '0', '0').execute()
+                change(parm, 'charge', ':{}@N'.format(vxi), bc['N']+((fc['N']-bc['N'])*smoothstep(float(i)/10))).execute()
+                change(parm, 'charge', ':{}@H'.format(vxi), bc['H']+((fc['H']-bc['H'])*smoothstep(float(i)/10))).execute()
+                change(parm, 'charge', ':{}@CA'.format(vxi), bc['CA']+((fc['CA']-bc['CA'])*smoothstep(float(i)/10))).execute()
+                change(parm, 'charge', ':{}@HA'.format(vxi), bc['HA']+((fc['HA']-bc['HA'])*smoothstep(float(i)/10))).execute()
+                change(parm, 'charge', ':{}@CB'.format(vxi), bc['CB']+((fc['CB']-bc['CB'])*smoothstep(float(i)/10))).execute()
+                change(parm, 'charge', ':{}@HB2'.format(vxi), bc['HB2']+((fc['HB2']-bc['HB2'])*smoothstep(float(i)/10))).execute()
+                change(parm, 'charge', ':{}@HB3'.format(vxi), bc['HB3']+((fc['HB3']-bc['HB3'])*smoothstep(float(i)/10))).execute()
+                change(parm, 'charge', ':{}@CG'.format(vxi), bc['CG']+((fc['CG']-bc['CG'])*smoothstep(float(i)/10))).execute()
+                change(parm, 'charge', ':{}@HG2'.format(vxi), bc['HG2']+((fc['HG2']-bc['HG2'])*smoothstep(float(i)/10))).execute()
+                change(parm, 'charge', ':{}@HG3'.format(vxi), bc['HG3']+((fc['HG3']-bc['HG3'])*smoothstep(float(i)/10))).execute()
+                change(parm, 'charge', ':{}@CD'.format(vxi), bc['CD']+((fc['CD']-bc['CD'])*smoothstep(float(i)/10))).execute()
+                change(parm, 'charge', ':{}@HD2'.format(vxi), bc['HD2']+((fc['HD2']-bc['HD2'])*smoothstep(float(i)/10))).execute()
+                change(parm, 'charge', ':{}@HD3'.format(vxi), bc['HD3']+((fc['HD3']-bc['HD3'])*smoothstep(float(i)/10))).execute()
+                change(parm, 'charge', ':{}@CE'.format(vxi), bc['NE']+((fc['CE']-bc['NE'])*smoothstep(float(i)/10))).execute()
+                change(parm, 'charge', ':{}@HE2'.format(vxi), bc['HE']+((fc['HE2']-bc['HE'])*smoothstep(float(i)/10))).execute()
+                change(parm, 'charge', ':{}@HE3'.format(vxi), (fc['HE3']*smoothstep(float(i)/10))).execute()
+                change(parm, 'charge', ':{}@NZ'.format(vxi), bc['CZ']+((fc['NZ']-bc['CZ'])*smoothstep(float(i)/10))).execute()
+                change(parm, 'charge', ':{}@HZ1'.format(vxi), (fc['HZ1']*smoothstep(float(i)/10))).execute()
+                change(parm, 'charge', ':{}@HZ2'.format(vxi), (fc['HZ2']*smoothstep(float(i)/10))).execute()
+                change(parm, 'charge', ':{}@HZ3'.format(vxi), (fc['HZ3']*smoothstep(float(i)/10))).execute()
+                change(parm, 'charge', ':{}@NH1'.format(vxi), bc['NH1']-(bc['NH1']*smoothstep(float(i)/10))).execute()
+                change(parm, 'charge', ':{}@HH11'.format(vxi), bc['HH11']-(bc['HH11']*smoothstep(float(i)/10))).execute()
+                change(parm, 'charge', ':{}@HH12'.format(vxi), bc['HH12']-(bc['HH12']*smoothstep(float(i)/10))).execute()
+                change(parm, 'charge', ':{}@NH2'.format(vxi), bc['NH2']-(bc['NH2']*smoothstep(float(i)/10))).execute()
+                change(parm, 'charge', ':{}@HH21'.format(vxi), bc['HH21']-(bc['HH21']*smoothstep(float(i)/10))).execute()
+                change(parm, 'charge', ':{}@HH22'.format(vxi), bc['HH22']-(bc['HH22']*smoothstep(float(i)/10))).execute()
+                change(parm, 'charge', ':{}@C'.format(vxi), bc['C']+((fc['C']-bc['C'])*smoothstep(float(i)/10))).execute()
+                change(parm, 'charge', ':{}@O'.format(vxi), bc['O']+((fc['O']-bc['O'])*smoothstep(float(i)/10))).execute()
 		setOverwrite(parm).execute()
 		parmout(parm, 'Solv_{}_{}.prmtop'.format(a, 100-a)).execute()
 

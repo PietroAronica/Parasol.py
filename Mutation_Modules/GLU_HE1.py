@@ -38,8 +38,8 @@ def parmed_command(vxi='VXI', lipid='No'):
                 change(parm, 'charge', ':{}@HD2'.format(vxi), (fc['HD2']/10)*i).execute()
                 change(parm, 'charge', ':{}@HD3'.format(vxi), (fc['HD3']/10)*i).execute()
                 change(parm, 'charge', ':{}@CE'.format(vxi), bc['CD']+((fc['CE']-bc['CD'])/10)*i).execute()
-                change(parm, 'charge', ':{}@OH1'.format(vxi), bc['OE1']+((fc['OH1']-bc['OE1'])/10)*i).execute()
-                change(parm, 'charge', ':{}@OH2'.format(vxi), bc['OE2']+((fc['OH2']-bc['OE2'])/10)*i).execute()
+                change(parm, 'charge', ':{}@OZ1'.format(vxi), bc['OE1']+((fc['OZ1']-bc['OE1'])/10)*i).execute()
+                change(parm, 'charge', ':{}@OZ2'.format(vxi), bc['OE2']+((fc['OZ2']-bc['OE2'])/10)*i).execute()
                 change(parm, 'charge', ':{}@C'.format(vxi), bc['C']+((fc['C']-bc['C'])/10)*i).execute()
                 change(parm, 'charge', ':{}@O'.format(vxi), bc['O']+((fc['O']-bc['O'])/10)*i).execute()
 		setOverwrite(parm).execute()
@@ -64,9 +64,9 @@ def makevxi(struct, out, aa, vxi='VXI'):
 			elif atom.get_name() == 'CD' and res.get_resname() == vxi:
 				pdb.write(atom.change_name('CE')) 
 			elif atom.get_name() == 'OE1' and res.get_resname() == vxi:
-				pdb.write(atom.change_name('OH1')) 
+				pdb.write(atom.change_name('OZ1')) 
 			elif atom.get_name() == 'OE2' and res.get_resname() == vxi:
-				pdb.write(atom.change_name('OH2')) 
+				pdb.write(atom.change_name('OZ2')) 
 			else:
 				pdb.write(atom.formatted())
 	                try:
@@ -137,8 +137,8 @@ def lib_make(ff, outputfile, vxi='VXI', var=variablemake()):
 	ctrl.write('set %s.1.12 name "HD2"\n'%vxi)
 	ctrl.write('set %s.1.13 name "HD3"\n'%vxi)
 	ctrl.write('set %s.1.14 name "CE"\n'%vxi)
-	ctrl.write('set %s.1.15 name "OH1"\n'%vxi)
-	ctrl.write('set %s.1.16 name "OH2"\n'%vxi)
+	ctrl.write('set %s.1.15 name "OZ1"\n'%vxi)
+	ctrl.write('set %s.1.16 name "OZ2"\n'%vxi)
 	ctrl.write('set %s.1.17 name "C"\n'%vxi)
 	ctrl.write('set %s.1.18 name "O"\n'%vxi)
 	ctrl.write('set %s.1.1 type "N"\n'%vxi)

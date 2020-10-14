@@ -24,11 +24,11 @@ def parmed_command(vxi='VXI', lipid='No'):
 	for i in range(11):
 		a = i*10
 		parm = AmberParm('Solv_{}_{}.prmtop'.format(a, 100-a))
-		changeLJPair(parm, ':{}@CA :{}@H2 0 0'.format(vxi, vxi)).execute()
-		changeLJPair(parm, ':{}@HA :{}@H2 0 0'.format(vxi, vxi)).execute()
-		changeLJPair(parm, ':{}@O :{}@H 0 0'.format(vxi, vxi)).execute()
-		changeLJPair(parm, ':{}@O :{}@H1 0 0'.format(vxi, vxi)).execute()
-		changeLJPair(parm, ':{}@O :{}@HA13 0 0'.format(vxi, vxi)).execute()
+		changeLJPair(parm, ':{}@CA'.format(vxi), ':{}@H2'.format(vxi), '0', '0').execute()
+		changeLJPair(parm, ':{}@HA'.format(vxi), ':{}@H2'.format(vxi), '0', '0').execute()
+		changeLJPair(parm, ':{}@O'.format(vxi), ':{}@H'.format(vxi), '0', '0').execute()
+		changeLJPair(parm, ':{}@O'.format(vxi), ':{}@H1'.format(vxi), '0', '0').execute()
+		changeLJPair(parm, ':{}@O'.format(vxi), ':{}@HA13'.format(vxi), '0', '0').execute()
                 change(parm, 'charge', ':{}@N1'.format(vxi), (fc['N']-(fc['N']/10)*i)*(10-i)*(10-i)/100).execute()
                 change(parm, 'charge', ':{}@H1'.format(vxi), (fc['H']-(fc['H']/10)*i)*(10-i)*(10-i)/100).execute()
                 change(parm, 'charge', ':{}@N'.format(vxi), fc['CA']+((bc['N']-fc['CA'])/10)*i).execute()

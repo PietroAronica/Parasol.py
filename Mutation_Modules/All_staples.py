@@ -75,6 +75,39 @@ def parmed_command_ABX(vx1):
 		setOverwrite(parm).execute()
 		parmout(parm, 'Solv_{}_{}.prmtop'.format(a, 100-a)).execute()
 
+def parmed_command_DAX(vx1):
+	bc = {}
+        with open('Param_files/AminoAcid/ASP.param', 'r') as b:
+                data = b.readlines()[1:]
+        for line in data:
+		key, value = line.split()
+		bc[key] = float(value)
+        b.close()
+	fc = {}
+        with open('Param_files/AminoAcid/DAX.param', 'r') as b:
+                data = b.readlines()[1:]
+        for line in data:
+		key, value = line.split()
+		fc[key] = float(value)
+        b.close()
+	for i in range(11):
+		a = i*10
+		parm = AmberParm('Solv_{}_{}.prmtop'.format(a, 100-a))
+                change(parm, 'charge', ':{}@N'.format(vx1), bc['N']+((fc['N']-bc['N'])/10)*i).execute()
+                change(parm, 'charge', ':{}@H'.format(vx1), bc['H']+((fc['H']-bc['H'])/10)*i).execute()
+                change(parm, 'charge', ':{}@CA'.format(vx1), bc['CA']+((fc['CA']-bc['CA'])/10)*i).execute()
+                change(parm, 'charge', ':{}@HA'.format(vx1), bc['HA']+((fc['HA']-bc['HA'])/10)*i).execute()
+                change(parm, 'charge', ':{}@CB'.format(vx1), bc['CB']+((fc['CB']-bc['CB'])/10)*i).execute()
+                change(parm, 'charge', ':{}@HB2'.format(vx1), bc['HB2']+((fc['HB2']-bc['HB2'])/10)*i).execute()
+                change(parm, 'charge', ':{}@HB3'.format(vx1), bc['HB3']+((fc['HB3']-bc['HB3'])/10)*i).execute()
+                change(parm, 'charge', ':{}@CG'.format(vx1), bc['CG']+((fc['CG']-bc['CG'])/10)*i).execute()
+                change(parm, 'charge', ':{}@OD1'.format(vx1), bc['OD1']+((fc['OD1']-bc['OD1'])/10)*i).execute()
+                change(parm, 'charge', ':{}@OD2'.format(vx1), bc['OD2']+((fc['OD2']-bc['OD2'])/10)*i).execute()
+                change(parm, 'charge', ':{}@C'.format(vx1), bc['C']+((fc['C']-bc['C'])/10)*i).execute()
+                change(parm, 'charge', ':{}@O'.format(vx1), bc['O']+((fc['O']-bc['O'])/10)*i).execute()
+		setOverwrite(parm).execute()
+		parmout(parm, 'Solv_{}_{}.prmtop'.format(a, 100-a)).execute()
+
 def parmed_command_ABX_N(vx1):
 	bc = {}
         with open('Param_files/AminoAcid/NABU.param', 'r') as b:
@@ -174,6 +207,39 @@ def parmed_command_CYX_N(vx1):
                 change(parm, 'charge', ':{}@HG'.format(vx1), bc['HG']-(bc['HG']/10)*i).execute()
                 change(parm, 'charge', ':{}@C'.format(vx1), bc['C']+((fc['C']-bc['C'])/10)*i).execute()
                 change(parm, 'charge', ':{}@O'.format(vx1), bc['O']+((fc['O']-bc['O'])/10)*i).execute()
+		setOverwrite(parm).execute()
+		parmout(parm, 'Solv_{}_{}.prmtop'.format(a, 100-a)).execute()
+
+def parmed_command_CYX_C(vx1):
+	bc = {}
+        with open('Param_files/AminoAcid/CCYS.param', 'r') as b:
+                data = b.readlines()[1:]
+        for line in data:
+		key, value = line.split()
+		bc[key] = float(value)
+        b.close()
+	fc = {}
+        with open('Param_files/AminoAcid/CCYX.param', 'r') as b:
+                data = b.readlines()[1:]
+        for line in data:
+		key, value = line.split()
+		fc[key] = float(value)
+        b.close()
+	for i in range(11):
+		a = i*10
+		parm = AmberParm('Solv_{}_{}.prmtop'.format(a, 100-a))
+                change(parm, 'charge', ':{}@N'.format(vx1), bc['N']+((fc['N']-bc['N'])/10)*i).execute()
+                change(parm, 'charge', ':{}@H'.format(vx1), bc['H']+((fc['H']-bc['H'])/10)*i).execute()
+                change(parm, 'charge', ':{}@CA'.format(vx1), bc['CA']+((fc['CA']-bc['CA'])/10)*i).execute()
+                change(parm, 'charge', ':{}@HA'.format(vx1), bc['HA']+((fc['HA']-bc['HA'])/10)*i).execute()
+                change(parm, 'charge', ':{}@CB'.format(vx1), bc['CB']+((fc['CB']-bc['CB'])/10)*i).execute()
+                change(parm, 'charge', ':{}@HB2'.format(vx1), bc['HB2']+((fc['HB2']-bc['HB2'])/10)*i).execute()
+                change(parm, 'charge', ':{}@HB3'.format(vx1), bc['HB3']+((fc['HB3']-bc['HB3'])/10)*i).execute()
+                change(parm, 'charge', ':{}@SG'.format(vx1), bc['SG']+((fc['SG']-bc['SG'])/10)*i).execute()
+                change(parm, 'charge', ':{}@HG'.format(vx1), bc['HG']-(bc['HG']/10)*i).execute()
+                change(parm, 'charge', ':{}@C'.format(vx1), bc['C']+((fc['C']-bc['C'])/10)*i).execute()
+                change(parm, 'charge', ':{}@O'.format(vx1), bc['O']+((fc['O']-bc['O'])/10)*i).execute()
+                change(parm, 'charge', ':{}@OXT'.format(vx1), bc['OXT']+((fc['OXT']-bc['OXT'])/10)*i).execute()
 		setOverwrite(parm).execute()
 		parmout(parm, 'Solv_{}_{}.prmtop'.format(a, 100-a)).execute()
 
@@ -280,7 +346,7 @@ def parmed_command_FCX_C(vx1):
 
 def parmed_command_HCX(vx1):
 	bc = {}
-        with open('Param_files/AminoAcid/HCY.param', 'r') as b:
+        with open('Param_files/AminoAcid/HC1.param', 'r') as b:
                 data = b.readlines()[1:]
         for line in data:
 		key, value = line.split()
@@ -346,41 +412,6 @@ def parmed_command_PCX_C(vx1):
                 change(parm, 'charge', ':{}@C'.format(vx1), bc['C']+((fc['C']-bc['C'])/10)*i).execute()
                 change(parm, 'charge', ':{}@O'.format(vx1), bc['O']+((fc['O']-bc['O'])/10)*i).execute()
                 change(parm, 'charge', ':{}@OXT'.format(vx1), (bc['OXT']-(bc['OXT']/10)*i)*(10-i)/10).execute()
-		setOverwrite(parm).execute()
-		parmout(parm, 'Solv_{}_{}.prmtop'.format(a, 100-a)).execute()
-
-def parmed_command_HCX(vx1):
-	bc = {}
-        with open('Param_files/AminoAcid/HCY.param', 'r') as b:
-                data = b.readlines()[1:]
-        for line in data:
-		key, value = line.split()
-		bc[key] = float(value)
-        b.close()
-	fc = {}
-        with open('Param_files/AminoAcid/HCX.param', 'r') as b:
-                data = b.readlines()[1:]
-        for line in data:
-		key, value = line.split()
-		fc[key] = float(value)
-        b.close()
-	for i in range(11):
-		a = i*10
-		parm = AmberParm('Solv_{}_{}.prmtop'.format(a, 100-a))
-                change(parm, 'charge', ':{}@N'.format(vx1), bc['N']+((fc['N']-bc['N'])/10)*i).execute()
-                change(parm, 'charge', ':{}@H'.format(vx1), bc['H']+((fc['H']-bc['H'])/10)*i).execute()
-                change(parm, 'charge', ':{}@CA'.format(vx1), bc['CA']+((fc['CA']-bc['CA'])/10)*i).execute()
-                change(parm, 'charge', ':{}@HA'.format(vx1), bc['HA']+((fc['HA']-bc['HA'])/10)*i).execute()
-                change(parm, 'charge', ':{}@CB'.format(vx1), bc['CB']+((fc['CB']-bc['CB'])/10)*i).execute()
-                change(parm, 'charge', ':{}@HB2'.format(vx1), bc['HB2']+((fc['HB2']-bc['HB2'])/10)*i).execute()
-                change(parm, 'charge', ':{}@HB3'.format(vx1), bc['HB3']+((fc['HB3']-bc['HB3'])/10)*i).execute()
-                change(parm, 'charge', ':{}@CG'.format(vx1), bc['CG']+((fc['CG']-bc['CG'])/10)*i).execute()
-                change(parm, 'charge', ':{}@HG2'.format(vx1), bc['HG2']+((fc['HG2']-bc['HG2'])/10)*i).execute()
-                change(parm, 'charge', ':{}@HG3'.format(vx1), bc['HG3']+((fc['HG3']-bc['HG3'])/10)*i).execute()
-                change(parm, 'charge', ':{}@SD'.format(vx1), bc['SD']+((fc['SD']-bc['SD'])/10)*i).execute()
-                change(parm, 'charge', ':{}@HD'.format(vx1), bc['HD']-(bc['HD']/10)*i).execute()
-                change(parm, 'charge', ':{}@C'.format(vx1), bc['C']+((fc['C']-bc['C'])/10)*i).execute()
-                change(parm, 'charge', ':{}@O'.format(vx1), bc['O']+((fc['O']-bc['O'])/10)*i).execute()
 		setOverwrite(parm).execute()
 		parmout(parm, 'Solv_{}_{}.prmtop'.format(a, 100-a)).execute()
 
@@ -502,7 +533,7 @@ def parmed_command_I4X(vx1):
 	for i in range(11):
 		a = i*10
 		parm = AmberParm('Solv_{}_{}.prmtop'.format(a, 100-a))
-		changeLJPair(parm, ':{}@HA :{}@HB21 0 0'.format(vx1, vx1)).execute()
+		changeLJPair(parm, ':{}@HA'.format(vx1), ':{}@HB21'.format(vx1), '0', '0').execute()
                 change(parm, 'charge', ':{}@N'.format(vx1), bc['N']+((fc['N']-bc['N'])/10)*i).execute()
                 change(parm, 'charge', ':{}@H'.format(vx1), bc['H']+((fc['H']-bc['H'])/10)*i).execute()
                 change(parm, 'charge', ':{}@CA'.format(vx1), bc['CA']+((fc['CA']-bc['CA'])/10)*i).execute()
@@ -547,7 +578,7 @@ def parmed_command_I7X(vx1):
 	for i in range(11):
 		a = i*10
 		parm = AmberParm('Solv_{}_{}.prmtop'.format(a, 100-a))
-		changeLJPair(parm, ':{}@HA :{}@HB21 0 0'.format(vx1, vx1)).execute()
+		changeLJPair(parm, ':{}@HA'.format(vx1), ':{}@HB21'.format(vx1), '0', '0').execute()
                 change(parm, 'charge', ':{}@N'.format(vx1), bc['N']+((fc['N']-bc['N'])/10)*i).execute()
                 change(parm, 'charge', ':{}@H'.format(vx1), bc['H']+((fc['H']-bc['H'])/10)*i).execute()
                 change(parm, 'charge', ':{}@CA'.format(vx1), bc['CA']+((fc['CA']-bc['CA'])/10)*i).execute()
@@ -748,6 +779,28 @@ def makevxi_HSX(struct, out, resid, vx1):
                         pass
         pdb.write('END\n')
 
+def makevxi_DAX(struct, out, resid, vx1):
+        struct.residue_dict[resid].set_resname(vx1)
+	pdb = open(out, 'w')
+        try:
+                pdb.write(struct.other_dict['Cryst1'].formatted())
+        except KeyError:
+                pass
+        for res in struct.residue_list:
+                for atom in res.atom_list:
+                       	pdb.write(atom.formatted())
+	                try:
+        	                pdb.write(struct.other_dict[atom.get_number()].ter())
+                	except:
+                        	pass
+        for oth in struct.other_dict:
+                try:
+                        if oth.startswith('Conect'):
+                                pdb.write(struct.other_dict[oth].formatted())
+                except:
+                        pass
+        pdb.write('END\n')
+
 def makevxi_VLX(struct, out, resid, vx1):
         struct.residue_dict[resid].set_resname(vx1)
 	pdb = open(out, 'w')
@@ -843,6 +896,50 @@ def makevxi_MCX(struct, out, resid, vx1):
         pdb.write('END\n')
 
 def makevxi_CYX(struct, out, resid, vx1):
+        struct.residue_dict[resid].set_resname(vx1)
+	pdb = open(out, 'w')
+        try:
+                pdb.write(struct.other_dict['Cryst1'].formatted())
+        except KeyError:
+                pass
+        for res in struct.residue_list:
+                for atom in res.atom_list:
+                       	pdb.write(atom.formatted())
+	                try:
+        	                pdb.write(struct.other_dict[atom.get_number()].ter())
+                	except:
+                        	pass
+        for oth in struct.other_dict:
+                try:
+                        if oth.startswith('Conect'):
+                                pdb.write(struct.other_dict[oth].formatted())
+                except:
+                        pass
+        pdb.write('END\n')
+
+def makevxi_CYX_N(struct, out, resid, vx1):
+        struct.residue_dict[resid].set_resname(vx1)
+	pdb = open(out, 'w')
+        try:
+                pdb.write(struct.other_dict['Cryst1'].formatted())
+        except KeyError:
+                pass
+        for res in struct.residue_list:
+                for atom in res.atom_list:
+                       	pdb.write(atom.formatted())
+	                try:
+        	                pdb.write(struct.other_dict[atom.get_number()].ter())
+                	except:
+                        	pass
+        for oth in struct.other_dict:
+                try:
+                        if oth.startswith('Conect'):
+                                pdb.write(struct.other_dict[oth].formatted())
+                except:
+                        pass
+        pdb.write('END\n')
+
+def makevxi_CYX_C(struct, out, resid, vx1):
         struct.residue_dict[resid].set_resname(vx1)
 	pdb = open(out, 'w')
         try:
@@ -1737,6 +1834,68 @@ def lib_make_CYX_N(ff, outputfile, vxi, newsul='ds', gonhyd='dh'):
         ctrl.close()
 	Leapy.run('lyp.in', outputfile)
 
+def lib_make_CYX_C(ff, outputfile, vxi, newsul='ds', gonhyd='dh'):
+        ctrl = open('lyp.in', 'w')
+        ctrl.write("source %s\n"%ff)
+	ctrl.write("%s=loadpdb Param_files/LibPDB/CCYX.pdb\n"%vxi)
+	ctrl.write('set %s.1.1 element "N"\n'%vxi)
+	ctrl.write('set %s.1.2 element "H"\n'%vxi)
+	ctrl.write('set %s.1.3 element "C"\n'%vxi)
+	ctrl.write('set %s.1.4 element "H"\n'%vxi)
+	ctrl.write('set %s.1.5 element "C"\n'%vxi)
+	ctrl.write('set %s.1.6 element "H"\n'%vxi)
+	ctrl.write('set %s.1.7 element "H"\n'%vxi)
+	ctrl.write('set %s.1.8 element "S"\n'%vxi)
+	ctrl.write('set %s.1.9 element "H"\n'%vxi)
+	ctrl.write('set %s.1.10 element "C"\n'%vxi)
+	ctrl.write('set %s.1.11 element "O"\n'%vxi)
+	ctrl.write('set %s.1.12 element "O"\n'%vxi)
+	ctrl.write('set %s.1.1 name "N"\n'%vxi)
+	ctrl.write('set %s.1.2 name "H"\n'%vxi)
+	ctrl.write('set %s.1.3 name "CA"\n'%vxi)
+	ctrl.write('set %s.1.4 name "HA"\n'%vxi)
+	ctrl.write('set %s.1.5 name "CB"\n'%vxi)
+	ctrl.write('set %s.1.6 name "HB2"\n'%vxi)
+	ctrl.write('set %s.1.7 name "HB3"\n'%vxi)
+	ctrl.write('set %s.1.8 name "SG"\n'%vxi)
+	ctrl.write('set %s.1.9 name "HG"\n'%vxi)
+	ctrl.write('set %s.1.10 name "C"\n'%vxi)
+	ctrl.write('set %s.1.11 name "O"\n'%vxi)
+	ctrl.write('set %s.1.12 name "OXT"\n'%vxi)
+	ctrl.write('set %s.1.1 type "N"\n'%vxi)
+	ctrl.write('set %s.1.2 type "H"\n'%vxi)
+	ctrl.write('set %s.1.3 type "CT"\n'%vxi)
+	ctrl.write('set %s.1.4 type "H1"\n'%vxi)
+	ctrl.write('set %s.1.5 type "CT"\n'%vxi)
+	ctrl.write('set %s.1.6 type "H1"\n'%vxi)
+	ctrl.write('set %s.1.7 type "H1"\n'%vxi)
+	ctrl.write('set %s.1.8 type "%s"\n'%(vxi, newsul))
+	ctrl.write('set %s.1.9 type "%s"\n'%(vxi, gonhyd))
+	ctrl.write('set %s.1.10 type "C"\n'%vxi)
+	ctrl.write('set %s.1.11 type "O2"\n'%vxi)
+	ctrl.write('set %s.1.12 type "O2"\n'%vxi)
+	ctrl.write('bond %s.1.1 %s.1.2\n'%(vxi, vxi))
+	ctrl.write('bond %s.1.1 %s.1.3\n'%(vxi, vxi))
+	ctrl.write('bond %s.1.3 %s.1.4\n'%(vxi, vxi))
+	ctrl.write('bond %s.1.3 %s.1.5\n'%(vxi, vxi))
+	ctrl.write('bond %s.1.3 %s.1.10\n'%(vxi, vxi))
+	ctrl.write('bond %s.1.5 %s.1.6\n'%(vxi, vxi))
+	ctrl.write('bond %s.1.5 %s.1.7\n'%(vxi, vxi))
+	ctrl.write('bond %s.1.5 %s.1.8\n'%(vxi, vxi))
+	ctrl.write('bond %s.1.8 %s.1.9\n'%(vxi, vxi))
+	ctrl.write('bond %s.1.10 %s.1.11\n'%(vxi, vxi))
+	ctrl.write('bond %s.1.10 %s.1.12\n'%(vxi, vxi))
+	ctrl.write('set %s.1 connect0 %s.1.N\n'%(vxi, vxi))
+	ctrl.write('set %s.1 connect2 %s.1.8\n'%(vxi, vxi))
+	ctrl.write('set %s name "%s"\n'%(vxi, vxi))
+	ctrl.write('set %s.1 name "%s"\n'%(vxi, vxi))
+	ctrl.write('set %s head %s.1.N\n'%(vxi, vxi))
+	ctrl.write('set %s tail %s.1.C\n'%(vxi, vxi))
+	ctrl.write('saveoff %s %s.lib\n'%(vxi, vxi))
+	ctrl.write("quit\n") 
+        ctrl.close()
+	Leapy.run('lyp.in', outputfile)
+
 def lib_make_HCX(ff, outputfile, vxi, newsul='ds', gonhyd='dh'):
         ctrl = open('lyp.in', 'w')
         ctrl.write("source %s\n"%ff)
@@ -1866,6 +2025,69 @@ def lib_make_ABX(ff, outputfile, vxi, newcar='dc', gonhyd='dh'):
 	ctrl.write('set %s.1 connect0 %s.1.N\n'%(vxi, vxi))
 	ctrl.write('set %s.1 connect1 %s.1.C\n'%(vxi, vxi))
 	ctrl.write('set %s.1 connect2 %s.1.8\n'%(vxi, vxi))
+	ctrl.write('set %s name "%s"\n'%(vxi, vxi))
+	ctrl.write('set %s.1 name "%s"\n'%(vxi, vxi))
+	ctrl.write('set %s head %s.1.N\n'%(vxi, vxi))
+	ctrl.write('set %s tail %s.1.C\n'%(vxi, vxi))
+	ctrl.write('saveoff %s %s.lib\n'%(vxi, vxi))
+	ctrl.write("quit\n") 
+        ctrl.close()
+	Leapy.run('lyp.in', outputfile)
+
+def lib_make_DAX(ff, outputfile, vxi, newoxy='do', difoxy='fo'):
+        ctrl = open('lyp.in', 'w')
+        ctrl.write("source %s\n"%ff)
+	ctrl.write("%s=loadpdb Param_files/LibPDB/DAX.pdb\n"%vxi)
+	ctrl.write('set %s.1.1 element "N"\n'%vxi)
+	ctrl.write('set %s.1.2 element "H"\n'%vxi)
+	ctrl.write('set %s.1.3 element "C"\n'%vxi)
+	ctrl.write('set %s.1.4 element "H"\n'%vxi)
+	ctrl.write('set %s.1.5 element "C"\n'%vxi)
+	ctrl.write('set %s.1.6 element "H"\n'%vxi)
+	ctrl.write('set %s.1.7 element "H"\n'%vxi)
+	ctrl.write('set %s.1.8 element "C"\n'%vxi)
+	ctrl.write('set %s.1.9 element "O"\n'%vxi)
+	ctrl.write('set %s.1.10 element "O"\n'%vxi)
+	ctrl.write('set %s.1.11 element "C"\n'%vxi)
+	ctrl.write('set %s.1.12 element "O"\n'%vxi)
+	ctrl.write('set %s.1.1 name "N"\n'%vxi)
+	ctrl.write('set %s.1.2 name "H"\n'%vxi)
+	ctrl.write('set %s.1.3 name "CA"\n'%vxi)
+	ctrl.write('set %s.1.4 name "HA"\n'%vxi)
+	ctrl.write('set %s.1.5 name "CB"\n'%vxi)
+	ctrl.write('set %s.1.6 name "HB2"\n'%vxi)
+	ctrl.write('set %s.1.7 name "HB3"\n'%vxi)
+	ctrl.write('set %s.1.8 name "CG"\n'%vxi)
+	ctrl.write('set %s.1.9 name "OD1"\n'%vxi)
+	ctrl.write('set %s.1.10 name "OD2"\n'%vxi)
+	ctrl.write('set %s.1.11 name "C"\n'%vxi)
+	ctrl.write('set %s.1.12 name "O"\n'%vxi)
+	ctrl.write('set %s.1.1 type "N"\n'%vxi)
+	ctrl.write('set %s.1.2 type "H"\n'%vxi)
+	ctrl.write('set %s.1.3 type "CT"\n'%vxi)
+	ctrl.write('set %s.1.4 type "H1"\n'%vxi)
+	ctrl.write('set %s.1.5 type "CT"\n'%vxi)
+	ctrl.write('set %s.1.6 type "HC"\n'%vxi)
+	ctrl.write('set %s.1.7 type "HC"\n'%vxi)
+	ctrl.write('set %s.1.8 type "C"\n'%vxi)
+	ctrl.write('set %s.1.9 type "%s"\n'%(vxi, newoxy))
+	ctrl.write('set %s.1.10 type "%s"\n'%(vxi, difoxy))
+	ctrl.write('set %s.1.11 type "C"\n'%vxi)
+	ctrl.write('set %s.1.12 type "O"\n'%vxi)
+	ctrl.write('bond %s.1.1 %s.1.2\n'%(vxi, vxi))
+	ctrl.write('bond %s.1.1 %s.1.3\n'%(vxi, vxi))
+	ctrl.write('bond %s.1.3 %s.1.4\n'%(vxi, vxi))
+	ctrl.write('bond %s.1.3 %s.1.5\n'%(vxi, vxi))
+	ctrl.write('bond %s.1.3 %s.1.11\n'%(vxi, vxi))
+	ctrl.write('bond %s.1.5 %s.1.6\n'%(vxi, vxi))
+	ctrl.write('bond %s.1.5 %s.1.7\n'%(vxi, vxi))
+	ctrl.write('bond %s.1.5 %s.1.8\n'%(vxi, vxi))
+	ctrl.write('bond %s.1.8 %s.1.9\n'%(vxi, vxi))
+	ctrl.write('bond %s.1.8 %s.1.10\n'%(vxi, vxi))
+	ctrl.write('bond %s.1.11 %s.1.12\n'%(vxi, vxi))
+	ctrl.write('set %s.1 connect0 %s.1.N\n'%(vxi, vxi))
+	ctrl.write('set %s.1 connect1 %s.1.C\n'%(vxi, vxi))
+	ctrl.write('set %s.1 connect2 %s.1.9\n'%(vxi, vxi))
 	ctrl.write('set %s name "%s"\n'%(vxi, vxi))
 	ctrl.write('set %s.1 name "%s"\n'%(vxi, vxi))
 	ctrl.write('set %s head %s.1.N\n'%(vxi, vxi))
@@ -2876,6 +3098,40 @@ def stock_add_to_all_ABX(dist, newcar='dc', gonhyd='dh'):
                 Frcmod_creator.NONBON_insert('{}_{}.frcmod'.format(a, 100-a), newcar, cal(p['CT'][2], p['CT'][2], i), cal(p['CT'][3], p['CT'][3], i))
                 Frcmod_creator.NONBON_insert('{}_{}.frcmod'.format(a, 100-a), gonhyd, cal(p['HC'][2], p['0_H'][2], i), cal(p['HC'][3], p['0_H'][3], i))
 
+def stock_add_to_all_DAX(dist, newoxy='do', difoxy='fo'):
+        p = {}
+        with open('Param_files/Stock/Stock.param', 'r') as b:
+                data = b.readlines()[1:]
+        for line in data:
+                p[line.split()[0]] = []
+                for point in line.split()[1:]:
+                        p[line.split()[0]].append(float(point))
+        b.close()
+        for i in range(11):
+                a = i*10
+                Frcmod_creator.MASS_insert('{}_{}.frcmod'.format(a, 100-a), newoxy, cal(p['O2'][0], p['OS'][0], i), cal(p['O2'][1], p['OS'][1], i))
+                Frcmod_creator.MASS_insert('{}_{}.frcmod'.format(a, 100-a), difoxy, cal(p['O2'][0], p['O2'][0], i), cal(p['O2'][1], p['O2'][1], i))
+                Frcmod_creator.BOND_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}'.format('C ', newoxy), cal(p['C_O2'][0], p['C_OS'][0], i), cal(p['C_O2'][1], p['C_OS'][1], i))
+                Frcmod_creator.BOND_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}'.format('C ', difoxy), cal(p['C_O2'][0], p['C_O'][0], i), cal(p['C_O2'][1], p['C_O'][1], i))
+                Frcmod_creator.BOND_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}'.format(newoxy, 'dc'), cal(p['0_0'][0], p['CT_OS'][0], i), cal(dist, p['CT_OS'][1], i))
+                Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format('HC', 'dc', newoxy), cal(p['X_CM_CM_0'][0], p['C_C_H'][0], i), cal(p['X_CM_CM_0'][1], p['C_C_H'][1], i))
+                Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format('CT', 'dc', newoxy), cal(p['X_CM_CM_0'][0], p['C_C_H'][0], i), cal(p['X_CM_CM_0'][1], p['C_C_H'][1], i))
+                Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format('dh', 'dc', newoxy), cal(p['X_CM_CM_0'][0], p['C_C_H'][0], i), cal(p['X_CM_CM_0'][1], p['C_C_H'][1], i))
+                Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format('dc', newoxy, 'C '), cal(p['X_CM_CM_0'][0], p['C_OS_CT'][0], i), cal(p['X_CM_CM_0'][1], p['C_OS_CT'][1], i))
+                Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format(newoxy, 'C ', difoxy), cal(p['O2_C_O2'][0], p['O_C_OS'][0], i), cal(p['O2_C_O2'][1], p['O_C_OS'][1], i))
+                Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format('CT', 'C ', newoxy), cal(p['C_C_O2'][0], p['C_C_OS'][0], i), cal(p['C_C_O2'][1], p['C_C_OS'][1], i))
+                Frcmod_creator.ANGLE_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}'.format('CT', 'C ', difoxy), cal(p['C_C_O2'][0], p['C_C_O'][0], i), cal(p['C_C_O2'][1], p['C_C_O'][1], i))
+                Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format('C ', 'CT', 'dc', newoxy), cal(p['0_4'][0], p['X_C_C_X'][0], i), cal(p['0_4'][1], p['X_C_C_X'][1], i), cal(p['0_4'][2], p['X_C_C_X'][2], i), cal(p['0_4'][3], p['X_C_C_X'][3], i))
+                Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format('N ', 'CT', 'dc', newoxy), cal(p['0_4'][0], p['X_C_C_X'][0], i), cal(p['0_4'][1], p['X_C_C_X'][1], i), cal(p['0_4'][2], p['X_C_C_X'][2], i), cal(p['0_4'][3], p['X_C_C_X'][3], i))
+                Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format('H1', 'CT', 'dc', newoxy), cal(p['0_3'][0], p['HC_C_C_OS_1'][0], i), cal(p['0_3'][1], p['HC_C_C_OS_1'][1], i), cal(p['0_3'][2], p['HC_C_C_OS_1'][2], i), cal(p['0_3'][3], p['HC_C_C_OS_1'][3], i))
+                Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format('H1', 'CT', 'dc', newoxy), cal(p['0_2'][0], p['HC_C_C_OS_2'][0], i), cal(p['0_2'][1], p['HC_C_C_OS_2'][1], i), cal(p['0_2'][2], p['HC_C_C_OS_2'][2], i), cal(p['0_2'][3], p['HC_C_C_OS_2'][3], i))
+		Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format('CT', 'dc', newoxy, 'C'), cal(p['0_5'][0], p['X_CT_OS_X'][0], i), cal(p['0_5'][1], p['X_CT_OS_X'][1], i), cal(p['0_5'][2], p['X_CT_OS_X'][2], i), cal(p['0_5'][3], p['X_CT_OS_X'][3], i))
+		Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format('HC', 'dc', newoxy, 'C'), cal(p['0_5'][0], p['X_CT_OS_X'][0], i), cal(p['0_5'][1], p['X_CT_OS_X'][1], i), cal(p['0_5'][2], p['X_CT_OS_X'][2], i), cal(p['0_5'][3], p['X_CT_OS_X'][3], i))
+		Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format('dh', 'dc', newoxy, 'C'), cal(p['0_5'][0], p['X_CT_OS_X'][0], i), cal(p['0_5'][1], p['X_CT_OS_X'][1], i), cal(p['0_5'][2], p['X_CT_OS_X'][2], i), cal(p['0_5'][3], p['X_CT_OS_X'][3], i))
+		Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format('dc', newoxy, 'C', 'CT'), cal(p['0_5'][0], p['X_C_OS_X'][0], i), cal(p['0_5'][1], p['X_C_OS_X'][1], i), cal(p['0_5'][2], p['X_C_OS_X'][2], i), cal(p['0_5'][3], p['X_C_OS_X'][3], i))
+		Frcmod_creator.DIHEDRAL_insert('{}_{}.frcmod'.format(a, 100-a), '{}-{}-{}-{}'.format('dc', newoxy, 'C', difoxy), cal(p['0_5'][0], p['X_C_OS_X'][0], i), cal(p['0_5'][1], p['X_C_OS_X'][1], i), cal(p['0_5'][2], p['X_C_OS_X'][2], i), cal(p['0_5'][3], p['X_C_OS_X'][3], i))
+                Frcmod_creator.NONBON_insert('{}_{}.frcmod'.format(a, 100-a), newoxy, cal(p['O2'][2], p['OS'][2], i), cal(p['O2'][3], p['OS'][3], i))
+                Frcmod_creator.NONBON_insert('{}_{}.frcmod'.format(a, 100-a), difoxy, cal(p['O2'][2], p['O2'][2], i), cal(p['O2'][3], p['O2'][3], i))
 def stock_add_to_all_ABX_N(dist, newcar='dc', gonhyd='dh'):
         p = {}
         with open('Param_files/Stock/Stock.param', 'r') as b:

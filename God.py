@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/home/pietroa/.conda/envs/base/bin/python
 
 from __future__ import division
 import sys
@@ -11,7 +11,7 @@ import PDBHandler
 import Leapy
 import Run
 
-def makeinput(pdbfile, outfile, baa, faa, resid, resid2='No', atypes='Standard', newbox=8.0, ff1='Standard', ff2='Null', lipid='No', extralib='Null', extrafrcmod='Null', extracommand='Null', extraprep='Null'):
+def makeinput(pdbfile, outfile, baa, faa, resid, resid2='No', atypes='Standard', newbox=8.0, ff1='Standard', ff2='No', lipid='No', extralib='Null', extrafrcmod='Null', extracommand='Null', extraprep='Null', extracommand1='Null'):
 # Set forcefield to be used
 	if ff1 == 'Standard':
 		ff1 = 'Param_files/Essentials/cmd.ff14SB+'
@@ -91,7 +91,7 @@ def makeinput(pdbfile, outfile, baa, faa, resid, resid2='No', atypes='Standard',
 	else:	
 		Curr_mut.lib_make(ff1, outfile, var=var)
 # Create prmtops
-	Leapy.createprmtops(ff1=ff1, ff2=ff2, ion=Ion, box=oldbox, solvbox=newbox, output=outfile, bal=bal, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand, extraprep=extraprep)
+	Leapy.createprmtops(ff1=ff1, ff2=ff2, ion=Ion, box=oldbox, solvbox=newbox, output=outfile, bal=bal, extralib=extralib, extrafrcmod=extrafrcmod, extracommand=extracommand, extraprep=extraprep, extracommand1=extracommand1)
 	if Term == 'N':
 		Curr_mut.parmed_command_N(lipid=lipid)
 	elif Term == 'C':
